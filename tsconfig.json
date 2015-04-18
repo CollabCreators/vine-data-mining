@@ -13,5 +13,9 @@
         "!./node_modules/**/*.ts"
     ],
     "files": [
+        "./src/app.ts",
+        "./typings/node/node.d.ts",
+        "./typings/request/request.d.ts",
+        "./typings/tsd.d.ts"
     ]
 }
