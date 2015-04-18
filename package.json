@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/markogresak/vine-data-mining/issues"
   },
-  "homepage": "https://github.com/markogresak/vine-data-mining"
+  "homepage": "https://github.com/markogresak/vine-data-mining",
+  "dependencies": {
+    "babel": "^5.1.10"
+  }
 }
