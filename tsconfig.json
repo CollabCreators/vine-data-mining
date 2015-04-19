@@ -16,6 +16,7 @@
         "./src/VineAPI.d.ts",
         "./src/app.ts",
         "./typings/es6-promise/es6-promise.d.ts",
+        "./typings/form-data/form-data.d.ts",
         "./typings/node/node.d.ts",
         "./typings/request/request.d.ts",
         "./typings/tsd.d.ts"
