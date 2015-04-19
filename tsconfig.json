@@ -13,6 +13,8 @@
         "!./node_modules/**/*.ts"
     ],
     "files": [
+        "./src/Vine.ts",
+        "./src/VineAPI.d.ts",
         "./src/app.ts",
         "./typings/es6-promise/es6-promise.d.ts",
         "./typings/node/node.d.ts",
