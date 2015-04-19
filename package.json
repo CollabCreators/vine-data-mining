@@ -6,6 +6,8 @@
     "postinstall": "tsd reinstall --overwrite --save",
     "prestart": "./node_modules/typescript/bin/tsc --project .",
     "start": "./node_modules/babel/bin/babel-node bin/app.js",
+    "watch": "nodemon -v &>/dev/null && nodemon -w bin bin/app.js",
+    "w": "npm run-script watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
