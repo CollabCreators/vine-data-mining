@@ -44,3 +44,4 @@ node_modules
 ## Project-specific files
 opis-problema
 typings
+bin/
