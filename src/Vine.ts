@@ -25,12 +25,9 @@ export default class Vine {
         }
         this.login(username, password)
             .then((data: AuthenticateData) => {
-                console.log(data);
                 this.sessionKey = data.key;
         })
             .catch((err) => {
-                console.log("login error")
-                console.log(err)
                 throw err;
         });
     }
@@ -62,7 +59,6 @@ export default class Vine {
                 }
             },
                 (err, httpResponse, body) => {
-                    console.log('body', err)
                     // Error occured during request, reject promise with api message and `err`.
                     if (err) {
                         reject(Error(`Vine - Login: ${err}`));
@@ -97,13 +93,11 @@ export default class Vine {
     }
 
     public searchUser(username: string): Promise<UserSearchData> {
-        console.log("search", username)
         return new Promise<UserSearchData>((resolve, reject) => {
             request.get(`${Vine.BASE_URL}/users/search/${username}`, {
                 headers: Vine.HeadersFactory(this.sessionKey)
             },
                 (err, httpResponse, body) => {
-                    console.log('done', body)
                     // Error occured during request, reject promise with api message and `err`.
                     if (err) {
                         reject(Error(`Vine - Search_User: ${err}`));
@@ -117,7 +111,6 @@ export default class Vine {
                     // Everything is ok, resolve promise with parsed response.
                     resolve(response.data);
                 });
-            console.log("end request")
         });
     }
 }
