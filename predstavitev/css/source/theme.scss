@@ -56,3 +56,39 @@ $heading1TextShadow: 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b
 // See ../../bower_components/reveal.js/css/theme/README.md
 // for further explanations on how reveal.js themes work.
 
+.content {
+    z-index: 9999;
+    margin-top: 500px !important;
+}
+
+.background {
+    z-index: 0;
+    position: absolute;
+    opacity: 0.3;
+
+    .frame-wrapper {
+        width: 300px;
+        height: 480px;
+    }
+
+    .frame-wrapper:nth-child(1) {
+        position: absolute;
+        top: -100px;
+        left: -20px;
+        transform: rotate(15deg);
+    }
+
+    .frame-wrapper:nth-child(2) {
+        position: absolute;
+        top: -100px;
+        left: 740px;
+        transform: rotate(-15deg);
+    }
+
+    .frame-wrapper:nth-child(3) {
+        position: absolute;
+        top: -50px;
+        left: 360px;
+    }
+
+}
