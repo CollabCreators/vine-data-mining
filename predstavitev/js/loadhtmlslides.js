@@ -46,7 +46,7 @@
 
     var titleEl = document.createElement('div');
     titleEl.innerHTML = '<div class="background">' +
-        '<div class="frame-wrapper"><iframe src="https://vine.co/v/eztZAqdEgAp/embed/postcard" width="300" height="480" frameborder="0"></iframe></div>' +
+        '<div class="frame-wrapper"><iframe src="https://vine.co/v/OTBMavBrEiV/embed/postcard" width="300" height="480" frameborder="0"></iframe></div>' +
         '<div class="frame-wrapper"><iframe src="https://vine.co/v/hi5LzAXaPM9/embed/postcard" width="300" height="480" frameborder="0"></iframe></div>' +
         '<div class="frame-wrapper"><iframe src="https://vine.co/v/OLh9Tb17XZ0/embed/postcard" width="300" height="480" frameborder="0"></iframe></div>' +
         '</div><div class="content-main-title"><h2>Podatkovno rudarjenje</h2><h4>Mreze v socialnem omrezju Vine</h4><div><small>Marko Grešak</small></div>' +
