@@ -1,8 +1,0 @@
-{
-  "generator-reveal": {
-    "presentationTitle": "predstavitev",
-    "packageVersion": "1.0.0",
-    "useSass": true,
-    "deployToGithubPages": false
-  }
-}
