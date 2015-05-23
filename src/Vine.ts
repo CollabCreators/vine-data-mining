@@ -93,26 +93,4 @@ export default class Vine {
                 });
         });
     }
-
-    public searchUser(username: string): Promise<UserSearchData> {
-        return new Promise<UserSearchData>((resolve, reject) => {
-            request.get(`${Vine.BASE_URL}/users/search/${username}`, {
-                headers: Vine.HeadersFactory(this.sessionKey)
-            },
-                (err, httpResponse, body) => {
-                    // Error occured during request, reject promise with api message and `err`.
-                    if (err) {
-                        reject(Error(`Vine - Search_User: ${err}`));
-                    }
-                    // Parse response's body.
-                    let response: ApiResponse = JSON.parse(body);
-                    // Reject promise if API didn't return a successful response.
-                    if (!response.success) {
-                        reject(Error(`Vine - Search_User: ${response.error}`));
-                    }
-                    // Everything is ok, resolve promise with parsed response.
-                    resolve(response.data);
-                });
-        });
-    }
 }
