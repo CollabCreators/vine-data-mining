@@ -1,7 +1,7 @@
 /**
  * Generic Vine API response. This will be returned from any request.
  */
-interface ApiResponse {
+interface ApiResponse<T> {
   /**
    * HTTP response code.
    * @type {number}
@@ -9,9 +9,9 @@ interface ApiResponse {
   code: number;
   /**
    * Response data (more strict definitons in interfaces below).
-   * @type {any}
+   * @type {T}
    */
-  data: any;
+  data: T;
   /**
    * True if request was successful, false otherwise.
    * @type {boolean}
