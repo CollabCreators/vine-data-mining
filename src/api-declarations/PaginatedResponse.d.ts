@@ -1,7 +1,7 @@
 /**
  * Response from API which is limited to `size` records per page.
  */
-interface PaginatedResponse {
+interface PaginatedResponse<T> {
   /**
    * Number of all records.
    * @type {number}
@@ -9,9 +9,9 @@ interface PaginatedResponse {
   count: number;
   /**
    * An array of actual records, size matches `size` attribute (url param).
-   * @type {Array<any>}
+   * @type {Array<T>}
    */
-  records: Array<any>;
+  records: Array<T>;
   /**
    * The `page` url param for previous page (null if this is first page).
    * @type {number}

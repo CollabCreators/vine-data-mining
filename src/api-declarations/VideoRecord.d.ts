@@ -64,7 +64,7 @@ interface VideoRecord {
    * Record of comments.
    * @type {PaginatedResponse}
    */
-  comments: PaginatedResponse;
+  comments: PaginatedResponse<any>;
   /**
    * Entities of this video, i.e. mentions.
    * @type {Array<VideoEntityRecord>}
@@ -131,12 +131,12 @@ interface VideoRecord {
    * Data about video reposts.
    * @type {PaginatedResponse}
    */
-  reposts: PaginatedResponse;
+  reposts: PaginatedResponse<any>;
   /**
    * Data about video likes.
    * @type {PaginatedResponse}
    */
-  likes: PaginatedResponse;
+  likes: PaginatedResponse<any>;
 }
 
 /**
