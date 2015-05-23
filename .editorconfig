@@ -10,7 +10,7 @@ insert_final_newline = true
 # always use spaces for indent (convert tabs to spaces)
 indent_style = space
 # indent size is 2 spaces, unless overriden
-indent_size = 4
+indent_size = 2
 # trim trailing whitespace(s)
 trim_trailing_whitespace = true
 # use utf-8 encoding
