@@ -9,9 +9,11 @@ export default class Vine {
 
     private static BASE_URL = "https://api.vineapp.com";
     private static DEFAULT_HEADERS: request.Headers = {
-        "User-Agent": "com.vine.iphone/1.0.3 (unknown, iPhone OS 6.1.0, iPhone, Scale/2.000000)",
-        "accept-language": "en, sv, fr, de, ja, nl, it, es, pt, pt-PT, da, fi, nb, ko, zh-Hans, zh-Hant, " +
-        "ru, pl, tr, uk, ar, hr, cs, el, he, ro, sk, th, id, ms, en-GB, ca, hu, vi, en-us;q=0.8"
+        "User-Agent": "com.vine.iphone/1.0.3 (unknown, iPhone OS 8.3.0, iPhone, Scale/2.000000)",
+        "Accept": "*/*",
+        "Accept-Language": "en, sv, fr, de, ja, nl, it, es, pt, pt-PT, da, fi, nb, ko, zh-Hans, zh-Hant, " +
+        "ru, pl, tr, uk, ar, hr, cs, el, he, ro, sk, th, id, ms, en-GB, ca, hu, vi, en-us;q=0.8",
+        "Accept-Encoding": "gzip"
     };
     private sessionKey: string;
 
