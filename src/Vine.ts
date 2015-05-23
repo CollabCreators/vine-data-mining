@@ -17,13 +17,15 @@ export default class Vine {
     };
     private sessionKey: string;
 
-    constructor(username: string, password: string) {
+    constructor(username?: string, password?: string) {
         // Check if username and password is in valid format.
         if (username.length === 0) {
-            throw Error("Vine - Constructor: Username is an empty string.");
+            return;
+            // throw Error("Vine - Constructor: Username is an empty string.");
         }
         if (password.length === 0) {
-            throw Error("Vine - Constructor: Password is an empty string.");
+            return;
+            // throw Error("Vine - Constructor: Password is an empty string.");
         }
         this.login(username, password)
             .then((data: AuthenticateData) => {
