@@ -17,24 +17,20 @@ export default class Vine {
   };
   private sessionKey: string;
 
-    constructor(username?: string, password?: string) {
-        // Check if username and password is in valid format.
-        if (username.length === 0) {
-            return;
-            // throw Error("Vine - Constructor: Username is an empty string.");
-        }
-        if (password.length === 0) {
-            return;
-            // throw Error("Vine - Constructor: Password is an empty string.");
-        }
-        this.login(username, password)
-            .then((data: AuthenticateData) => {
-                this.sessionKey = data.key;
-        })
-            .catch((err) => {
-                throw err;
-        });
+  constructor(username?: string, password?: string) {
+    // Check if username and password is in valid format.
+    if (username.length === 0 || password.length === 0) {
+      this.sessionKey = "";
+      return;
     }
+    this.login(username, password)
+      .then((data: AuthenticateData) => {
+      this.sessionKey = data.key;
+    })
+      .catch((err) => {
+      throw err;
+    });
+  }
 
   private static HeadersFactory(sessionKey?: string): request.Headers {
     let obj = Vine.DEFAULT_HEADERS;
