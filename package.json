@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "postinstall": "tsd reinstall --overwrite --save",
+    "postinstall": "./node_modules/.bin/tsd reinstall --overwrite --save",
     "prestart": "./node_modules/.bin/tsc --project .",
     "start": "node_modules/.bin/babel-node bin/src/app.js",
     "router": "npm run-script prestart && node_modules/.bin/babel-node bin/src/router/index.js",
@@ -34,6 +34,7 @@
     "request": "^2.55.0",
     "sinon": "^1.14.1",
     "sinon-chai": "^2.7.0",
+    "tsd": "^0.6.0",
     "typescript": "^1.5.0-beta"
   }
 }
