@@ -58,7 +58,8 @@ export default class VineApi {
         form: {
           username: username,
           password: password
-        }
+        },
+        gzip: true
       },
         (err, httpResponse, body) => {
           // Error occured during request, reject promise with api message and `err`.
@@ -89,7 +90,8 @@ export default class VineApi {
     return new Promise<ApiResponse<AuthenticateData>>((resolve, reject) => {
       request.del({
         url: `${VineApi.BASE_URL}/users/authenticate`,
-        headers: VineApi.HeadersFactory(this.sessionKey)
+        headers: VineApi.HeadersFactory(this.sessionKey),
+        gzip: true
       },
         (err, httpResponse, body) => {
           // Error occured during request, reject promise with api message and `err`.
@@ -167,7 +169,8 @@ export default class VineApi {
       request.get({
         url: `${VineApi.BASE_URL}/${endpoint}/${reqData}${params}`,
         // Add headers to simulate a request from iPhone.
-        headers: VineApi.HeadersFactory(this.sessionKey)
+        headers: VineApi.HeadersFactory(this.sessionKey),
+        gzip: true
       },
         (err, httpResponse, body: string) => {
           // If there was error with request, reject promise with `err`.
