@@ -80,7 +80,7 @@ interface VineData {
   created: Date;
   /**
    * An array of mentioned userids.
-   * @type {Array<number>}
+   * @type {Array<string>}
    */
-  mentions: Array<number>;
+  mentions: Array<string>;
 }
