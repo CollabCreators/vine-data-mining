@@ -1,7 +1,7 @@
 /// <reference path="./api-declarations/VineAPI.d.ts"/>
 /// <reference path="./StoredData.d.ts"/>
 
-class UserProfileHelper {
+export class UserProfileHelper {
 
   /**
    * Collect User data that will be stored from API response.
@@ -23,7 +23,7 @@ class UserProfileHelper {
   }
 }
 
-class VineHelper {
+export class VineHelper {
 
   /**
    * Collect Vine data that will be stored from API response.
