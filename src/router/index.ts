@@ -1,5 +1,5 @@
 import * as express from "express";
-import * as bodyParser from "body-parser";
+import {expressInit} from "../helpers/express-init";
 
 class Router {
 
@@ -12,12 +12,7 @@ class Router {
    */
   constructor(port: number) {
     this.address = null;
-    let app = express();
-    app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(bodyParser.json());
-    app.use('/router', this.setupExpressRouter());
-    app.listen(port);
-    console.log('Router listening on ' + port);
+    expressInit(port, "/router", this.setupExpressRouter, this);
   }
 
   /**
