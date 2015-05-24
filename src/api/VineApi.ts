@@ -127,14 +127,15 @@ export default class VineApi {
         url: `${VineApi.BASE_URL}/${endpoint}/${reqData}${params}`,
         headers: VineApi.HeadersFactory(this.sessionKey)
       },
-        (err, httpResponse, body: ApiResponse<any>) => {
+        (err, httpResponse, body: string) => {
           if (err) {
             reject(Error(err));
           }
-          if (!body.success) {
-            reject(Error(body.error));
+          let data: ApiResponse<any> = JSON.parse(body);
+          if (!data.success) {
+            reject(Error(data.error));
           }
-          resolve(body);
+          resolve(data);
         });
     });
   }
