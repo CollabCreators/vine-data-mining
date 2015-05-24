@@ -131,9 +131,25 @@ export default class VineApi {
     });
   }
 
-  private makePaginatedApiGetRequest(apiEndpoint: string, endpointData: string, )
-}
-
-interface Options {
-  key: string;
+  private makePaginatedApiRequest(endpoint: string, reqData: string): Promise<PaginatedResponse<any>> {
+    return new Promise((resolve, reject) => {
+      this.makeApiRequest(endpoint, reqData, [{ size: 100 }])
+        .then((data) => {
+        let responseData: PaginatedResponse<any> = data.data;
+        let secondaryRequests: Array<Promise<any>>;
+        for (let page = 2, totalPages = Math.floor(responseData.count / 100) + 1; page <= totalPages; page++) {
+          let secondaryReqPromise = this.makeApiRequest(endpoint, reqData, [{ size: 100 }, { page: page }])
+            .then((d: ApiResponse<PaginatedResponse<any>>) => {
+            d.data.records.forEach(e => responseData.records.push(e));
+          });
+          secondaryRequests.push(secondaryReqPromise);
+        }
+        Promise.all(secondaryRequests)
+          .then(() => {
+          resolve(responseData);
+        });
+      })
+        .catch(error => reject(error));
+    });
+  }
 }
