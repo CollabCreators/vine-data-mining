@@ -1,5 +1,5 @@
 import * as express from "express";
-import {expressInit} from "../helpers/express-init";
+import expressInit from "../helpers/express-init";
 
 class Router {
 

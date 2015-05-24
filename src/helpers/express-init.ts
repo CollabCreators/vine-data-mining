@@ -11,7 +11,7 @@ import * as bodyParser from "body-parser";
  *
  * @returns {express.Express}            Initialized express app.
  */
-export function expressInit(port: number, routerPath: string, initRouter: () => express.Router, thisArg: any = this): express.Express {
+export default function expressInit(port: number, routerPath: string, initRouter: () => express.Router, thisArg: any = this): express.Express {
   let app = express();
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());

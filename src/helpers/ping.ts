@@ -11,7 +11,7 @@ import {get} from "request";
  *
  * @returns {Promise<any>}                     Promise which is resolved when `check` returns true.
  */
-export function ping(address: string, endpoint: string, interval: number, check: (body: string, res?: any) => boolean, thisArg: any = this): Promise<any> {
+export default function ping(address: string, endpoint: string, interval: number, check: (body: string, res?: any) => boolean, thisArg: any = this): Promise<any> {
   return new Promise((resolve, reject) => {
     // Set interval to ping server. Store in variable so it can be cleaned before resolving.
     let checkInterval = setInterval(() => {
