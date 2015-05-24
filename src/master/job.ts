@@ -52,6 +52,16 @@ export default class Job {
    */
   public compare(other: Job): number {
     return this.priority - other.priority;
+  /**
+   * Compare priorities of two jobs.
+   *
+   * @param   {Job}    a
+   * @param   {Job}    b
+   *
+   * @returns {number}   Less than 0 if a has more priority, 0 if equal or more than 0 if b has greater priority.
+   */
+  public static CompareJobs(a: Job, b: Job): number {
+    return b.priority - a.priority;
   }
 
 }
