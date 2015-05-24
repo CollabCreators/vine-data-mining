@@ -1,0 +1,8 @@
+--compilers js:babel/register
+--require chai
+--require sinon
+--require sinon-chai
+--require chai-as-promised
+--reporter spec
+--bail
+bin/test/

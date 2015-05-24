@@ -10,7 +10,7 @@
     "master": "npm run-script prestart && node_modules/.bin/babel-node bin/src/master/index.js",
     "watch": "nodemon -v &>/dev/null && nodemon -w bin bin/app.js",
     "w": "npm run-script watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --opts $([[ $NODE_ENV == 'development' ]] && echo '.mocha.dev.opts' || echo '.mocha.ci.opts')"
   },
   "repository": {
     "type": "git",
