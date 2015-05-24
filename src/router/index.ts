@@ -19,7 +19,7 @@ class Router {
    * Setup express router. Adds methods:
    * 	- get: get currently stored address
    * 	- put: add (overwrite) address, returns address
-   * 	- delete: delete stored address, returns address (undefined)
+   * 	- delete: delete stored address, returns address (null)
    *
    * @returns {express.Router} Configured express router.
    */
@@ -55,7 +55,7 @@ class Router {
   /**
    * Remove stored address.
    *
-   * @returns {Object} Return value from getAddress -> {address: undefined}.
+   * @returns {Object} Return value from getAddress -> {address: null}.
    */
   private delAddress() {
     this.address = null;
