@@ -11,11 +11,11 @@ import * as bodyParser from "body-parser";
  *
  * @returns {express.Express}            Initialized express app.
  */
-export function expressInit(port: number, routerPath: string, initRouter: () => express.Router, thisArg?: any): express.Express {
+export function expressInit(port: number, routerPath: string, initRouter: () => express.Router, thisArg: any = this): express.Express {
   let app = express();
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
-  app.use(routerPath, initRouter.call(thisArg || this));
+  app.use(routerPath, initRouter.call(thisArg));
   app.listen(port);
   console.log(`Router listening on ${port}`);
   return app;
