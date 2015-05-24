@@ -94,15 +94,15 @@ export default class VineApi {
     });
   }
 
-  public getUserTimeline(userId: number, size?: number): Promise<PaginatedResponse<VideoRecord>> {
     return new Promise((resolve, reject) => {
-      this.makeApiGetRequest("timelines/users", userId.toString(), [{ size: (size || 100).toString()] })
-        .then((body: ApiResponse<PaginatedResponse<VideoRecord>>) => {
-          let data = body.data;
-        })
-        .catch((error) => {
-          reject(error);
-        });
+
+  public getUserTimeline(userId: number): Promise<Array<VineData>> {
+    return new Promise((resolve, reject) => {
+      this.makePaginatedApiRequest("timelines/users", userId.toString())
+        .then((body: PaginatedResponse<VideoRecord>) => {
+        resolve(body.records.map((d: VideoRecord) => VineHelper.ProcessApiResponse(userId, d)));
+      })
+        .catch(error => reject(error));
     });
   }
 
