@@ -3,12 +3,24 @@ export default class Job {
   /**
    * Initialize new job.
    *
-   * @param  {JobType} type     Type of this job.
-   * @param   {string} id       Id for this job.
-   * @param   {Object} data     Job data.
-   * @param   {number} priority Job priority, defaults to 1. Bigger the number, bigger the priority.
+   * @param   {StoredData} data     Job data, including id and type.
+   * @param   {number}     priority Job priority, defaults to 1. Bigger the number, bigger the priority.
    */
-  constructor(public type: JobType, public id: string, public data: Object, public priority: number = 1) { }
+  constructor(public data: StoredData, public priority: number = 1) { }
+
+  /**
+   * Get type of this job.
+   *
+   * @returns {JobType}
+   */
+  get type(): JobType { return this.data.type; }
+
+  /**
+   * Get id of this job.
+   *
+   * @returns {string}
+   */
+  get id(): string { return this.data.id; }
 
   /**
    * Increase priority by 1.
@@ -28,7 +40,7 @@ export default class Job {
    * @returns {boolean}       True if jobs are equal, i.e. their id's match, false otherwise.
    */
   public equals(other: Job): boolean {
-    return this.id === other.id;
+    return this.data.id === other.data.id;
   }
 
   /**
