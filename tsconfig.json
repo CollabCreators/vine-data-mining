@@ -24,6 +24,7 @@
         "./src/api/api-declarations/VineAPI.d.ts",
         "./src/app.ts",
         "./src/helpers/express-init.ts",
+        "./src/helpers/ping.ts",
         "./src/router/index.ts",
         "./typings/body-parser/body-parser.d.ts",
         "./typings/es6-promise/es6-promise.d.ts",
