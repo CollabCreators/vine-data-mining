@@ -1,6 +1,3 @@
-/// <reference path="./api-declarations/VineAPI.d.ts"/>
-/// <reference path="./StoredData.d.ts"/>
-
 export class UserProfileHelper {
 
   /**

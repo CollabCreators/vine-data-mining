@@ -21,7 +21,6 @@
         "./src/api/api-declarations/UserData.d.ts",
         "./src/api/api-declarations/UserSearchData.d.ts",
         "./src/api/api-declarations/VideoRecord.d.ts",
-        "./src/api/api-declarations/VineAPI.d.ts",
         "./src/app.ts",
         "./src/helpers/express-init.ts",
         "./src/helpers/ping.ts",

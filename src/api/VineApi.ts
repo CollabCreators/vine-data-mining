@@ -1,6 +1,4 @@
 /// <reference path="../../typings/tsd.d.ts"/>
-/// <reference path="./api-declarations/VineAPI.d.ts"/>
-/// <reference path="./StoredData.d.ts"/>
 
 "use strict";
 import * as request from "request";
