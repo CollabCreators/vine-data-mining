@@ -1,16 +1,3 @@
-enum JobType {
-  /**
-   * Get user profile data job.
-   * @type {Number}
-   */
-  User = 1,
-  /**
-   * Get user's vine data job.
-   * @type {Number}
-   */
-  Vine = 2
-}
-
 export default class Job {
 
   /**

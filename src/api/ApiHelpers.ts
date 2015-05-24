@@ -9,7 +9,7 @@ export class UserProfileHelper {
    */
   public static ProcessApiResponse(userId: string, data: UserData): UserProfileData {
     return {
-      type: "user",
+      type: JobType.User,
       username: data.username,
       id: userId,
       followerCount: data.followerCount,
@@ -33,7 +33,7 @@ export class VineHelper {
    */
   public static ProcessApiResponse(userId: string, data: VideoRecord): VineData {
     return {
-      type: "vine",
+      type: JobType.Vine,
       authorId: userId,
       loopCount: data.loops.count,
       commentsCount: data.comments.count,

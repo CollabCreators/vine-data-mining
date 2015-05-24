@@ -1,9 +1,9 @@
 interface StoredData {
   /**
    * Type of data record.
-   * @type {string}
+   * @type {JobType}
    */
-  type: string;
+  type: JobType;
   /**
    * Unique indentifier.
    * @type {string}
