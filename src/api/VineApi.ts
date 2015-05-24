@@ -142,7 +142,7 @@ export default class VineApi {
 
   private makePaginatedApiRequest(endpoint: string, reqData: string): Promise<PaginatedResponse<any>> {
     return new Promise((resolve, reject) => {
-      this.makeApiRequest(endpoint, reqData, [{ size: 100 }])
+      this.makeApiRequest(endpoint, reqData, [{ size: 1000 }])
         .then((data) => {
         let responseData: PaginatedResponse<any> = data.data;
         let maxSize = responseData.size;
