@@ -1,11 +1,11 @@
-/// <reference path="../typings/tsd.d.ts"/>
+/// <reference path="../../typings/tsd.d.ts"/>
 /// <reference path="./api-declarations/VineAPI.d.ts"/>
 
 "use strict";
 import * as request from "request";
 import {Promise} from "es6-promise";
 
-export default class Vine {
+export default class VineApi {
 
   private static BASE_URL = "https://api.vineapp.com";
   private static DEFAULT_HEADERS: request.Headers = {
@@ -33,7 +33,7 @@ export default class Vine {
   }
 
   private static HeadersFactory(sessionKey?: string): request.Headers {
-    let obj = Vine.DEFAULT_HEADERS;
+    let obj = VineApi.DEFAULT_HEADERS;
     if (sessionKey) {
       obj["vine-session-id"] = sessionKey;
     }
@@ -51,8 +51,8 @@ export default class Vine {
     return new Promise<AuthenticateData>((resolve, reject) => {
       // Perform post to API authenticate endpoint using given credentials.
       request.post({
-        uri: `${Vine.BASE_URL}/users/authenticate`,
-        headers: Vine.HeadersFactory(),
+        uri: `${VineApi.BASE_URL}/users/authenticate`,
+        headers: VineApi.HeadersFactory(),
         form: {
           username: username,
           password: password
@@ -78,8 +78,8 @@ export default class Vine {
   public logout(): Promise<ApiResponse<AuthenticateData>> {
     return new Promise<ApiResponse<AuthenticateData>>((resolve, reject) => {
       request.del({
-        url: `${Vine.BASE_URL}/users/authenticate`,
-        headers: Vine.HeadersFactory(this.sessionKey)
+        url: `${VineApi.BASE_URL}/users/authenticate`,
+        headers: VineApi.HeadersFactory(this.sessionKey)
       },
         (err, httpResponse, body) => {
           // Error occured during request, reject promise with api message and `err`.
@@ -89,5 +89,43 @@ export default class Vine {
           // Parse response's body and resolve promise with the object.
           resolve(JSON.parse(body));
         });
-    }
+    });
+  }
+
+  public getUserTimeline(userId: number, size?: number): Promise<PaginatedResponse<VideoRecord>> {
+    return new Promise((resolve, reject) => {
+      this.makeApiGetRequest("timelines/users", userId.toString(), [{ size: (size || 100).toString()] })
+        .then((body: ApiResponse<PaginatedResponse<VideoRecord>>) => {
+          let data = body.data;
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  private makeApiGetRequest(apiEndpoint: string, endpointData: string, requestParams?: Array<Options>): Promise<ApiResponse<any>> {
+    // let params = requestParams ? `?${requestParams}` : "";
+    return new Promise((resolve, reject) => {
+      request.get({
+        url: `${VineApi.BASE_URL}/${apiEndpoint}/${endpointData}`,
+        headers: VineApi.HeadersFactory(this.sessionKey)
+      },
+        (err, httpResponse, body: ApiResponse<any>) => {
+          if (err) {
+            reject(Error(err));
+          }
+          if (!body.success) {
+            reject(Error(body.error));
+          }
+          resolve(body);
+        });
+    });
+  }
+
+  private makePaginatedApiGetRequest(apiEndpoint: string, endpointData: string, )
+}
+
+interface Options {
+  key: string;
 }

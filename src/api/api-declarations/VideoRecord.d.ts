@@ -147,7 +147,7 @@ interface LoopRecord {
    * Count of loops.
    * @type {number}
    */
-  loops: number;
+  count: number;
   /**
    * Unknown.
    * @type {number}
