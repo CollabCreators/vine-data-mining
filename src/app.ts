@@ -26,7 +26,7 @@ function startVine() {
       let sortedUsers = mentionedUsers.sort((a, b) => b.followerCount - a.followerCount);
       console.log("users len:", mentionedUsers.length);
       sortedUsers.slice(0, 5).forEach((e) => {
-        db.put("vine", e.userId, e).then((res) => console.log(res.body.results));
+        db.put("vine", e.id, e).then((res) => console.log(res.body.results));
       });
       console.timeEnd("get mentions");
     });
