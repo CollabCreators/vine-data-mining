@@ -1,5 +1,5 @@
 "use strict";
-import Vine from "./Vine";
+import VineApi from "./api/VineApi";
 
 let username: string = process.env.VINE_USERNAME;
 let password: string = process.env.VINE_PASSWORD;
