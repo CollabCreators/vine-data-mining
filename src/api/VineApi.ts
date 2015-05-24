@@ -94,7 +94,15 @@ export default class VineApi {
     });
   }
 
+  public getUserProfile(userId: number): Promise<UserProfileData> {
     return new Promise((resolve, reject) => {
+      this.makeApiRequest("users/profiles", userId.toString())
+        .then((body: ApiResponse<UserData>) => {
+        resolve(UserProfileHelper.ProcessApiResponse(body.data));
+      })
+        .catch(error => reject(error));
+    });
+  }
 
   public getUserTimeline(userId: number): Promise<Array<VineData>> {
     return new Promise((resolve, reject) => {
