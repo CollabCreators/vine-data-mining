@@ -29,12 +29,18 @@
         "./src/master/index.ts",
         "./src/master/job.ts",
         "./src/router/index.ts",
+        "./test/test-job.ts",
         "./typings/body-parser/body-parser.d.ts",
+        "./typings/chai-as-promised/chai-as-promised.d.ts",
+        "./typings/chai/chai.d.ts",
         "./typings/es6-promise/es6-promise.d.ts",
         "./typings/express/express.d.ts",
         "./typings/form-data/form-data.d.ts",
+        "./typings/mocha/mocha.d.ts",
         "./typings/node/node.d.ts",
         "./typings/request/request.d.ts",
+        "./typings/sinon-chai/sinon-chai.d.ts",
+        "./typings/sinon/sinon.d.ts",
         "./typings/tsd.d.ts"
     ]
 }

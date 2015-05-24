@@ -22,6 +22,21 @@
     },
     "body-parser/body-parser.d.ts": {
       "commit": "aadd63ecae3feb76ea2d4be80511e266b5c2c4a7"
+    },
+    "mocha/mocha.d.ts": {
+      "commit": "c2b70ba731a485968fa3e0561a32652f59787015"
+    },
+    "chai/chai.d.ts": {
+      "commit": "c2b70ba731a485968fa3e0561a32652f59787015"
+    },
+    "sinon/sinon.d.ts": {
+      "commit": "c2b70ba731a485968fa3e0561a32652f59787015"
+    },
+    "sinon-chai/sinon-chai.d.ts": {
+      "commit": "c2b70ba731a485968fa3e0561a32652f59787015"
+    },
+    "chai-as-promised/chai-as-promised.d.ts": {
+      "commit": "c2b70ba731a485968fa3e0561a32652f59787015"
     }
   }
 }
