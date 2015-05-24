@@ -145,9 +145,10 @@ export default class VineApi {
       this.makeApiRequest(endpoint, reqData, [{ size: 100 }])
         .then((data) => {
         let responseData: PaginatedResponse<any> = data.data;
-        let secondaryRequests: Array<Promise<any>>;
-        for (let page = 2, totalPages = Math.floor(responseData.count / 100) + 1; page <= totalPages; page++) {
-          let secondaryReqPromise = this.makeApiRequest(endpoint, reqData, [{ size: 100 }, { page: page }])
+        let maxSize = responseData.size;
+        let secondaryRequests: Array<Promise<any>> = [];
+        for (let page = 2, totalPages = Math.ceil(responseData.count / maxSize); page <= totalPages; page++) {
+          let secondaryReqPromise = this.makeApiRequest(endpoint, reqData, [{ size: maxSize }, { page: page }])
             .then((d: ApiResponse<PaginatedResponse<any>>) => {
             d.data.records.forEach(e => responseData.records.push(e));
           });
