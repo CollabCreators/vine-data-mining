@@ -97,8 +97,8 @@ export default class VineApi {
   public getUserProfile(userId: string): Promise<UserProfileData> {
     return new Promise((resolve, reject) => {
       this.makeApiRequest("users/profiles", userId)
-        .then((body: ApiResponse<UserData>) => {
-        resolve(UserProfileHelper.ProcessApiResponse(userId, body.data));
+        .then((data: ApiResponse<UserData>) => {
+        resolve(UserProfileHelper.ProcessApiResponse(userId, data.data));
       })
         .catch(error => reject(error));
     });
@@ -107,8 +107,8 @@ export default class VineApi {
   public getUserTimeline(userId: string): Promise<Array<VineData>> {
     return new Promise((resolve, reject) => {
       this.makePaginatedApiRequest("timelines/users", userId)
-        .then((body: PaginatedResponse<VideoRecord>) => {
-        resolve(body.records.map((d: VideoRecord) => VineHelper.ProcessApiResponse(userId, d)));
+        .then((data: PaginatedResponse<VideoRecord>) => {
+        resolve(data.records.map((d: VideoRecord) => VineHelper.ProcessApiResponse(userId, d)));
       })
         .catch(error => reject(error));
     });
