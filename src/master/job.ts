@@ -1,13 +1,27 @@
+enum JobType {
+  /**
+   * Get user profile data job.
+   * @type {Number}
+   */
+  User = 1,
+  /**
+   * Get user's vine data job.
+   * @type {Number}
+   */
+  Vine = 2
+}
+
 export default class Job {
 
   /**
    * Initialize new job.
    *
+   * @param  {JobType} type     Type of this job.
    * @param   {string} id       Id for this job.
    * @param   {Object} data     Job data.
    * @param   {number} priority Job priority, defaults to 1. Bigger the number, bigger the priority.
    */
-  constructor(public id: string, public data: Object, public priority: number = 1) { }
+  constructor(public type: JobType, public id: string, public data: Object, public priority: number = 1) { }
 
   /**
    * Increase priority by 1.
