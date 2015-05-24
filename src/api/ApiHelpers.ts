@@ -10,10 +10,10 @@ export class UserProfileHelper {
    *
    * @returns {UserProfileData}      User data with filtered fields.
    */
-  public static ProcessApiResponse(data: UserData): UserProfileData {
+  public static ProcessApiResponse(userId: string, data: UserData): UserProfileData {
     return {
       username: data.username,
-      userId: data.userId,
+      userId: userId,
       followerCount: data.followerCount,
       loopCount: data.followerCount,
       postCount: data.postCount,
@@ -28,12 +28,12 @@ export class VineHelper {
   /**
    * Collect Vine data that will be stored from API response.
    *
-   * @param   {number}      userId Id of post author (used at sending request).
+   * @param   {string}      userId Id of post author (used at sending request).
    * @param   {VideoRecord} data   Vine data API response.
    *
    * @returns {VineData}           Vine data with filtered fields.
    */
-  public static ProcessApiResponse(userId: number, data: VideoRecord): VineData {
+  public static ProcessApiResponse(userId: string, data: VideoRecord): VineData {
     return {
       authorId: userId,
       loopCount: data.loops.count,

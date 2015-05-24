@@ -94,19 +94,19 @@ export default class VineApi {
     });
   }
 
-  public getUserProfile(userId: number): Promise<UserProfileData> {
+  public getUserProfile(userId: string): Promise<UserProfileData> {
     return new Promise((resolve, reject) => {
-      this.makeApiRequest("users/profiles", userId.toString())
+      this.makeApiRequest("users/profiles", userId)
         .then((body: ApiResponse<UserData>) => {
-        resolve(UserProfileHelper.ProcessApiResponse(body.data));
+        resolve(UserProfileHelper.ProcessApiResponse(userId, body.data));
       })
         .catch(error => reject(error));
     });
   }
 
-  public getUserTimeline(userId: number): Promise<Array<VineData>> {
+  public getUserTimeline(userId: string): Promise<Array<VineData>> {
     return new Promise((resolve, reject) => {
-      this.makePaginatedApiRequest("timelines/users", userId.toString())
+      this.makePaginatedApiRequest("timelines/users", userId)
         .then((body: PaginatedResponse<VideoRecord>) => {
         resolve(body.records.map((d: VideoRecord) => VineHelper.ProcessApiResponse(userId, d)));
       })

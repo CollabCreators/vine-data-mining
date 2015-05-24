@@ -11,7 +11,7 @@ interface UserProfileData {
    * User's user id.
    * @type {string}
    */
-  userId: number;
+  userId: string;
   /**
    * Number of user's followers.
    * @type {number}
@@ -47,7 +47,7 @@ interface VineData {
    * User id of vine author.
    * @type {number}
    */
-  authorId: number;
+  authorId: string;
   /**
    * Number of times this vine was looped.
    * @type {number}
