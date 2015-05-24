@@ -47,6 +47,24 @@ export class VineHelper {
   }
 
   /**
+   * Get all unique mentioned user ids from array of `VineData`.
+   *
+   * @param   {Array<VineData>} allData An array of `VineData`, filtered response from API.
+   *
+   * @returns {Array<string>}           Array of unique mentioned user ids.
+   */
+  public static GetUniqueMentions(allData: Array<VineData>): Array<string> {
+    return allData
+    // Get only array of `mentions` from `allData` array.
+      .map((d: VineData) => d.mentions)
+    // Flatten array of `mentions` array to a single dimension array.
+      .reduce((a: Array<string>, b: Array<string>) => a.concat(b))
+    // Filter out only values that have matching current index and index in array.
+    // Taking advantage of fact that `.indexOf` will return first found index in array.
+      .filter((e: string, i: number, arr: Array<string>) => arr.indexOf(e) === i);
+  }
+
+  /**
    * Filter out and parse entities which are of type mention.
    *
    * @param   {Array<VideoEntityRecord>} entities Array of vine entities.
