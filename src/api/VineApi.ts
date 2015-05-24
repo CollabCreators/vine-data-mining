@@ -21,7 +21,7 @@ export default class VineApi {
 
   constructor(username?: string, password?: string) {
     // Check if username and password is in valid format.
-    if (username.length === 0 || password.length === 0) {
+    if (typeof username != "string" || username.length === 0 || typeof password != "string" || password.length === 0) {
       this.sessionKey = "";
       return;
     }
