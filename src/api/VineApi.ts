@@ -177,8 +177,15 @@ export default class VineApi {
           if (err) {
             reject(Error(err));
           }
-          // Parse response JSON string.
-          let data: ApiResponse<any> = JSON.parse(body);
+          // Try to parse response JSON string.
+          let data: ApiResponse<any>;
+          try {
+            data = JSON.parse(body);
+          }
+          catch (e) {
+            // If parsing failed, reject promise.
+            reject(e);
+          }
           // If response wasn't successful, reject promise with reponse error.
           if (!data.success) {
             reject(Error(data.error));
