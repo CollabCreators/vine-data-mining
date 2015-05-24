@@ -26,6 +26,7 @@ class MasterNode {
       throw Error("Missing environment variable ORCHESTRATE_KEY.");
     }
     this.db = Orchestrate(process.env.ORCHESTRATE_KEY);
+    this.jobs = [];
     expressInit(port, "/master", this.setupExpressRouter, this);
   }
 
@@ -34,4 +35,9 @@ class MasterNode {
     router.get("/", (req, res) => { res.json({}) });
     return router;
   }
+
+  private addJob(data: StoredData) {
+    this.jobs.push(new Job(data));
+  }
+
 }
