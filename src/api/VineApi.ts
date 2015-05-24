@@ -77,7 +77,15 @@ export default class VineApi {
     });
   }
 
+  /**
+   * Log out currently logged in user or reject promise if no session.
+   *
+   * @returns {Promise}
+   */
   public logout(): Promise<ApiResponse<AuthenticateData>> {
+    if (!this.sessionKey) {
+      return Promise.reject(Error("Not logged in."));
+    }
     return new Promise<ApiResponse<AuthenticateData>>((resolve, reject) => {
       request.del({
         url: `${VineApi.BASE_URL}/users/authenticate`,
@@ -94,68 +102,126 @@ export default class VineApi {
     });
   }
 
+  /**
+   * Get user's profile data.
+   *
+   * @param   {string}                   userId Id of user.
+   *
+   * @returns {Promise<UserProfileData>}        API response with fitlered out uninteresting data.
+   */
   public getUserProfile(userId: string): Promise<UserProfileData> {
     return new Promise((resolve, reject) => {
+      // Make a request to /users/profiles with given userId.
       this.makeApiRequest("users/profiles", userId)
         .then((data: ApiResponse<UserData>) => {
+        // When the API request promise resolves, process returned data and use it to resolve promise.
         resolve(UserProfileHelper.ProcessApiResponse(userId, data.data));
       })
+      // If  there happened to be an error, reject this promise.
         .catch(error => reject(error));
     });
   }
 
+  /**
+   * Get full user timeline for given userId.
+   *
+   * @param   {string}                  userId Id of user.
+   *
+   * @returns {Promise<Array<VineData>>}        Promise resolving with array of all user's videos.
+   */
   public getUserTimeline(userId: string): Promise<Array<VineData>> {
     return new Promise((resolve, reject) => {
+      // Make a request to /timelines/users with given userId.
       this.makePaginatedApiRequest("timelines/users", userId)
         .then((data: PaginatedResponse<VideoRecord>) => {
+        // When the API request promise resolves, process returned data array and use it to resolve promise.
         resolve(data.records.map((d: VideoRecord) => VineHelper.ProcessApiResponse(userId, d)));
       })
+      // If  there happened to be an error, reject this promise.
         .catch(error => reject(error));
     });
   }
 
+  /**
+   * Make a request to given Vine API endpoint.
+   *
+   * @param   {string}            endpoint  Vine API endpoint.
+   * @param   {string}            reqData   Request data, e.g. userId.
+   * @param   {Array<Object>}     reqParams Additional parameters, e.g. size or page.
+   *
+   * @returns { Promise<ApiResponse<any>>}  Promise resolving to full generic ApiResponse.
+   */
   private makeApiRequest(endpoint: string, reqData: string, reqParams?: Array<Object>): Promise<ApiResponse<any>> {
+    // Set url paramteres to empty string as a fallback if there is no `reqParams`.
     let params = "";
     if (reqParams && reqParams.length > 0) {
+      // If there is at least one `reqParams`, map all params to match `key=value` pairs,
+      //  join them with `&` and prepend `?`. End result should be something like: ?size=100&page=2.
       params = "?" + reqParams.map((p) => {
         let key = Object.keys(p)[0];
         return `${key}=${p[key]}`;
       }).join("&");
     }
     return new Promise((resolve, reject) => {
+      // Make a get request to Vine API's `endpoint` using `reqData` and parsed `params`.
       request.get({
         url: `${VineApi.BASE_URL}/${endpoint}/${reqData}${params}`,
+        // Add headers to simulate a request from iPhone.
         headers: VineApi.HeadersFactory(this.sessionKey)
       },
         (err, httpResponse, body: string) => {
+          // If there was error with request, reject promise with `err`.
           if (err) {
             reject(Error(err));
           }
+          // Parse response JSON string.
           let data: ApiResponse<any> = JSON.parse(body);
+          // If response wasn't successful, reject promise with reponse error.
           if (!data.success) {
             reject(Error(data.error));
           }
+          // There was no error, resolve promise with parsed data.
           resolve(data);
         });
     });
   }
 
+  /**
+   * Make a request to paginated API endpoint.
+   * Returned promise will not resolve until data from all pages is collected.
+   *
+   * @param   {string}                  endpoint Vine API endpoint (which returns paginated response).
+   * @param   {string}                  reqData  Request data, e.g. userId.
+   *
+   * @returns {Promise<PaginatedResponse<any>>}  Promise resolving to PaginatedResponse with all pages data.
+   */
   private makePaginatedApiRequest(endpoint: string, reqData: string): Promise<PaginatedResponse<any>> {
     return new Promise((resolve, reject) => {
+      // Make a request to first page (page=1 is implicit).
+      // Using a very large value for size to max out API's max allowed page size.
       this.makeApiRequest(endpoint, reqData, [{ size: 1000 }])
         .then((data) => {
+        // Set temporary variable to store response `data` field.
         let responseData: PaginatedResponse<any> = data.data;
+        // Store max size of a single page. This should max out at 100, but keeping it dynamic.
         let maxSize = responseData.size;
+        // Initialize an array of secondary, i.e. pages following the first, requests promises.
         let secondaryRequests: Array<Promise<any>> = [];
+        // Loop through pages 2 - end, end is calculated using pages size / max size of single page.
         for (let page = 2, totalPages = Math.ceil(responseData.count / maxSize); page <= totalPages; page++) {
+          // Make a request to current `page`, save promise to temporary variable.
           let secondaryReqPromise = this.makeApiRequest(endpoint, reqData, [{ size: maxSize }, { page: page }])
+          // Append data to `responseData` when request promise resolves.
             .then((d: ApiResponse<PaginatedResponse<any>>) => {
             d.data.records.forEach(e => responseData.records.push(e));
           });
+          // Add request promise to array of secondary promises.
           secondaryRequests.push(secondaryReqPromise);
         }
+        // Wait for all promises to resolve, resolve returned promise when they do.
         Promise.all(secondaryRequests).then(() => resolve(responseData));
       })
+      // If  there happened to be an error, reject this promise.
         .catch(error => reject(error));
     });
   }
