@@ -106,11 +106,17 @@ export default class VineApi {
     });
   }
 
-  private makeApiGetRequest(apiEndpoint: string, endpointData: string, requestParams?: Array<Options>): Promise<ApiResponse<any>> {
-    // let params = requestParams ? `?${requestParams}` : "";
+  private makeApiRequest(endpoint: string, reqData: string, reqParams?: Array<Object>): Promise<ApiResponse<any>> {
+    let params = "";
+    if (reqParams && reqParams.length > 0) {
+      params = "?" + reqParams.map((p) => {
+        let key = Object.keys(p)[0];
+        return `${key}=${p[key]}`;
+      }).join("&");
+    }
     return new Promise((resolve, reject) => {
       request.get({
-        url: `${VineApi.BASE_URL}/${apiEndpoint}/${endpointData}`,
+        url: `${VineApi.BASE_URL}/${endpoint}/${reqData}${params}`,
         headers: VineApi.HeadersFactory(this.sessionKey)
       },
         (err, httpResponse, body: ApiResponse<any>) => {
