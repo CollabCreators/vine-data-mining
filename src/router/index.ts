@@ -25,9 +25,12 @@ class Router {
    */
   private setupExpressRouter(): express.Router {
     let router = express.Router();
-    router.get('/', (req, res) => {res.json(this.getAddress())});
-    router.put('/:address', (req, res) => {res.json(this.putAddress(req.body.address || req.params.address))});
-    router.delete('/', (req, res) => {res.json(this.delAddress())});
+    // Set GET to return JSON result of `getAddress()`.
+    router.get("/", (req, res) => { res.json(this.getAddress()) });
+    // Set PUT to add `:address` (in body or as param) and return JSON result of `getAddress()`.
+    router.put("/:address", (req, res) => { res.json(this.putAddress(req.body.address || req.params.address)) });
+    // Set DELETE delete stored address and return JSON result of `getAddress()`.
+    router.delete("/", (req, res) => { res.json(this.delAddress()) });
     return router;
   }
 
