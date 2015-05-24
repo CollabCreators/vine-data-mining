@@ -154,10 +154,7 @@ export default class VineApi {
           });
           secondaryRequests.push(secondaryReqPromise);
         }
-        Promise.all(secondaryRequests)
-          .then(() => {
-          resolve(responseData);
-        });
+        Promise.all(secondaryRequests).then(() => resolve(responseData));
       })
         .catch(error => reject(error));
     });
