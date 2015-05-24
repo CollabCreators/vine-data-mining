@@ -1,22 +1,24 @@
-/**
- * Data collected from user's profile.
- */
-interface UserProfileData {
+interface StoredData {
   /**
    * Type of data record.
    * @type {string}
    */
   type: string;
   /**
+   * Unique indentifier.
+   * @type {string}
+   */
+  id: string;
+}
+/**
+ * Data collected from user's profile.
+ */
+interface UserProfileData extends StoredData {
+  /**
    * User's username.
    * @type {string}
    */
   username: string;
-  /**
-   * User's user id.
-   * @type {string}
-   */
-  userId: string;
   /**
    * Number of user's followers.
    * @type {number}
@@ -47,12 +49,7 @@ interface UserProfileData {
 /**
  * Data collected from a vine upload.
  */
-interface VineData {
-  /**
-   * Type of data record.
-   * @type {string}
-   */
-  type: string;
+interface VineData extends StoredData {
   /**
    * User id of vine author.
    * @type {number}
@@ -73,11 +70,6 @@ interface VineData {
    * @type {Array<string>}
    */
   tags: Array<string>;
-  /**
-   * Id of this post.
-   * @type {string}
-   */
-  postId: string;
   /**
    * Number of times this vine was reposted.
    * @type {number}

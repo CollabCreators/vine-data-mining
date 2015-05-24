@@ -14,7 +14,7 @@ export class UserProfileHelper {
     return {
       type: "user",
       username: data.username,
-      userId: userId,
+      id: userId,
       followerCount: data.followerCount,
       loopCount: data.followerCount,
       postCount: data.postCount,
@@ -41,7 +41,7 @@ export class VineHelper {
       loopCount: data.loops.count,
       commentsCount: data.comments.count,
       tags: data.tags,
-      postId: data.postId.toString(),
+      id: data.postId.toString(),
       respostsCount: data.reposts.count,
       likesCount: data.likes.count,
       created: new Date(data.created),
