@@ -74,6 +74,11 @@ interface VineData {
    */
   tags: Array<string>;
   /**
+   * Id of this post.
+   * @type {string}
+   */
+  postId: string;
+  /**
    * Number of times this vine was reposted.
    * @type {number}
    */

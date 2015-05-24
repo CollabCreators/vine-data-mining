@@ -41,6 +41,7 @@ export class VineHelper {
       loopCount: data.loops.count,
       commentsCount: data.comments.count,
       tags: data.tags,
+      postId: data.postId.toString(),
       respostsCount: data.reposts.count,
       likesCount: data.likes.count,
       created: new Date(data.created),
