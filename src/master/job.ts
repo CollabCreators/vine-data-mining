@@ -48,10 +48,12 @@ export default class Job {
    *
    * @param   {Job}    other Job to compare with.
    *
-   * @returns {number}       Below zero if this has lower priority, 0 if equal or above zero if bigger priority.
+   * @returns {boolean}       True if this job has greater priority than `other`, false otherwise.
    */
-  public compare(other: Job): number {
-    return this.priority - other.priority;
+  public compare(other: Job): boolean {
+    return Job.CompareJobs(this, other) > 0;
+  }
+
   /**
    * Compare priorities of two jobs.
    *
