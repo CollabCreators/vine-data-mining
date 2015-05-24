@@ -4,10 +4,10 @@
   "description": "",
   "scripts": {
     "postinstall": "tsd reinstall --overwrite --save",
-    "prestart": "./node_modules/typescript/bin/tsc --project .",
-    "start": "./node_modules/babel/bin/babel-node bin/app.js",
-    "router": "npm run-script prestart && ./node_modules/babel/bin/babel-node bin/router/index.js",
-    "master": "npm run-script prestart && ./node_modules/babel/bin/babel-node bin/master/index.js",
+    "prestart": "./node_modules/.bin/tsc --project .",
+    "start": "node_modules/.bin/babel-node bin/src/app.js",
+    "router": "npm run-script prestart && node_modules/.bin/babel-node bin/src/router/index.js",
+    "master": "npm run-script prestart && node_modules/.bin/babel-node bin/src/master/index.js",
     "watch": "nodemon -v &>/dev/null && nodemon -w bin bin/app.js",
     "w": "npm run-script watch",
     "test": "echo \"Error: no test specified\" && exit 1"
