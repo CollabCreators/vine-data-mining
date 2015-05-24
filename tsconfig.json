@@ -12,6 +12,8 @@
         "!./node_modules/**/*.ts"
     ],
     "files": [
+        "./src/api/ApiHelpers.ts",
+        "./src/api/StoredData.d.ts",
         "./src/api/VineApi.ts",
         "./src/api/api-declarations/ApiResponse.d.ts",
         "./src/api/api-declarations/AuthenticateData.d.ts",
