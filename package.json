@@ -22,7 +22,9 @@
   "homepage": "https://github.com/markogresak/vine-data-mining",
   "dependencies": {
     "babel": "^5.4.7",
+    "body-parser": "^1.12.4",
     "es6-promise": "^2.1.1",
+    "express": "^4.12.4",
     "orchestrate": "^0.4.3",
     "request": "^2.55.0",
     "typescript": "^1.5.0-beta"
