@@ -73,11 +73,11 @@ export class VineHelper {
    */
   private static getMentionEntities(entities: Array<VideoEntityRecord>): Array<string> {
     return entities
-      // Filter out entites of type mention.
+    // Filter out entites of type mention.
       .filter(entity => entity.type === "mention")
-      // Expected url: vine://user-id/xxxxxxxxxxxxxxxxxx
-      //  Matching the last `/xx...` part and returning just the `xx...` which is actual userid.
-      //  This is used because other user ids aren't pointing to correct records.
+    // Expected url: vine://user-id/xxxxxxxxxxxxxxxxxx
+    //  Matching the last `/xx...` part and returning just the `xx...` which is actual userid.
+    //  This is used because other user ids aren't pointing to correct records.
       .map(entity => entity.link.match(/\/(\d+)$/)[1], 10);
   }
 }
