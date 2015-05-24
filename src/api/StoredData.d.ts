@@ -3,6 +3,11 @@
  */
 interface UserProfileData {
   /**
+   * Type of data record.
+   * @type {string}
+   */
+  type: string;
+  /**
    * User's username.
    * @type {string}
    */
@@ -43,6 +48,11 @@ interface UserProfileData {
  * Data collected from a vine upload.
  */
 interface VineData {
+  /**
+   * Type of data record.
+   * @type {string}
+   */
+  type: string;
   /**
    * User id of vine author.
    * @type {number}

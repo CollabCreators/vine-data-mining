@@ -12,6 +12,7 @@ export class UserProfileHelper {
    */
   public static ProcessApiResponse(userId: string, data: UserData): UserProfileData {
     return {
+      type: "user",
       username: data.username,
       userId: userId,
       followerCount: data.followerCount,
@@ -35,6 +36,7 @@ export class VineHelper {
    */
   public static ProcessApiResponse(userId: string, data: VideoRecord): VineData {
     return {
+      type: "vine",
       authorId: userId,
       loopCount: data.loops.count,
       commentsCount: data.comments.count,
