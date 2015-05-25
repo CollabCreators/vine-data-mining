@@ -10,7 +10,6 @@ let db = Orchestrate(orchestrateKey);
 
 function startVine() {
   let vine = new VineApi();
-
   console.time("get timeline");
   vine.getUserTimeline("911422956889063424")
     .then((data: Array<VineData>) => {
@@ -25,10 +24,12 @@ function startVine() {
     })).then(() => {
       let sortedUsers = mentionedUsers.sort((a, b) => b.followerCount - a.followerCount);
       console.log("users len:", mentionedUsers.length);
-      sortedUsers.slice(0, 5).forEach((e) => {
-        db.put("vine", e.id, e).then((res) => console.log(res.body.results));
+       let promises = sortedUsers.slice(0, 5).map((e) => {
+        return promises.push(db.put("vine", e.id, e));
       });
-      console.timeEnd("get mentions");
+      Promise.all(promises).then(() => {
+        console.timeEnd("get mentions");
+      });
     });
   })
     .catch(error => { throw error });
