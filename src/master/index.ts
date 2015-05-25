@@ -60,6 +60,16 @@ class MasterNode {
   }
 
   /**
+   * Take an array of completed jobs and remove them from stored jobs.
+   *
+   * @param {Array<Job>} completeJobs Jobs to be marked complete / removed.
+   */
+  private completeJobs(jobs: Array<Job>): void {
+    // Filter `this.jobs` to keep values which are not found in `jobs` array.
+    this.jobs = this.jobs.filter((tj: Job) => !jobs.some((j: Job) => j.equals(tj)));
+  }
+
+  /**
    * Get public IP of this machine.
    *
    * @returns {Promise<string>} Promise resolving to IPv4 string.
