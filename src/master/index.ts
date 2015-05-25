@@ -32,6 +32,11 @@ class MasterNode {
     expressInit(port, "/master", this.setupExpressRouter, this);
   }
 
+  /**
+   * Set up an expres API router.
+   *
+   * @returns {express.Router} Configured express router.
+   */
   private setupExpressRouter(): express.Router {
     let router = express.Router();
     router.get("/", (req, res) => { res.json({}) });
