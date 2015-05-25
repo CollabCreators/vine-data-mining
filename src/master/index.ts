@@ -54,7 +54,7 @@ class MasterNode {
     // Assuming that jobs are already sorted, this is `count` most important jobs.
     let jobs = Job.FilterIdle(this.jobs).slice(0, count);
     for (let i = 0; i < jobs.length; i++) {
-        jobs[i].markActive();
+      jobs[i].markActive();
     }
     return jobs;
   }
