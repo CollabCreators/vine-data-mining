@@ -38,7 +38,12 @@ class MasterNode {
     return router;
   }
 
-  private addJob(data: StoredData) {
+  /**
+   * Add a job to list of jobs.
+   *
+   * @param   {StoredData} data Job data.
+   */
+  private addJob(data: StoredData): void {
     this.jobs.push(new Job(data));
     this.jobs = Job.Sort(this.jobs);
   }
