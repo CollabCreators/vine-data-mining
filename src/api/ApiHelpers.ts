@@ -1,3 +1,8 @@
+class JobTypes {
+  public static User: JobType = 0;
+  public static Vine: JobType = 1;
+}
+
 export class UserProfileHelper {
 
   /**
@@ -9,7 +14,7 @@ export class UserProfileHelper {
    */
   public static ProcessApiResponse(userId: string, data: UserData): UserProfileData {
     return {
-      type: JobType.User,
+      type: JobTypes.User,
       username: data.username,
       id: userId,
       followerCount: data.followerCount,
@@ -33,7 +38,7 @@ export class VineHelper {
    */
   public static ProcessApiResponse(userId: string, data: VideoRecord): VineData {
     return {
-      type: JobType.Vine,
+      type: JobTypes.Vine,
       authorId: userId,
       loopCount: data.loops.count,
       commentsCount: data.comments.count,
