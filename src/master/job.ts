@@ -51,7 +51,7 @@ export default class Job {
    * @returns {boolean}       True if this job has greater priority than `other`, false otherwise.
    */
   public compare(other: Job): boolean {
-    return Job.CompareJobs(this, other) < 0;
+    return Job.CompareJobs(this, other) <= 0;
   }
 
   /**

@@ -50,7 +50,11 @@ describe("Job", () => {
   });
 
   it("should compare two jobs", (done) => {
+    // Compare same jobs.
+    job1.compare(job1).should.be.true;
+    // Compare job with higher priority.
     job1.compare(job2).should.be.false;
+    // Compare job with lower priority.
     job2.compare(job1).should.be.true;
     done();
   });
