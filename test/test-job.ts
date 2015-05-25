@@ -5,6 +5,7 @@ chai.use(require("sinon-chai"));
 chai.use(require("chai-as-promised"));
 
 import Job from "../src/master/job";
+import JobState from "../src/master/JobState";
 
 describe("Job", () => {
 
@@ -52,7 +53,7 @@ describe("Job", () => {
     });
 
     it("should expose state getter which equals JobState.Idle (0) by default", (done) => {
-      job1.state.should.equal(0);
+      job1.state.should.equal(JobState.Idle);
       done();
     });
 
