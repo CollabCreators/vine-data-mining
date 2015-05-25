@@ -38,6 +38,7 @@ class MasterNode {
 
   private addJob(data: StoredData) {
     this.jobs.push(new Job(data));
+    this.jobs = Job.Sort(this.jobs);
   }
 
 }
