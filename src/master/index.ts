@@ -70,11 +70,16 @@ class MasterNode {
    *
    * @param {Array<Job>} completeJobs Jobs to be marked complete / removed.
    */
-    // Filter `this.jobs` to keep values which are not found in `jobs` array.
-    this.jobs = this.jobs.filter((tj: Job) => !jobs.some((j: Job) => j.equals(tj)));
   private completeJobs(jobs: Array<Job>): Promise<any> {
     return new Promise((resolve, reject) => {
+      // Attempt to store jobs data.
+      this.storeJobData(jobs).then(() => {
+        // Filter `this.jobs` to keep values which are not found in `jobs` array and then resolve the promise.
+        this.jobs = this.jobs.filter((tj: Job) => !jobs.some((j: Job) => j.equals(tj)));
         resolve();
+      })
+      // Reject returned promise if storeJobData failed.
+        .catch(reject);
     });
   }
 
