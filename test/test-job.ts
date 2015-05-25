@@ -36,7 +36,7 @@ describe("Job", () => {
 
     it("should have a priority 1 by default", (done) => {
       let job = new Job(null);
-      job1.priority.should.equal(1);
+      job.priority.should.equal(1);
       done();
     });
 
