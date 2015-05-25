@@ -3,6 +3,7 @@ import expressInit from "../helpers/expressInit";
 import VineApi from "../api/VineApi";
 import Job from "./job";
 let Orchestrate = require("orchestrate");
+let CanIHazIp = require("canihazip");
 
 class MasterNode {
 
@@ -39,6 +40,15 @@ class MasterNode {
   private addJob(data: StoredData) {
     this.jobs.push(new Job(data));
     this.jobs = Job.Sort(this.jobs);
+  }
+
+  /**
+   * Get public IP of this machine.
+   *
+   * @returns {Promise<string>} Promise resolving to IPv4 string.
+   */
+  private getPublicIp(): Promise<string> {
+    return CanIHazIp();
   }
 
 }
