@@ -25,6 +25,7 @@
         "./src/app.ts",
         "./src/helpers/expressInit.ts",
         "./src/helpers/ping.ts",
+        "./src/master/JobState.ts",
         "./src/master/JobType.ts",
         "./src/master/index.ts",
         "./src/master/job.ts",
