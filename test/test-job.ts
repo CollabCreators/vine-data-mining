@@ -8,7 +8,7 @@ import Job from "../src/master/job";
 
 describe("Job", () => {
 
-  let job1: Job, job2: Job;
+  let job1: Job, job2: Job, otherJob: Job;
 
   beforeEach((done) => {
 
@@ -18,6 +18,10 @@ describe("Job", () => {
     };
     job1 = new Job(data, 1);
     job2 = new Job(data, 2);
+    otherJob = new Job({
+      type: 1,
+      id: "12345"
+    }, 1);
     done();
   });
 
@@ -50,6 +54,16 @@ describe("Job", () => {
   });
 
   it("should compare two jobs", (done) => {
+  it("should match equality to other job by id", (done) => {
+    job1.equals.should.exist;
+    // Compare same jobs.
+    job1.equals(job1).should.be.true;
+    // Compare jobs with same id.
+    job1.equals(job2).should.be.true;
+    // Compare jobs with differnet id.
+    job1.equals(otherJob).should.be.false;
+    done();
+  });
     // Compare same jobs.
     job1.compare(job1).should.be.true;
     // Compare job with higher priority.
