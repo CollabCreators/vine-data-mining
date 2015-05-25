@@ -19,14 +19,14 @@ class MasterNode {
     "925163818496167936"  // Curtis Lepore
   ];
 
-  private db: any;
+  private orchestrateDb: any;
   private jobs: Array<Job>;
 
   constructor(port: number) {
     if (!process.env.ORCHESTRATE_KEY) {
       throw Error("Missing environment variable ORCHESTRATE_KEY.");
     }
-    this.db = Orchestrate(process.env.ORCHESTRATE_KEY);
+    this.orchestrateDb = Orchestrate(process.env.ORCHESTRATE_KEY);
     this.jobs = [];
     expressInit(port, "/master", this.setupExpressRouter, this);
   }
