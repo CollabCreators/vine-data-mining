@@ -73,6 +73,21 @@ class MasterNode {
   private completeJobs(jobs: Array<Job>): void {
     // Filter `this.jobs` to keep values which are not found in `jobs` array.
     this.jobs = this.jobs.filter((tj: Job) => !jobs.some((j: Job) => j.equals(tj)));
+
+  /**
+   * Store job data to Orchestrate.
+   *
+   * @param   {Array<Job>}   jobs Jobs to be stored.
+   *
+   * @returns {Promise<any>}      Promise which resolves when data is stored or is rejected if storing fails.
+   */
+  private storeJobData(jobs: Array<Job>): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // Map `jobs` to promises which resolve when put request successfully ends.
+      let dbPromises = jobs.map((j: Job) => this.orchestrateDb.put(MasterNode.ORCHESTRATE_COLLECTION, j.data.id, j.data));
+      // Resolve returned promise when all `dbPromises` resolve or reject it if any of them fails.
+      Promise.all(dbPromises).then(resolve).catch(reject);
+    });
   }
 
   /**
