@@ -66,4 +66,8 @@ export default class Job {
     return b.priority - a.priority;
   }
 
+  public static SortJobs(jobs: Array<Job>): Array<Job> {
+    return jobs.sort(Job.CompareJobs);
+  }
+
 }
