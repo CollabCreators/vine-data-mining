@@ -11,7 +11,7 @@
     "watch": "nodemon -v &>/dev/null && nodemon -w bin bin/app.js",
     "w": "npm run-script watch",
     "pretest": "npm run-script prestart",
-    "test": "./node_modules/.bin/mocha --opts $([[ $NODE_ENV == 'development' ]] && echo '.mocha.dev.opts' || echo '.mocha.ci.opts')"
+    "test": "./node_modules/.bin/mocha --opts $([ $NODE_ENV == 'development' ] && echo '.mocha.dev.opts' || echo '.mocha.ci.opts')"
   },
   "repository": {
     "type": "git",
