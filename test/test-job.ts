@@ -4,9 +4,64 @@ chai.should();
 chai.use(require("sinon-chai"));
 chai.use(require("chai-as-promised"));
 
+import Job from "../src/master/job";
+
 describe("Job", () => {
-  it("should pass", (done) => {
-    true.should.be.true;
+
+  let job1: Job, job2: Job;
+
+  beforeEach((done) => {
+
+    let data = {
+      type: 1, // JobType.Vine
+      id: "123"
+    };
+    job1 = new Job(data, 1);
+    job2 = new Job(data, 2);
+    done();
+  });
+
+  it("should export priority property", (done) => {
+    job1.priority.should.exist;
+    job1.priority.should.equal(1);
+    done();
+  });
+
+  it("should export type property", (done) => {
+    job1.type.should.exist;
+    job1.type.should.equal(1); // JobType.Vine
+    done();
+  });
+
+  it("should export id property", (done) => {
+    job1.id.should.exist;
+    job1.id.should.equal("123");
+    done();
+  });
+
+  it("should have function bump priority which increases priority by 1", (done) => {
+    job1.bumpPriority.should.exist;
+    job1.priority.should.equal(1);
+    for (let i = 2; i <= 5; i++) {
+      job1.bumpPriority();
+      job1.priority.should.equal(i);
+    }
+    done();
+  });
+
+  it("should compare two jobs", (done) => {
+    job1.compare(job2).should.be.false;
+    job2.compare(job1).should.be.true;
+    done();
+  });
+
+  it("should have static function to compare jobs", (done) => {
+    // Compare 2 same jobs, should be equal.
+    Job.CompareJobs(job1, job1).should.equal(0);
+    // Compare job1 (lower) to job2 (higher), job2 should have higher prioirty.
+    Job.CompareJobs(job1, job2).should.be.above(0);
+    // Compare job2 (higher) to job2 (lower), job1 should have lower prioirty.
+    Job.CompareJobs(job2, job1).should.be.below(0);
     done();
   });
 
