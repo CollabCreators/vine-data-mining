@@ -28,7 +28,7 @@ describe("Job", () => {
 
   describe("getters", () => {
 
-    it("should expose priority property", (done) => {
+    it("should conatin priority property (getter and setter)", (done) => {
       job1.priority.should.exist;
       job1.priority.should.equal(1);
       done();
@@ -40,19 +40,19 @@ describe("Job", () => {
       done();
     });
 
-    it("should expose type getter", (done) => {
+    it("should conatin type getter", (done) => {
       job1.type.should.exist;
       job1.type.should.equal(1); // JobType.Vine
       done();
     });
 
-    it("should expose id getter", (done) => {
+    it("should conatin id getter", (done) => {
       job1.id.should.exist;
       job1.id.should.equal("123"); // Id set in beforeEach.
       done();
     });
 
-    it("should expose state getter which equals JobState.Idle (0) by default", (done) => {
+    it("should conatin state getter which equals JobState.Idle (0) by default", (done) => {
       job1.state.should.equal(JobState.Idle);
       done();
     });
@@ -61,9 +61,9 @@ describe("Job", () => {
 
   describe("instance functions", () => {
 
-    describe("state", () => {
+    describe("to change state", () => {
 
-      it("should have function bump priority which increases priority by 1", (done) => {
+      it("should include function bumpPriority which increases priority by 1", (done) => {
         job1.bumpPriority.should.exist;
         job1.priority.should.equal(1);
         for (let i = 2; i <= 5; i++) {
@@ -73,14 +73,14 @@ describe("Job", () => {
         done();
       });
 
-      it("should have function markActive which changes state to Pending", (done) => {
+      it("should include function markActive which changes state to Pending", (done) => {
         job1.state.should.equal(JobState.Idle);
         job1.markActive();
         job1.state.should.equal(JobState.Pending);
         done();
       });
 
-      it("should have function markDone which changes state to Fulfilled", (done) => {
+      it("should include function markDone which changes state to Fulfilled", (done) => {
         job1.state.should.equal(JobState.Idle);
         job1.markDone();
         job1.state.should.equal(JobState.Fulfilled);
@@ -89,7 +89,7 @@ describe("Job", () => {
 
     });
 
-    describe("comparison", () => {
+    describe("for comparison", () => {
 
       it("should match equality to other job by id", (done) => {
         job1.equals.should.exist;
@@ -115,9 +115,9 @@ describe("Job", () => {
 
   });
 
-  describe("static functions", () => {
+  describe("should have a static function", () => {
 
-    it("should have static function to compare two jobs", (done) => {
+    it("to compare two jobs", (done) => {
       Job.CompareJobs.should.exist;
       // Compare 2 same jobs, should be equal.
       Job.CompareJobs(job1, job1).should.equal(0);
@@ -128,7 +128,7 @@ describe("Job", () => {
       done();
     });
 
-    it("should have a static function to sort an array of jobs", (done) => {
+    it("to sort an array of jobs", (done) => {
       Job.Sort.should.exist;
       let jobs: Array<Job> = [];
       // Add jobs in with priorities in ascending order.
@@ -144,7 +144,7 @@ describe("Job", () => {
       done();
     });
 
-    it("should have a static function to filter an array of jobs to keep idle jobs only", (done) => {
+    it("to filter an array of jobs to keep idle jobs only", (done) => {
       let jobs: Array<Job> = [];
       for (let i = 0; i <= 5; i++) {
         jobs.push(new Job(null, i));
