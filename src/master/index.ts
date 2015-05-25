@@ -117,3 +117,5 @@ class MasterNode {
   }
 
 }
+
+new MasterNode(9999);
