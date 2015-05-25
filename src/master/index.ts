@@ -70,9 +70,13 @@ class MasterNode {
    *
    * @param {Array<Job>} completeJobs Jobs to be marked complete / removed.
    */
-  private completeJobs(jobs: Array<Job>): void {
     // Filter `this.jobs` to keep values which are not found in `jobs` array.
     this.jobs = this.jobs.filter((tj: Job) => !jobs.some((j: Job) => j.equals(tj)));
+  private completeJobs(jobs: Array<Job>): Promise<any> {
+    return new Promise((resolve, reject) => {
+        resolve();
+    });
+  }
 
   /**
    * Store job data to Orchestrate.
