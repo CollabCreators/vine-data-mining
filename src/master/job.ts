@@ -92,6 +92,13 @@ export default class Job {
     return b.priority - a.priority;
   }
 
+  /**
+   * Sort an array of jobs. This will modify the array passed to function.
+   *
+   * @param   {Array<Job>} jobs Array of jobs to sort. Reference will be changed (sorted).
+   *
+   * @returns {Array<Job>}      Sorted array of jobs.
+   */
   public static Sort(jobs: Array<Job>): Array<Job> {
     return jobs.sort(Job.CompareJobs);
   }
