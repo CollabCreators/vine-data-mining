@@ -53,7 +53,6 @@ describe("Job", () => {
     done();
   });
 
-  it("should compare two jobs", (done) => {
   it("should match equality to other job by id", (done) => {
     job1.equals.should.exist;
     // Compare same jobs.
@@ -64,6 +63,8 @@ describe("Job", () => {
     job1.equals(otherJob).should.be.false;
     done();
   });
+
+  it("should compare priority to another job", (done) => {
     // Compare same jobs.
     job1.compare(job1).should.be.true;
     // Compare job with higher priority.
@@ -73,7 +74,8 @@ describe("Job", () => {
     done();
   });
 
-  it("should have static function to compare jobs", (done) => {
+  it("should have static function to compare two jobs", (done) => {
+    Job.CompareJobs.should.exist;
     // Compare 2 same jobs, should be equal.
     Job.CompareJobs(job1, job1).should.equal(0);
     // Compare job1 (lower) to job2 (higher), job2 should have higher prioirty.
@@ -83,7 +85,7 @@ describe("Job", () => {
     done();
   });
 
-  it("should have a static function to sort jobs", (done) => {
+  it("should have a static function to sort an array of jobs", (done) => {
     Job.SortJobs.should.exist;
     let jobs: Array<Job> = [];
     // Add jobs in with priorities in ascending order.
