@@ -96,4 +96,15 @@ export default class Job {
     return jobs.sort(Job.CompareJobs);
   }
 
+  /**
+   * Filter an array of jobs to keep only idle jobs.
+   *
+   * @param   {Array<Job>} jobs Array to be fileterd.
+   *
+   * @returns {Array<Job>}      Filtere array of jobs.
+   */
+  public static FilterIdle(jobs: Array<Job>): Array<Job> {
+    return jobs.filter((j: Job) => j.state === JobState.Idle);
+  }
+
 }

@@ -144,6 +144,22 @@ describe("Job", () => {
       done();
     });
 
+    it("should have a static function to filter an array of jobs to keep idle jobs only", (done) => {
+      let jobs: Array<Job> = [];
+      for (let i = 0; i <= 5; i++) {
+        jobs.push(new Job(null, i));
+      }
+      jobs[0].markActive();
+      jobs[5].markDone();
+      let filtered = Job.FilterIdle(jobs);
+      filtered.length.should.equal(4);
+      for(let i = 0; i < 4; i++) {
+        // Compare by priority as it's only distinction between jobs.
+        filtered[i].priority.should.equal(jobs[i + 1].priority);
+      }
+      done();
+    });
+
   });
 
 });
