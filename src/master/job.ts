@@ -45,6 +45,20 @@ export default class Job {
   }
 
   /**
+   * Mark this job as active, pending competion.
+   */
+  public markActive(): void  {
+    this._state = JobState.Pending;
+  }
+
+  /**
+   * Mark this job as completed.
+   */
+  public markDone(): void {
+    this._state = JobState.Fulfilled;
+  }
+
+  /**
    * Compare two jobs if equal.
    *
    * @param   {Job}     other Job to compare with.

@@ -62,6 +62,7 @@ describe("Job", () => {
   describe("instance functions", () => {
 
     describe("state", () => {
+
       it("should have function bump priority which increases priority by 1", (done) => {
         job1.bumpPriority.should.exist;
         job1.priority.should.equal(1);
@@ -71,9 +72,25 @@ describe("Job", () => {
         }
         done();
       });
+
+      it("should have function markActive which changes state to Pending", (done) => {
+        job1.state.should.equal(JobState.Idle);
+        job1.markActive();
+        job1.state.should.equal(JobState.Pending);
+        done();
+      });
+
+      it("should have function markDone which changes state to Fulfilled", (done) => {
+        job1.state.should.equal(JobState.Idle);
+        job1.markDone();
+        job1.state.should.equal(JobState.Fulfilled);
+        done();
+      });
+
     });
 
     describe("comparison", () => {
+
       it("should match equality to other job by id", (done) => {
         job1.equals.should.exist;
         // Compare same jobs.
