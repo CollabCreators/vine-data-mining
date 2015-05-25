@@ -1,4 +1,8 @@
+import JobState from "./JobState";
+
 export default class Job {
+
+  private _state: number;
 
   /**
    * Initialize new job.
@@ -6,7 +10,9 @@ export default class Job {
    * @param   {StoredData} data     Job data, including id and type.
    * @param   {number}     priority Job priority, defaults to 1. Bigger the number, bigger the priority.
    */
-  constructor(public data: StoredData, public priority: number = 1) { }
+  constructor(public data: StoredData, public priority: number = 1) {
+    this._state = JobState.Idle;
+  }
 
   /**
    * Get type of this job.
@@ -21,6 +27,12 @@ export default class Job {
    * @returns {string}
    */
   get id(): string { return this.data.id; }
+
+  /**
+   * Get state of this job.
+   * @returns {number}
+   */
+  get state(): number { return this._state; }
 
   /**
    * Increase priority by 1.
