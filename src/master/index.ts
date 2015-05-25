@@ -43,6 +43,23 @@ class MasterNode {
   }
 
   /**
+   * Get next `count` jobs with highest priority.
+   *
+   * @param   {number = 5} count How many jobs take.
+   *
+   * @returns {Array<Job>}       Array of jobs.
+   */
+  private getNextJobs(count: number = 5): Array<Job> {
+    // Filter jobs to keep only idle, then take first `count` jobs.
+    // Assuming that jobs are already sorted, this is `count` most important jobs.
+    let jobs = Job.FilterIdle(this.jobs).slice(0, count);
+    for (let i = 0; i < jobs.length; i++) {
+        jobs[i].markActive();
+    }
+    return jobs;
+  }
+
+  /**
    * Get public IP of this machine.
    *
    * @returns {Promise<string>} Promise resolving to IPv4 string.
