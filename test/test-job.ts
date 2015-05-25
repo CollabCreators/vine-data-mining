@@ -86,14 +86,14 @@ describe("Job", () => {
   });
 
   it("should have a static function to sort an array of jobs", (done) => {
-    Job.SortJobs.should.exist;
+    Job.Sort.should.exist;
     let jobs: Array<Job> = [];
     // Add jobs in with priorities in ascending order.
     for (let i = 0; i <= 5; i++) {
       jobs.push(new Job(null, i));
     }
     // Sort jobs (by priority), job with [0] has highest priority.
-    let sortedJobs = Job.SortJobs(jobs);
+    let sortedJobs = Job.Sort(jobs);
     // priority should be inversely proportional to index.
     for (let i = 0; i <= 5; i++) {
       sortedJobs[i].priority.should.equal(5 - i);
