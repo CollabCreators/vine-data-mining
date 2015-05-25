@@ -39,7 +39,10 @@ class MasterNode {
    */
   private setupExpressRouter(): express.Router {
     let router = express.Router();
-    router.get("/", (req, res) => { res.json({}) });
+    // GET /job, returns a list of jobs with most priority.
+    router.get("/job", (req, res) => res.json(this.getNextJobs()));
+    // PUT /job, complete jobs with data.
+    router.put("/job", (req, res) => this.completeJobs(req.body.data));
     return router;
   }
 
