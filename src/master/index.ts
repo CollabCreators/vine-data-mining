@@ -19,6 +19,7 @@ class MasterNode {
     "925163818496167936"  // Curtis Lepore
   ];
 
+  private static ORCHESTRATE_COLLECTION = "vine";
   private orchestrateDb: any;
   private jobs: Array<Job>;
 
