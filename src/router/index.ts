@@ -1,6 +1,6 @@
 import * as express from "express";
 import {SSLConfig, expressInit} from "../helpers/expressInit";
-import {readFile} from "fs";
+import {readFileSync} from "fs";
 import * as path from "path";
 
 class Router {
@@ -14,23 +14,45 @@ class Router {
    */
   constructor(port: number) {
     this.address = null;
-    readFile(path.join(__dirname, "./ssl-config.json"), (err, data) => {
-      if (err) {
-        throw err;
-      }
-      // Parse read config file.
-      let config: SSLConfig = JSON.parse(data.toString());
-      // Check if config.key exists, throw an error if it doesn't.
-      if (!config.key) {
-        throw Error("Missing field 'key' in ssl-config.json.");
-      }
-      // Check if config.cert exists, throw an error if it doesn't.
-      if (!config.cert) {
-        throw Error("Missing field 'cert' in ssl-config.json.");
-      }
-      // Config file is fine, start the express server.
-      expressInit(port, "/router", this.setupExpressRouter, this, config);
-    });
+    // Read ssl-config.json and parse it.
+    let sslConfigData: SSLConfig = readFileSync(path.join(__dirname, "./ssl-config.json")).toJSON();
+    // Check if config.key exists, throw an error if it doesn't.
+    if (!sslConfigData.key) {
+      throw Error("Missing field 'key' in ssl-config.json.");
+    }
+    // Check if config.cert exists, throw an error if it doesn't.
+    if (!sslConfigData.cert) {
+      throw Error("Missing field 'cert' in ssl-config.json.");
+    }
+    let keyData, certData;
+    // Try to read key file, catch and throw reading error.
+    try {
+      keyData = readFileSync(sslConfigData.key).toString();
+    }
+    catch (e) {
+      throw e;
+    }
+    // Try to read cert file, catch and throw reading error.
+    try {
+      certData = readFileSync(sslConfigData.cert).toString();
+    }
+    catch (e) {
+      throw e;
+    }
+    // Check if keyData exists.
+    if (!keyData) {
+      throw Error("Key data is missing, configured file is probably empty.");
+    }
+    // Check if certData exists.
+    if (!certData) {
+      throw Error("Cert data is missing, configured file is probably empty.");
+    }
+    // Everything is okay, create config object and pass it to `expressInit` to start the server.
+    let config: SSLConfig = {
+      key: keyData,
+      cert: certData
+    };
+    expressInit(port, "/router", this.setupExpressRouter, this, config);
   }
 
   /**
