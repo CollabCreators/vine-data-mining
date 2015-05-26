@@ -76,10 +76,30 @@ class MasterNode {
   private setupExpressRouter(): express.Router {
     let router = express.Router();
     // GET /job, returns a list of jobs with most priority.
-    router.get("/job", (req, res) => res.json(this.getNextJobs()));
+    router.get("/job", (req, res) => {
+      this.logRequest(req);
+      res.json(this.getNextJobs());
+    });
     // PUT /job, complete jobs with data.
-    router.put("/job", (req, res) => this.completeJobs(req.body.data));
+    router.put("/job", (req, res) => {
+      this.logRequest(req);
+      this.completeJobs(req.body.data);
+    });
     return router;
+  }
+
+  /**
+   * Logs remote address and data, if put request.
+   *
+   * @param   {any}  req  Express request object, used to log client IP and received data.
+   */
+  private logRequest(req: any): void {
+    console.log("-----------------------------------------------------");
+    console.log(`${req.method} request from`, (req.headers["x-forwarded-for"] || req.connection.remoteAddress));
+    // If it was PUT request, log received data.
+    if (req.method === "PUT") {
+      console.log(req.body.data);
+    }
   }
 
   /**
