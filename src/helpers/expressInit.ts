@@ -1,5 +1,20 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
+export interface SSLConfig {
+  /**
+   * Private key file.
+   *
+   * @type {string}
+   */
+  key: string;
+
+  /**
+   * Certificate file.
+   *
+   * @type {string}
+   */
+  cert: string;
+}
 
 /**
  * Initialize new express app.
