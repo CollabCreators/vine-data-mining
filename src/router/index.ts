@@ -1,5 +1,7 @@
 import * as express from "express";
 import {SSLConfig, expressInit} from "../helpers/expressInit";
+import {readFile} from "fs";
+import * as path from "path";
 
 class Router {
 
@@ -12,7 +14,23 @@ class Router {
    */
   constructor(port: number) {
     this.address = null;
-    expressInit(port, "/router", this.setupExpressRouter, this);
+    readFile(path.join(__dirname, "./ssl-config.json"), (err, data) => {
+      if (err) {
+        throw err;
+      }
+      // Parse read config file.
+      let config: SSLConfig = JSON.parse(data.toString());
+      // Check if config.key exists, throw an error if it doesn't.
+      if (!config.key) {
+        throw Error("Missing field 'key' in ssl-config.json.");
+      }
+      // Check if config.cert exists, throw an error if it doesn't.
+      if (!config.cert) {
+        throw Error("Missing field 'cert' in ssl-config.json.");
+      }
+      // Config file is fine, start the express server.
+      expressInit(port, "/router", this.setupExpressRouter, this, config);
+    });
   }
 
   /**
