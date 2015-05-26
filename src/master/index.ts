@@ -21,6 +21,8 @@ class MasterNode {
   ];
 
   private static ORCHESTRATE_COLLECTION = "vine";
+  private static ROUTER_SERVER = "gresak.io:9631";
+  private static ROUTER_ENDPOINT = "router";
   private orchestrateDb: any;
   private jobs: Array<Job>;
 
