@@ -33,6 +33,7 @@ class MasterNode {
     this.orchestrateDb = Orchestrate(process.env.ORCHESTRATE_KEY);
     this.jobs = [];
     expressInit(port, "/master", this.setupExpressRouter, this);
+    this.registerIpAtRouter();
   }
 
   /**
@@ -111,14 +112,37 @@ class MasterNode {
   }
 
   /**
-   * Get public IP of this machine.
+   * Register IP of node with router.
    *
-   * @returns {Promise<string>} Promise resolving to IPv4 string.
+   * @returns {Promise<any>} Promise resolving when IP is registed successfully.
    */
-  private getPublicIp(): Promise<string> {
-    return CanIHazIp();
+  private registerIpAtRouter(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // Get IP of this machine.
+      CanIHazIp().then((ip: string) => {
+        // Register `ip` with router.
+        Communicator.registerAddress(MasterNode.ROUTER_SERVER, MasterNode.ROUTER_ENDPOINT, ip)
+          .then(() => {
+          // Add exit listeners and resolve returned promise.
+          this.addExitListeners();
+          resolve();
+        })
+        // If there was error while registering the address, reject returned promise.
+          .catch(reject);
+      });
+    });
   }
 
+  /**
+   * Listen for exit events and unregister IP at router just before master node process exits.
+   */
+  private addExitListeners(): void {
+    // Register event for each of exit/kill events.
+    ["exit", "SIGINT", "uncaughtException"].forEach((event) => {
+      // Event handler should remove IP registered with router.
+      process.on(event, () => Communicator.unregisterAddress(MasterNode.ROUTER_SERVER, MasterNode.ROUTER_ENDPOINT));
+    });
+  }
 }
 
 new MasterNode(9999);
