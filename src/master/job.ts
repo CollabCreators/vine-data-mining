@@ -65,8 +65,8 @@ export default class Job {
    *
    * @returns {boolean}       True if jobs are equal, i.e. their id's match, false otherwise.
    */
-  public equals(other: Job): boolean {
-    return this.data.id === other.data.id;
+  public equals(other: Job, matchType: boolean = false): boolean {
+    return (matchType ? this.type === other.type : true) && this.data.id === other.data.id;
   }
 
   /**

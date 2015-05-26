@@ -9,7 +9,7 @@ import JobState from "../src/master/JobState";
 
 describe("Job", () => {
 
-  let job1: Job, job2: Job, otherJob: Job;
+  let job1: Job, job2: Job, otherJob: Job, otherTypeJob: Job;
 
   beforeEach((done) => {
 
@@ -20,8 +20,12 @@ describe("Job", () => {
     job1 = new Job(data, 1);
     job2 = new Job(data, 2);
     otherJob = new Job({
-      type: 1,
+      type: 0,
       id: "12345"
+    }, 1);
+    otherTypeJob = new Job({
+      type: 0,
+      id: "123"
     }, 1);
     done();
   });
@@ -99,6 +103,23 @@ describe("Job", () => {
         job1.equals(job2).should.be.true;
         // Compare jobs with differnet id.
         job1.equals(otherJob).should.be.false;
+        done();
+      });
+
+      it("should match equality to other job by id and type", (done) => {
+        job1.equals.should.exist;
+        // Compare same jobs.
+        job1.equals(job1).should.be.true;
+        // Compare jobs with same id, use default matchType = false.
+        job1.equals(otherTypeJob).should.be.true;
+        // Compare jobs with same id, use explicit matchType = false.
+        job1.equals(otherTypeJob, false).should.be.true;
+        // Compare jobs with same id, use explicit matchType = true.
+        job1.equals(otherTypeJob, true).should.be.false;
+        // Compare jobs with differnet id.
+        job1.equals(otherJob).should.be.false;
+        // Compare jobs with differnet id and also match type.
+        job1.equals(otherJob, true).should.be.false;
         done();
       });
 
