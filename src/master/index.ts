@@ -10,6 +10,7 @@ class MasterNode {
 
   /**
    * Id's of 5 most followed users (my assuption).
+   *
    * @type {Array<string>}
    */
   private static INITIAL_USERS = [
@@ -20,16 +21,47 @@ class MasterNode {
     "925163818496167936"  // Curtis Lepore
   ];
 
+  /**
+   * Name of Orchestrate database collection.
+   *
+   * @type {String}
+   */
   private static ORCHESTRATE_COLLECTION = "vine";
-  private static ROUTER_SERVER = "gresak.io:9631";
+
+  /**
+   * Address of router server.
+   *
+   * @type {String}
+   */
+  private static ROUTER_SERVER = "http://gresak.io:9631";
+
+  /**
+   * Endpoint of router.
+   *
+   * @type {String}
+   */
   private static ROUTER_ENDPOINT = "router";
+
+  /**
+   * Orchestrate database connector.
+   *
+   * @type {any}
+   */
   private orchestrateDb: any;
+
+  /**
+   * Array of currently pending jobs.
+   *
+   * @type {Array<Job>}
+   */
   private jobs: Array<Job>;
 
   constructor(port: number) {
+    // Check if ORCHESTRATE_KEY environment variable is set.
     if (!process.env.ORCHESTRATE_KEY) {
       throw Error("Missing environment variable ORCHESTRATE_KEY.");
     }
+    // Initialize orchestrate database connector.
     this.orchestrateDb = Orchestrate(process.env.ORCHESTRATE_KEY);
     this.jobs = [];
     expressInit(port, "/master", this.setupExpressRouter, this);
