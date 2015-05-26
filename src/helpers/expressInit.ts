@@ -1,5 +1,7 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
+import * as https from "https";
+
 export interface SSLConfig {
   /**
    * Private key file.
@@ -31,7 +33,14 @@ export function expressInit(port: number, routerPath: string, initRouter: () => 
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
   app.use(routerPath, initRouter.call(thisArg));
-  app.listen(port);
+  if (conf && typeof conf.key === "string" && typeof conf.cert === "string") {
+    // Create a https server with passed `conf` an listen on `port`.
+    https.createServer(conf, app).listen(port);
+  }
+  else {
+    // Config not passed, assuming https is not required, use regular http.
+    app.listen(port);
+  }
   console.log(`Router listening on ${port}`);
   return app;
 }
