@@ -128,11 +128,11 @@ class MasterNode {
   private getNextJobs(count: number = 5): Array<Job> {
     // Filter jobs to keep only idle, then take first `count` jobs.
     // Assuming that jobs are already sorted, this is `count` most important jobs.
-    let jobs = Job.FilterIdle(this.jobs).slice(0, count);
-    for (let i = 0; i < jobs.length; i++) {
-      jobs[i].markActive();
-    }
-    return jobs;
+    return Job.FilterIdle(this.jobs).slice(0, count).map((job) => {
+      job.markActive();
+      // Return job to add it to mapped jobs.
+      return job;
+    });
   }
 
   /**
