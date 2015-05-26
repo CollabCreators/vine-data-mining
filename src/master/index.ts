@@ -33,7 +33,7 @@ class MasterNode {
    *
    * @type {String}
    */
-  private static ROUTER_SERVER = "http://gresak.io:9631";
+  private static ROUTER_SERVER = "https://gresak.io:9631";
 
   /**
    * Endpoint of router.
