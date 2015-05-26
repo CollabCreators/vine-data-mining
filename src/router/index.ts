@@ -26,43 +26,50 @@ class Router {
   private setupExpressRouter(): express.Router {
     let router = express.Router();
     // Set GET to return JSON result of `getAddress()`.
-    router.get("/", (req, res) => { res.json(this.getAddress()) });
+    router.get("/", (req, res) => { res.json(this.getAddress(req)) });
     // Set PUT to add `:address` (in body or as param) and return JSON result of `getAddress()`.
-    router.put("/:address", (req, res) => { res.json(this.putAddress(req.body.address || req.params.address)) });
+    router.put("/:address", (req, res) => { res.json(this.putAddress(req)) });
     // Set DELETE delete stored address and return JSON result of `getAddress()`.
-    router.delete("/", (req, res) => { res.json(this.delAddress()) });
+    router.delete("/", (req, res) => { res.json(this.delAddress(req)) });
     return router;
   }
 
   /**
    * Get curretly stored address.
    *
-   * @returns {Object} IP address in form { address: xxx.xxx.xxx.xxx }.
+   * @param   {any=}  req (optional) Express request object, it will be used to log client IP.
+   *
+   * @returns {Object}               IP address in form { address: xxx.xxx.xxx.xxx }.
    */
-  private getAddress(): Object {
+  private getAddress(req?: any): Object {
+    if (req) {
+      console.log(`${req.method} request from`, (req.headers["x-forwarded-for"] || req.connection.remoteAddress));
+    }
     return { address: this.address };
   }
 
   /**
    * Add (overwrite) stored address.
    *
-   * @param   {string} address New IP address.
+   * @param   {any} req        Express request object.
    *
    * @returns {Object}         Return value from getAddress (new address).
    */
-  private putAddress(address: string) {
-    this.address = address || null;
-    return this.getAddress();
+  private putAddress(req: any) {
+    this.address = (req.body.address || req.params.address) || null;
+    return this.getAddress(req);
   }
 
   /**
    * Remove stored address.
    *
+   * @param {any} req  Express request object.
+   *
    * @returns {Object} Return value from getAddress -> {address: null}.
    */
-  private delAddress() {
+  private delAddress(req?: any) {
     this.address = null;
-    return this.getAddress();
+    return this.getAddress(req);
   }
 
 }
