@@ -1,5 +1,5 @@
 import {Promise} from "es6-promise";
-import {get} from "request";
+import * as request from "request";
 
 export default class Communicator {
 
@@ -22,7 +22,7 @@ export default class Communicator {
       // Set interval to ping server. Store in variable so it can be cleaned before resolving.
       let checkInterval = setInterval(() => {
         // Send a get request to address/endpoint and
-        get({ url: `${address}/${endpoint}` },
+        request.get({ url: `${address}/${endpoint}` },
           (err, httpResponse, body: string) => {
             if (rejectOnError) {
               if (err) {
