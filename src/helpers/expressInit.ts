@@ -26,7 +26,7 @@ export interface SSLConfig {
  *
  * @returns {express.Express}            Initialized express app.
  */
-export default function expressInit(port: number, routerPath: string, initRouter: () => express.Router, thisArg: any = this): express.Express {
+export function expressInit(port: number, routerPath: string, initRouter: () => express.Router, thisArg: any = this, conf: SSLConfig = undefined): express.Express {
   let app = express();
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
