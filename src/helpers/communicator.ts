@@ -37,6 +37,48 @@ export default class Communicator {
   }
 
   /**
+   * Register an ipAddress on router.
+   *
+   * @param   {string}       server    Server address where router is running.
+   * @param   {string}       endpoint  Server endpoint where router is listening.
+   * @param   {string}       ipAddress IP address to be registered.
+   *
+   * @returns {Promise<any>}           Promise which will be resolved when ipAddress is successfully registered.
+   */
+  public static registerAddress(server: string, endpoint: string, ipAddress: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // Send a put request with value of `ipAddress` to `server`/`endpoint`.
+      request.put({
+        url: `${server}/${endpoint}/${ipAddress}`
+      },
+        (err, httpResponse, body: string) => {
+          // Check for errors, calls reject if there are any.
+          Communicator.checkErrorAndReject(err, httpResponse, body, reject);
+          // If address in response (new address) doesn't match the address which was sent, try to register it again.
+          if (JSON.parse(body).address !== ipAddress) {
+            Communicator.registerAddress(server, endpoint, ipAddress).then(resolve);
+          }
+          else {
+            // Register was successful, resolve returned promise.
+            resolve();
+          }
+        });
+    });
+  }
+
+  /**
+   * Unregister an address froum router.
+   *
+   * @param   {string}       server    Server address where router is running.
+   * @param   {string}       endpoint  Server endpoint where router is listening.
+   */
+  public static unregisterAddress(server: string, endpoint: string): void {
+    // Send a DELETE request to `server`/`endpoint`.
+    // Don't wait for a response so this function (and it's process) can exit as quickly as possible.
+    request.del({ url: `${server}/${endpoint}` });
+  }
+
+  /**
    * Check for errors in request response and call reject function if any errors found.
    *
    * @param {any}             err          Error from `request`.
