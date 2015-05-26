@@ -15,7 +15,7 @@ class Router {
   constructor(port: number) {
     this.address = null;
     // Read ssl-config.json and parse it.
-    let sslConfigData: SSLConfig = readFileSync(path.join(__dirname, "./ssl-config.json")).toJSON();
+    let sslConfigData: SSLConfig = JSON.parse(readFileSync(path.join(__dirname, "./ssl-config.json")).toString());
     // Check if config.key exists, throw an error if it doesn't.
     if (!sslConfigData.key) {
       throw Error("Missing field 'key' in ssl-config.json.");
