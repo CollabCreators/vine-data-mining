@@ -85,4 +85,19 @@ export class VineHelper {
     //  This is used because other user ids aren't pointing to correct records.
       .map(entity => entity.link.match(/\/(\d+)$/)[1], 10);
   }
+
+  /**
+  * Filter out and parse entities which are of type tag.
+   *
+   * @param   {Array<VideoEntityRecord>} entities Array of vine entities.
+   *
+   * @returns {Array<string>}                     Array of mnetioned user id's.
+   */
+  private static getTagsEntities(entities: Array<VideoEntityRecord>): Array<string> {
+    return entities
+    // Filter out entites of type tag.
+      .filter(entity => entity.type === "tag")
+    // Pick out titles of entities.
+      .map(entity => entity.title);
+  }
 }
