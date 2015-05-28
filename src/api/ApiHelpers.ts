@@ -1,3 +1,5 @@
+import ArrayHelper from "../helpers/arrayHelper";
+
 class JobTypes {
   public static User: JobType = 0;
   public static Vine: JobType = 1;
@@ -42,7 +44,7 @@ export class VineHelper {
       authorId: userId,
       loopCount: data.loops.count,
       commentsCount: data.comments.count,
-      tags: data.tags,
+      tags: ArrayHelper.mergeUnique(null, data.tags, VineHelper.getTagsEntities(data.entities)),
       id: data.postId.toString(),
       respostsCount: data.reposts.count,
       likesCount: data.likes.count,
