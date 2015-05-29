@@ -64,6 +64,11 @@ class MasterNode {
    */
   private jobs: Array<Job>;
 
+  /**
+   * Key - value store of job setTimeout timers.
+   *
+   * @type {Object}
+   */
   private jobTimeouts: Object;
 
   constructor(port: number) {
