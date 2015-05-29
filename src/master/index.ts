@@ -44,6 +44,13 @@ class MasterNode {
   private static ROUTER_ENDPOINT = "router";
 
   /**
+   * Timeout before job resets (5min).
+   *
+   * @type {number}
+   */
+  private static JOB_TIMEOUT = 5 * 60 * 1000;
+
+  /**
    * Orchestrate database connector.
    *
    * @type {any}
@@ -56,6 +63,8 @@ class MasterNode {
    * @type {Array<Job>}
    */
   private jobs: Array<Job>;
+
+  private jobTimeouts: Object;
 
   constructor(port: number) {
     // Check if ORCHESTRATE_KEY environment variable is set.
@@ -73,6 +82,7 @@ class MasterNode {
         new Job({ type: JobTypes.Vine, id: id })
         );
     });
+    this.jobTimeouts = {};
     expressInit(port, "/master", this.setupExpressRouter, this);
     this.registerIpAtRouter();
   }
@@ -133,6 +143,7 @@ class MasterNode {
     // Assuming that jobs are already sorted, this is `count` most important jobs.
     return Job.FilterIdle(this.jobs).slice(0, count).map((job) => {
       job.markActive();
+      this.jobTimeouts[`${job.type}-${job.id}`] = setTimeout(() => job.resetState());
       // Return job to add it to mapped jobs.
       return job;
     });
