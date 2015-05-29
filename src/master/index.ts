@@ -2,6 +2,7 @@ import * as express from "express";
 import {expressInit} from "../helpers/expressInit";
 import VineApi from "../api/VineApi";
 import Job from "./job";
+import {JobTypes} from "../api/ApiHelpers";
 import Communicator from "../helpers/communicator";
 let Orchestrate = require("orchestrate");
 let CanIHazIp = require("canihazip");
@@ -68,8 +69,8 @@ class MasterNode {
     MasterNode.INITIAL_USERS.forEach((id) => {
       // For each id add both user and vine jobs.
       this.jobs.push(
-        new Job({ type: 0, id: id }),
-        new Job({ type: 1, id: id })
+        new Job({ type: JobTypes.User, id: id }),
+        new Job({ type: JobTypes.Vine, id: id })
         );
     });
     expressInit(port, "/master", this.setupExpressRouter, this);
