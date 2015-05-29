@@ -125,7 +125,7 @@ class MasterNode {
    *
    * @returns {Array<Job>}       Array of jobs.
    */
-  private getNextJobs(count: number = 5): Array<Job> {
+  private getNextJobs(count: number = 1): Array<Job> {
     // Filter jobs to keep only idle, then take first `count` jobs.
     // Assuming that jobs are already sorted, this is `count` most important jobs.
     return Job.FilterIdle(this.jobs).slice(0, count).map((job) => {
