@@ -180,44 +180,7 @@ class MasterNode {
    */
   private completeJobs(jobs: Array<Job>): Promise<any> {
     return new Promise((resolve, reject) => {
-      // Attempt to store jobs data.
-      this.storeJobData(jobs).then(() => {
-        // Filter `this.jobs` to keep values which are not found in `jobs` array and then resolve the promise.
-        this.jobs = this.jobs.filter((tj: Job) => !jobs.some((j: Job) => j.equals(tj)));
-        resolve();
-      })
-      // Reject returned promise if storeJobData failed.
-        .catch(reject);
-    });
-  }
 
-  /**
-   * For each job, make query to database to see if it already exist.
-   *
-   * @param   {Array<Job>}      jobs              Jobs to search for.
-   * @param   {boolean = false} resolveWithFound  Should resolve promise with found jobs?
-   *
-   * @returns {PromiseArray<boolean>}             Promise resolving to an array of job existance boolean flags,
-   *                                                      true: exists, false: does not exist.
-   */
-  private findExisitngData(jobs: Array<Job>, resolveWithFound: boolean = false): Promise<Array<boolean>> {
-    return new Promise((resolve, reject) => {
-      // Initialize array of found jobs to all false, with length of `jobs`.
-      let jobsToKeep: Array<boolean> = jobs.map(() => resolveWithFound);
-      let jobQueryPromises: Array<Promise<any>> = jobs.map((job, i) => {
-        // Return the promise mapped into `jobQueryPromises`.
-        return this.orchestrateDb.newSearchBuilder().collection(MasterNode.ORCHESTRATE_COLLECTION).query(job.id)
-          .then((data) => {
-          // For each job, make a query to Orchestrate and if found data length
-          // is greater than 0, set flag to `resolveWithFound` (inverse).
-          if (data.length > 0) {
-            jobsToKeep[i] = !resolveWithFound;
-          }
-        });
-      });
-      // When all Orchestrate promises resolve, resolve returned promise based on
-      // `resolveWithFound` argument, it's kept if `jobsToKeep` value is `true`.
-      Promise.all(jobQueryPromises).then(() => resolve(jobsToKeep));
     });
   }
 
