@@ -115,4 +115,18 @@ export default class Job {
     return jobs.filter((j: Job) => j.state === JobState.Idle);
   }
 
+  /**
+   * Find given job in array of jobs.
+   *
+   * @param   {Job}             job       Job to find.
+   * @param   {Array<Job>}      jobs      Array of jobs to search for.
+   * @param   {boolean = false} matchType (optional) Should type of job be matched?
+   *
+   * @returns {Job}                       Reference to found job from array of jobs or `null` if no matches.
+   */
+  public static Find(job: Job, jobs: Array<Job>, matchType: boolean = false): Job {
+    // Filter jobs and return first match or null if there was no matches.
+    return jobs.filter(j => j.equals(job, matchType))[0] || null;
+  }
+
 }

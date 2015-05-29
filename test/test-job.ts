@@ -182,6 +182,39 @@ describe("Job", () => {
       done();
     });
 
+    describe("to find a reference to a job inside array of jobs", () => {
+
+      let jobs: Array<Job>;
+
+      beforeEach((done) => {
+        jobs = [];
+        for (let i = 1; i <= 5; i++) {
+          jobs.push(new Job({ type: JobTypes.Vine, id: i.toString() }));
+        }
+        done();
+      });
+
+      it("should search without matching type equality", (done) => {
+        // Change a property of returned reference.
+        Job.Find(new Job({ type: JobTypes.Vine, id: "2" }), jobs).bumpPriority();
+        // Assert that reference value was updated.
+        jobs[1].priority.should.equal(2);
+        done();
+      });
+
+      it("should search with also matching type equality", (done) => {
+        // Change a property of returned reference.
+        Job.Find(new Job({ type: JobTypes.Vine, id: "2" }), jobs, true).bumpPriority();
+        // Assert that reference value was updated.
+        jobs[1].priority.should.equal(2);
+
+        // When matching type and there is search type missmatch, result should be null.
+        should.not.exist(Job.Find(new Job({ type: JobTypes.User, id: "2" }), jobs, true));
+        done();
+      });
+
+    });
+
   });
 
 });
