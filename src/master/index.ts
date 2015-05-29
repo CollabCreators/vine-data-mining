@@ -71,6 +71,13 @@ class MasterNode {
    */
   private jobTimeouts: Object;
 
+  /**
+   * Array of uids of completed jobs.
+   *
+   * @type {Array<string>}
+   */
+  private doneJobs: Array<string>;
+
   constructor(port: number) {
     // Check if ORCHESTRATE_KEY environment variable is set.
     if (!process.env.ORCHESTRATE_KEY) {
@@ -88,6 +95,7 @@ class MasterNode {
         );
     });
     this.jobTimeouts = {};
+    this.doneJobs = [];
     expressInit(port, "/master", this.setupExpressRouter, this);
     this.registerIpAtRouter();
   }
@@ -132,8 +140,24 @@ class MasterNode {
    * @param   {StoredData} data Job data.
    */
   private addJob(data: StoredData): void {
-    this.jobs.push(new Job(data));
-    this.jobs = Job.Sort(this.jobs);
+    // If data is a falsy value or data.type is not a number (JobType is represented as a number) or
+    // id is not a string, do not add the job.
+    if (!data || typeof data.type !== "number" || typeof data.id !== "string") {
+      return;
+    }
+    // Job of type User is added in both type cases. Use just the necessary data for new job.
+    let newJobs: Array<Job> = [new Job({ type: JobTypes.User, id: data.id })];
+    // If data is of type vine, also add job with type vine.
+    if (data.type === JobTypes.Vine) {
+      newJobs.push(new Job({ type: JobTypes.Vine, id: data.id }));
+    }
+    // Filter jobs to remove already done jobs or jobs which are in progress.
+    let jobsToAdd = newJobs.filter((j) => this.doneJobs.indexOf(j.uid) === -1 && Job.Find(j, this.jobs, true) !== null);
+    // If filtered jobs aren't empty, add them to list of current jobs.
+    if (jobsToAdd.length > 0) {
+      Array.prototype.push.apply(this.jobs, jobsToAdd);
+      this.jobs = Job.Sort(this.jobs);
+    }
   }
 
   /**
