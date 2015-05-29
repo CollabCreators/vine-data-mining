@@ -1,6 +1,6 @@
 import ArrayHelper from "../helpers/arrayHelper";
 
-class JobTypes {
+export class JobTypes {
   public static User: JobType = 0;
   public static Vine: JobType = 1;
 }

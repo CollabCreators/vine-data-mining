@@ -6,6 +6,7 @@ chai.use(require("chai-as-promised"));
 
 import Job from "../src/master/job";
 import JobState from "../src/master/JobState";
+import {JobTypes} from "../src/api/ApiHelpers";
 
 describe("Job", () => {
 
@@ -14,17 +15,17 @@ describe("Job", () => {
   beforeEach((done) => {
 
     let data = {
-      type: 1, // JobType.Vine
+      type: JobTypes.Vine,
       id: "123"
     };
     job1 = new Job(data, 1);
     job2 = new Job(data, 2);
     otherJob = new Job({
-      type: 0,
+      type: JobTypes.User,
       id: "12345"
     }, 1);
     otherTypeJob = new Job({
-      type: 0,
+      type: JobTypes.User,
       id: "123"
     }, 1);
     done();
@@ -46,7 +47,7 @@ describe("Job", () => {
 
     it("should conatin type getter", (done) => {
       job1.type.should.exist;
-      job1.type.should.equal(1); // JobType.Vine
+      job1.type.should.equal(JobTypes.Vine);
       done();
     });
 
