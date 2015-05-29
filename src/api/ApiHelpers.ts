@@ -40,6 +40,7 @@ export class VineHelper {
    */
   public static ProcessApiResponse(userId: string, data: VideoRecord): VineData {
     return {
+      isRepost: VineHelper.isRepost(data),
       type: JobTypes.Vine,
       authorId: userId,
       loopCount: data.loops.count,
