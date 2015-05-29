@@ -9,6 +9,11 @@ interface StoredData {
    * @type {string}
    */
   id: string;
+  /**
+   * Flag set to true if vine is a repost.
+   * @type {boolean}
+   */
+  isRepost?: boolean;
 }
 /**
  * Data collected from user's profile.
@@ -50,11 +55,6 @@ interface UserProfileData extends StoredData {
  * Data collected from a vine upload.
  */
 interface VineData extends StoredData {
-  /**
-   * Flag set to true if vine is a repost.
-   * @type {boolean}
-   */
-  isRepost: boolean;
   /**
    * User id of vine author.
    * @type {number}
