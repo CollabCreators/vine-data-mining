@@ -47,7 +47,7 @@ export default class Job {
   /**
    * Mark this job as active, pending competion.
    */
-  public markActive(): void  {
+  public markActive(): void {
     this._state = JobState.Pending;
   }
 
