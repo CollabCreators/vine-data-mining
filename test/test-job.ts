@@ -63,6 +63,15 @@ describe("Job", () => {
       done();
     });
 
+    it("should contain uid getter which is different for differnet job types", (done) => {
+      // Returned uid should match format `${type}-${id}`.
+      job1.uid.should.equal("1-123");
+      // Returned uid should not match uid of another job with different id or type.
+      job1.uid.should.not.equal(otherJob.uid);
+      job1.uid.should.not.equal(otherTypeJob.uid);
+      done();
+    });
+
   });
 
   describe("instance functions", () => {

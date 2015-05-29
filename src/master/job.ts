@@ -35,6 +35,13 @@ export default class Job {
   get state(): number { return this._state; }
 
   /**
+   * Generate unique ID which should differ for different job types.
+   *
+   * @returns {string}
+   */
+  get uid(): string { return `${this.type}-${this.id}`; }
+
+  /**
    * Increase priority by 1.
    *
    * @returns {number} New priority.
