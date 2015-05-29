@@ -51,6 +51,11 @@ interface UserProfileData extends StoredData {
  */
 interface VineData extends StoredData {
   /**
+   * Flag set to true if vine is a repost.
+   * @type {boolean}
+   */
+  isRepost: boolean;
+  /**
    * User id of vine author.
    * @type {number}
    */
