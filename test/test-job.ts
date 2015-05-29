@@ -78,6 +78,16 @@ describe("Job", () => {
         done();
       });
 
+      it("should include function resetState which changes state to Idle", (done) => {
+        job1.state.should.equal(JobState.Idle);
+        // Change state to something else to make sure it changes back.
+        job1.markActive();
+        job1.state.should.equal(JobState.Pending);
+        job1.resetState();
+        job1.state.should.equal(JobState.Idle);
+        done();
+      });
+
       it("should include function markActive which changes state to Pending", (done) => {
         job1.state.should.equal(JobState.Idle);
         job1.markActive();

@@ -45,6 +45,13 @@ export default class Job {
   }
 
   /**
+   * Reset job state back to idle, waiting for request.
+   */
+  public resetState(): void {
+    this._state = JobState.Idle;
+  }
+
+  /**
    * Mark this job as active, pending competion.
    */
   public markActive(): void {
