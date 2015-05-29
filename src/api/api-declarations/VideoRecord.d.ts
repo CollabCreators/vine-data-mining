@@ -46,6 +46,11 @@ interface VideoRecord {
    */
   explicitContent: number;
   /**
+   * If Vine is repost, this will contain data about reposter.
+   * @type {Object}
+   */
+  repost?: Object;
+  /**
   * Is this video blocked (0, 1).
   * @type {number}
    */
