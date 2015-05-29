@@ -61,7 +61,8 @@ export default class Job {
   /**
    * Compare two jobs if equal.
    *
-   * @param   {Job}     other Job to compare with.
+   * @param   {Job}             other     Job to compare with.
+   * @param   {boolean = false} matchType (optional) Should type of job be matched?
    *
    * @returns {boolean}       True if jobs are equal, i.e. their id's match, false otherwise.
    */
