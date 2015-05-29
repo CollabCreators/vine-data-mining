@@ -98,6 +98,18 @@ describe("Job", () => {
         done();
       });
 
+      it("should set job state as failed if reset over FAIL_THRESHOLD times", (done) => {
+        // Call reset FAIL_THRESHOLD times.
+        for (let i = 0; i < Job.FAIL_THRESHOLD; i++) {
+          // State should still be Idle before resetting.
+          job1.state.should.equal(JobState.Idle);
+          job1.resetState();
+        }
+        // After reseting a job FAIL_THRESHOLD, state should be `Failed`.
+        job1.state.should.equal(JobState.Failed);
+        done();
+      });
+
       it("should include function markActive which changes state to Pending", (done) => {
         job1.state.should.equal(JobState.Idle);
         job1.markActive();

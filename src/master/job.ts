@@ -3,11 +3,25 @@ import JobState from "./JobState";
 export default class Job {
 
   /**
+   * Number of times job can be reset before marking it failed.
+   *
+   * @type {Number}
+   */
+  public static FAIL_THRESHOLD = 3;
+
+  /**
    * State of current job.
    *
    * @type {number}
    */
   private _state: number;
+
+  /**
+   * Counter of times this job failed.
+   *
+   * @type {number}
+   */
+  private _failCount: number;
 
   /**
    * Initialize new job.
@@ -17,6 +31,7 @@ export default class Job {
    */
   constructor(public data: StoredData, public priority: number = 1) {
     this._state = JobState.Idle;
+    this._failCount = 0;
   }
 
   /**
@@ -61,6 +76,11 @@ export default class Job {
    */
   public resetState(): void {
     this._state = JobState.Idle;
+    this._failCount += 1;
+    // If job vailed over threshold times, mark it as failed.
+    if (this._failCount >= Job.FAIL_THRESHOLD) {
+      this._state = JobState.Failed;
+    }
   }
 
   /**

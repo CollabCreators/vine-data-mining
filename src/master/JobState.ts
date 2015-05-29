@@ -14,4 +14,9 @@ export default class JobStates {
    * @type {number}
    */
   public static Fulfilled = 2;
+  /**
+   * Job has failed.
+   * @type {Number}
+   */
+  public static Failed = 3;
 }
