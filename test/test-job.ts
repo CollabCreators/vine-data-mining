@@ -20,8 +20,9 @@ describe("Job", () => {
     };
     job1 = new Job(data, 1);
     job2 = new Job(data, 2);
+    // Job with different job type.
     otherJob = new Job({
-      type: JobTypes.User,
+      type: JobTypes.Vine,
       id: "12345"
     }, 1);
     otherTypeJob = new Job({
