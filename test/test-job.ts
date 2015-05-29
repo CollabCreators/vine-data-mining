@@ -1,6 +1,6 @@
 import * as chai from "chai";
 import * as sinon from "sinon";
-chai.should();
+let should = chai.should();
 chai.use(require("sinon-chai"));
 chai.use(require("chai-as-promised"));
 
