@@ -64,11 +64,13 @@ class MasterNode {
     // Initialize orchestrate database connector.
     this.orchestrateDb = Orchestrate(process.env.ORCHESTRATE_KEY);
     // Map initial users to user jobs.
-    this.jobs = MasterNode.INITIAL_USERS.map((id) => {
-      return new Job({
-        type: 0, // JobType.User
-        id: id
-      });
+    this.jobs = [];
+    MasterNode.INITIAL_USERS.forEach((id) => {
+      // For each id add both user and vine jobs.
+      this.jobs.push(
+        new Job({ type: 0, id: id }),
+        new Job({ type: 1, id: id })
+        );
     });
     expressInit(port, "/master", this.setupExpressRouter, this);
     this.registerIpAtRouter();
