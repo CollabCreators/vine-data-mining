@@ -2,6 +2,11 @@ import JobState from "./JobState";
 
 export default class Job {
 
+  /**
+   * State of current job.
+   *
+   * @type {number}
+   */
   private _state: number;
 
   /**
