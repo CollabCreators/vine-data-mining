@@ -110,6 +110,8 @@ class MasterNode {
       // Use count from params. Function will use default value 1 if no param is given.
       res.json(this.getNextJobs(req.params.count));
     });
+    // GET /job-count, returns number of availabe jobs.
+    router.get("/job-count", (req, res) => res.json(this.availableJobsCount()));
     // PUT /job, complete jobs with data.
     router.put("/job", (req, res) => {
       this.logRequest(req);
@@ -177,6 +179,15 @@ class MasterNode {
     });
     MasterNode.logJobs("Jobs sent as a response:", jobs);
     return jobs;
+  }
+
+  /**
+   * Get number of available jobs.
+   *
+   * @returns {number}
+   */
+  private availableJobsCount(): number {
+    return Job.FilterIdle(this.jobs).length;
   }
 
   /**
