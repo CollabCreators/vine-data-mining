@@ -150,7 +150,7 @@ export default class Worker {
               resolve(JSON.parse(body));
             }
             catch (e) {
-              reject(Error("Error occured while parsing JSON response."));
+              reject(Error("Error occured while parsing getJob JSON response."));
             }
           });
       });
