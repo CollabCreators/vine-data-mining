@@ -73,7 +73,12 @@ export default class Worker {
   private nextJob(): void {
     Communicator.getAddress().then((address: string) => {
       this.masterAddress = `http://${address}:${this.masterPort}/master`;
-      this.getJob(this.jobSize).then(this.execJob);
+      this.getJob(this.jobSize).then((jobs: Array<Job>) => {
+        this.execJob(jobs).then((completedJobs: Array<Job>) => {
+          // Emit end event.
+          this.jobEventEmitter.emit("job.done");
+        });
+      });
     });
   }
 
