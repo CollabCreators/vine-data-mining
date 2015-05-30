@@ -70,15 +70,13 @@ export default class WorkerProfiler {
   }
 
   /**
-   * Get number of occurances when time was below threshold.
+   * Get percent of occurrences when time was below threshold.
    *
-   * @param   {number = 10) lastN Last `n` times to check.
-   *
-   * @returns {number}            Count of occurances when time was below threshold.
+   * @returns {number}            Percent of occurrences when time was below threshold, a value [0.0, 1.0].
    */
-  public timesBelowThreshold(lastN: number = 10): number {
-    // Negative slice returns elements from behind. Filter can just use value, since it's a flag.
-    return this.wasBelowThreshold.slice(-lastN).filter(wasBelow => wasBelow).length;
+  public belowThresholdPercent(): number {
+    // Calculate percentage of true values vs all values. Filter can just use value, since it's a flag.
+    return this.wasBelowThreshold.filter(wasBelow => wasBelow).length / this.wasBelowThreshold.length;
   }
 
 }
