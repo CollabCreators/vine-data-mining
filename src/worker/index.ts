@@ -83,31 +83,6 @@ export default class Worker {
   }
 
   /**
-   * Execute job(s).
-   *
-   * @param {Array<Job>} jobs Jobs to be executed.
-   *
-   * @returns {Promise}       Promise, resolved when job data is successfully sent to master.
-   */
-  private execJob(jobs: Array<Job>): Promise<any> {
-    // Emit start event.
-    this.jobEventEmitter.emit("job.start");
-    return new Promise((resolve, reject) => {
-      // Map `jobs` array into an array of completed jobs.
-      let resolvedJobs = jobs.map((job) => {
-        if (!JobTypes.isJobType(job.type)) {
-          return null;
-        }
-        // Determine API function based on job type.
-        return (job.type === JobTypes.User ? this.vineApi.getUserProfile : this.vineApi.getUserTimeline)(job.id);
-      // If resolved job is null (i.e. job type was unknown), remove it from resolved jobs.
-      }).filter((resolvedJob) => resolvedJob !== null);
-      // Resolve returned promise with completed jobs.
-      resolve(resolvedJobs);
-    });
-  }
-
-  /**
    * Gext next `count` job(s) from master.
    *
    * @param   {number = 1}  count Number of jobs to get.
@@ -131,6 +106,31 @@ export default class Worker {
             }
           });
       });
+    });
+  }
+
+  /**
+   * Execute job(s).
+   *
+   * @param {Array<Job>} jobs Jobs to be executed.
+   *
+   * @returns {Promise}       Promise, resolved when job data is successfully sent to master.
+   */
+  private execJob(jobs: Array<Job>): Promise<any> {
+    // Emit start event.
+    this.jobEventEmitter.emit("job.start");
+    return new Promise((resolve, reject) => {
+      // Map `jobs` array into an array of completed jobs.
+      let resolvedJobs = jobs.map((job) => {
+        if (!JobTypes.isJobType(job.type)) {
+          return null;
+        }
+        // Determine API function based on job type.
+        return (job.type === JobTypes.User ? this.vineApi.getUserProfile : this.vineApi.getUserTimeline)(job.id);
+      // If resolved job is null (i.e. job type was unknown), remove it from resolved jobs.
+      }).filter((resolvedJob) => resolvedJob !== null);
+      // Resolve returned promise with completed jobs.
+      resolve(resolvedJobs);
     });
   }
 
