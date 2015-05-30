@@ -7,6 +7,7 @@ import Worker from "./worker/index";
 
 /**
  * Port where the application will run.
+ * NOTE: If changing this value, make sure to also change it at ROUTER_SERVER in helpers/communicator.ts.
  *
  * @type {Number}
  */
