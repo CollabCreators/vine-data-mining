@@ -73,10 +73,13 @@ export default class Worker {
   private nextJob(): void {
     Communicator.getAddress().then((address: string) => {
       this.masterAddress = `http://${address}:${this.masterPort}/master`;
+      // Get new job of size `jobSize`.
       this.getJob(this.jobSize).then((jobs: Array<Job>) => {
+        // Execute received jobs.
         this.execJob(jobs).then((completedJobs: Array<Job>) => {
-          // Emit end event.
+          // Send collected data back.
           this.sendBack(completedJobs).then(() => {
+            // Emit end event.
             this.jobEventEmitter.emit("job.done");
           });
         });
@@ -129,7 +132,7 @@ export default class Worker {
         }
         // Determine API function based on job type.
         return (job.type === JobTypes.User ? this.vineApi.getUserProfile : this.vineApi.getUserTimeline)(job.id);
-      // If resolved job is null (i.e. job type was unknown), remove it from resolved jobs.
+        // If resolved job is null (i.e. job type was unknown), remove it from resolved jobs.
       }).filter((resolvedJob) => resolvedJob !== null);
       // Resolve returned promise with completed jobs.
       resolve(resolvedJobs);
