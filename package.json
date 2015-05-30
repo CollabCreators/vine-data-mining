@@ -5,8 +5,6 @@
   "scripts": {
     "postinstall": "./node_modules/.bin/tsd reinstall --overwrite --save",
     "prestart": "./node_modules/.bin/tsc --project .",
-    "router": "npm run-script prestart && node_modules/.bin/babel-node bin/src/router/index.js",
-    "master": "npm run-script prestart && node_modules/.bin/babel-node bin/src/master/index.js",
     "start": "node_modules/.bin/babel-node bin/src/index.js",
     "watch": "nodemon -v &>/dev/null && nodemon -w bin -x 'node_modules/.bin/babel-node bin/src/index.js'",
     "w": "npm run-script watch",
