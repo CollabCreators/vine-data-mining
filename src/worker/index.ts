@@ -108,14 +108,19 @@ export default class Worker {
    * Get next job and execute it.
    */
   private nextJob(): void {
+    console.log("Begin get address...");
     Communicator.getAddress().then((address: string) => {
       this.masterAddress = `http://${address}:${this.masterPort}/master`;
+      console.log("Master found at", this.masterAddress);
       // Get new job of size `jobSize`.
       this.getJob(this.jobSize).then((jobs: Array<Job>) => {
+        Worker.logJobs("Got jobs:", jobs);
         // Execute received jobs.
         this.execJob(jobs).then((completedJobs: Array<Job>) => {
+          Worker.logJobs("Completed completedJobs:", jobs);
           // Send collected data back.
           this.sendBack(completedJobs).then(() => {
+            console.log("Jobs successfully stored!");
             // Emit end event.
             this.jobEventEmitter.emit("job.done");
             this.checkThreshold();
@@ -225,6 +230,10 @@ export default class Worker {
     this.workerProfiler.resetTimesArrays();
     this.thresholdExceededCount = 0;
     this.thresholdExceededChecks = 0;
+  }
+
+  private static logJobs(message: string, jobs: Array<Job>): void {
+    console.log(message, jobs.map(j => j.uid));
   }
 
 }
