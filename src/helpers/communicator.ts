@@ -43,7 +43,7 @@ export default class Communicator {
             }
             if (accept.call(thisArg, body, httpResponse)) {
               clearInterval(checkInterval);
-              resolve();
+              resolve(body);
             }
           });
       }, interval);
