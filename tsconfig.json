@@ -31,6 +31,7 @@
         "./src/master/index.ts",
         "./src/master/job.ts",
         "./src/router/index.ts",
+        "./src/worker/index.ts",
         "./test/test-arrayHelper.ts",
         "./test/test-job.ts",
         "./typings/body-parser/body-parser.d.ts",
