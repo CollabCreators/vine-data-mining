@@ -100,7 +100,7 @@ export default class Master {
     // PUT /job, complete jobs with data.
     router.put("/job", (req, res) => {
       this.logRequest(req);
-      this.completeJobs(req.body.data).then(() => res.json({ok: true})).catch(() => res.json({ok: false}));
+      this.completeJobs(req.body.data).then(() => res.json({ ok: true })).catch(() => res.json({ ok: false }));
     });
     return router;
   }
@@ -130,7 +130,7 @@ export default class Master {
     let newJobs: Array<Job> = [
       new Job({ type: JobTypes.User, id: data.id }),
       new Job({ type: JobTypes.Vine, id: data.id })
-      ];
+    ];
     // Make sure that `mentions` array exists and that it has at least some element.
     if (data.mentions && data.mentions.length > 0) {
       // For each id in mentions, add new job.
@@ -208,7 +208,7 @@ export default class Master {
         this.cleanDoneJobs();
         resolve();
       })
-      .catch(reject);
+        .catch(reject);
     });
   }
 
