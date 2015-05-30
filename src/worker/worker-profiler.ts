@@ -32,7 +32,7 @@ export default class WorkerProfiler {
    * @param   {number} threshold Threshold of job execution time.
    */
   constructor(public jobEventEmitter: EventEmitter, public threshold: number, public LOG = true) {
-    this.resetTimes();
+    this.resetTimesArrays();
     // Set event listener for job.start, set start time.
     this.jobEventEmitter.on("job.start", () => this.currentStart = now());
     // Set event listener for job.done, calculate time and store size.
@@ -55,7 +55,7 @@ export default class WorkerProfiler {
   /**
    * Reset arrays.
    */
-  public resetTimes(): void {
+  public resetTimesArrays(): void {
     this.times = [];
     this.wasBelowThreshold = [];
   }
