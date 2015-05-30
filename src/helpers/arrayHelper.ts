@@ -11,8 +11,12 @@ export default class ArrayHelper {
    */
   public static mergeUnique(uniqueFn: (x: any, i: number, arr: Array<any>) => boolean, ...arrays: Array<any>): Array<any> {
     if (!uniqueFn) {
-      uniqueFn = (x, i, arr) => arr.indexOf(x) === i;
+      uniqueFn = ArrayHelper.isUnique;
     }
     return arrays.reduce((a, b) => a.concat(b)).filter(uniqueFn);
+  }
+
+  public static isUnique(value: any, index: number, arr: Array<any>): boolean {
+    return arr.indexOf(value) === index;
   }
 }
