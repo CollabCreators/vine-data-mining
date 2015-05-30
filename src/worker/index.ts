@@ -1,6 +1,8 @@
 import VineApi from "../api/VineApi";
 import Communicator from "../helpers/communicator";
 import {EventEmitter} from "events";
+import * as request from "request";
+import Job from "../master/job";
 
 export default class Worker {
 
