@@ -53,10 +53,16 @@ export default class Worker {
   }
 
   /**
-   * Run this worker.
+   * Execute job(s).
+   *
+   * @param {Array<Job>} jobs Jobs to be executed.
+   *
+   * @returns {Promise}       Promise, resolved when job data is successfully sent to master.
    */
-  private run(): void {
+  private execJob(jobs: Array<Job>): Promise<any> {
+    return new Promise((resolve, reject) => {
 
+    });
   }
 
   /**
