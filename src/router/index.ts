@@ -113,6 +113,3 @@ export default class Router {
   }
 
 }
-
-// Start a new router on port 9631.
-new Router(9631);
