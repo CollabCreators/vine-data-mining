@@ -31,6 +31,7 @@
     "express": "^4.12.4",
     "mocha": "^2.2.5",
     "orchestrate": "^0.4.3",
+    "performance-now": "^0.2.0",
     "request": "^2.55.0",
     "sinon": "^1.14.1",
     "sinon-chai": "^2.7.0",
