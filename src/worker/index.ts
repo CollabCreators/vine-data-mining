@@ -147,7 +147,7 @@ export default class Worker {
           (err, httpResponse, body: string) => {
             Communicator.checkErrorAndReject(err, httpResponse, body, reject);
             try {
-              resolve(JSON.parse(body));
+              resolve(JSON.parse(body).map((d) => new Job(d.data, d.priority)));
             }
             catch (e) {
               reject(Error("Error occured while parsing getJob JSON response."));
