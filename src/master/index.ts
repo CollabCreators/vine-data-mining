@@ -76,7 +76,7 @@ export default class Master {
     this.jobTimeouts = {};
     this.doneJobs = [];
     // Call addJob for each job id, use JobTypes.Vine so both user and vine jobs are added.
-    Master.INITIAL_USERS.forEach((id: string) => this.addJob({ type: JobTypes.Vine, id: id }));
+    Master.INITIAL_USERS.forEach((id: string) => this.addJob(id));
     expressInit(port, "/master", this.setupExpressRouter, this);
     if (process.env.NODE_ENV !== "development") {
       this.registerIpAtRouter();
@@ -119,24 +119,18 @@ export default class Master {
   /**
    * Add a job to list of jobs.
    *
-   * @param   {StoredData} data Job data.
+   * @param   {string} id Job data.
    */
-  private addJob(data: StoredData): void {
-    // If data is a falsy value or data.type is not a number (JobType is represented as a number) or
-    // id is not a string, do not add the job.
-    if (!data || typeof data.type !== "number" || typeof data.id !== "string") {
+  private addJob(id: string): void {
+    // Stop addition if id is not string or if it's of length 0.
+    if (typeof id !== "string" || id.length === 0) {
       return;
     }
     // Always add both user and vine job types.
     let newJobs: Array<Job> = [
-      new Job({ type: JobTypes.User, id: data.id }),
-      new Job({ type: JobTypes.Vine, id: data.id })
+      new Job({ type: JobTypes.User, id: id }),
+      new Job({ type: JobTypes.Vine, id: id })
     ];
-    // Make sure that `mentions` array exists and that it has at least some element.
-    if (data.mentions && data.mentions.length > 0) {
-      // For each id in mentions, add new job.
-      data.mentions.forEach((id: string) => this.addJob({ type: JobTypes.Vine, id: id }));
-    }
     // Filter jobs to remove already done jobs or jobs which are in progress.
     let jobsToAdd = newJobs.filter((j) => this.doneJobs.indexOf(j.uid) === -1 && Job.Find(j, this.jobs, true) === null);
     // If filtered jobs aren't empty, add them to list of current jobs.
