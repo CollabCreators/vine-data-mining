@@ -59,6 +59,13 @@ export default class Worker {
 
   }
 
+  /**
+   * Gext next `count` job(s) from master.
+   *
+   * @param   {number = 1}  count Number of jobs to get.
+   *
+   * @returns {Promise}           Promise resolving with job data.
+   */
   private getJob(count: number = 1): Promise<Array<Job>> {
     return new Promise((resolve, reject) => {
       // Check /job-count every second, accept (resolve) when response count is above `count` from argument.
