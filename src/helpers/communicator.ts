@@ -66,9 +66,10 @@ export default class Communicator {
     endpoint: string = Communicator.ROUTER_ENDPOINT): Promise<string> {
     return new Promise((resolve, reject) => {
       // Send a put request with value of `ipAddress` to `server`/`endpoint`.
-      console.log("Register address: PUT", `${server}/${endpoint}/${ipAddress}`);
+      console.log("Register address: PUT", `${server}/${endpoint}`);
       request.put({
-        url: `${server}/${endpoint}/${ipAddress}`
+        url: `${server}/${endpoint}/${ipAddress}`,
+        form: { address: ipAddress }
       },
         (err, httpResponse, body: string) => {
           // Check for errors, calls reject if there are any.
