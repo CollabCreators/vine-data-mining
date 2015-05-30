@@ -57,11 +57,12 @@ export default class Communicator {
    * @param   {string}       server    Server address where router is running.
    * @param   {string}       endpoint  Server endpoint where router is listening.
    *
-   * @returns {Promise<any>}           Promise which will be resolved when ipAddress is successfully registered.
+   * @returns {Promise<string>}        Promise which will be resolved when ipAddress is successfully registered.
+   *                                           Resolves with body of last request.
    */
   public static registerAddress(ipAddress: string,
     server: string = Communicator.ROUTER_SERVER,
-    endpoint: string = Communicator.ROUTER_ENDPOINT): Promise<any> {
+    endpoint: string = Communicator.ROUTER_ENDPOINT): Promise<string> {
     return new Promise((resolve, reject) => {
       // Send a put request with value of `ipAddress` to `server`/`endpoint`.
       request.put({
@@ -76,7 +77,7 @@ export default class Communicator {
           }
           else {
             // Register was successful, resolve returned promise.
-            resolve();
+            resolve(body);
           }
         });
     });
