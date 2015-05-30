@@ -122,7 +122,7 @@ export default class Worker {
           this.sendBack(completedJobs).then(() => {
             console.log("Jobs successfully stored!");
             // Emit end event.
-            this.jobEventEmitter.emit("job.done");
+            this.jobEventEmitter.emit("job.done", this.jobSize);
             this.checkThreshold();
           });
         });
