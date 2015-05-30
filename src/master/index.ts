@@ -171,7 +171,7 @@ class MasterNode {
     // Assuming that jobs are already sorted, this is `count` most important jobs.
     let jobs = Job.FilterIdle(this.jobs).slice(0, count).map((job) => {
       job.markActive();
-      this.jobTimeouts[job.uid] = setTimeout(() => job.resetState());
+      this.jobTimeouts[job.uid] = setTimeout(() => job.resetState(), MasterNode.JOB_TIMEOUT);
       // Return job to add it to mapped jobs.
       return job;
     });
