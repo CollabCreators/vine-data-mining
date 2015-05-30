@@ -1,6 +1,8 @@
 "use strict";
 import VineApi from "./api/VineApi";
 import {VineHelper} from "./api/ApiHelpers";
+import Communicator from "./helpers/communicator";
+import {JobTypes} from "./api/ApiHelpers";
 let Orchestrate = require("orchestrate");
 
 let username: string = process.env.VINE_USERNAME;
@@ -35,4 +37,15 @@ function startVine() {
     .catch(error => console.error(error));
 }
 
-startVine();
+function startRegister() {
+  Communicator.registerAddress("http://localhost:9631", "router", "1.2.3.4").then(() => {
+    console.log("registered successfully");
+  }).catch((err) => console.error(err))
+}
+
+// startRegister();
+
+console.log(typeof JobTypes.User);
+
+
+// startVine();
