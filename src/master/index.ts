@@ -201,9 +201,9 @@ export default class Master {
           return ArrayHelper.mergeUnique(null, [job.data.id], job.data.mentions || []);
           // Filter out falsy values.
         }).filter((id, i, arr) => !!id)
-          // Flatten array.
+        // Flatten array.
           .reduce((a, b) => a.concat(b))
-          // Keep only unique values.
+        // Keep only unique values.
           .filter((id, i, arr) => ArrayHelper.isUnique(id, i, arr))
           .forEach((idToAdd: string) => this.addJob(idToAdd));
         this.cleanDoneJobs();
