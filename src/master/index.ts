@@ -204,6 +204,7 @@ export default class Master {
           // Push job to doneJobs list so it will not be added again.
           this.doneJobs.push(localJob.uid);
           Master.logJobs("Completed job", [localJob]);
+          this.addJob(job.data);
         });
         this.cleanDoneJobs();
         resolve();
