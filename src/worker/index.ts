@@ -118,6 +118,7 @@ export default class Worker {
           this.sendBack(completedJobs).then(() => {
             // Emit end event.
             this.jobEventEmitter.emit("job.done");
+            this.checkThreshold();
           });
         });
       });
