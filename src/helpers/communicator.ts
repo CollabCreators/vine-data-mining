@@ -60,7 +60,8 @@ export default class Communicator {
    * @returns {Promise<string>}        Promise which will be resolved when ipAddress is successfully registered.
    *                                           Resolves with body of last request.
    */
-  public static registerAddress(ipAddress: string,
+  public static registerAddress(
+    ipAddress: string,
     server: string = Communicator.ROUTER_SERVER,
     endpoint: string = Communicator.ROUTER_ENDPOINT): Promise<string> {
     return new Promise((resolve, reject) => {
