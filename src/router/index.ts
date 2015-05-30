@@ -3,7 +3,7 @@ import {SSLConfig, expressInit} from "../helpers/expressInit";
 import {readFileSync} from "fs";
 import * as path from "path";
 
-class Router {
+export default class Router {
 
   private address: string;
 

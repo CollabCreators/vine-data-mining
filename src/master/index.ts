@@ -7,7 +7,6 @@ import Communicator from "../helpers/communicator";
 let Orchestrate = require("orchestrate");
 let CanIHazIp = require("canihazip");
 
-class MasterNode {
 
   /**
    * Id's of 5 most followed users (my assuption).
