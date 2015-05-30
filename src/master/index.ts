@@ -131,6 +131,11 @@ export default class Master {
     // If data is of type vine, also add job with type vine.
     if (data.type === JobTypes.Vine) {
       newJobs.push(new Job({ type: JobTypes.Vine, id: data.id }));
+      // Make sure that `mentions` array exists and that it has at least some element.
+      if (data.mentions && data.mentions.length > 0) {
+        // For each id in mentions, add new job.
+        data.mentions.forEach((id: string) => this.addJob({ type: JobTypes.Vine, id: id }));
+      }
     }
     // Filter jobs to remove already done jobs or jobs which are in progress.
     let jobsToAdd = newJobs.filter((j) => this.doneJobs.indexOf(j.uid) === -1 && Job.Find(j, this.jobs, true) === null);
