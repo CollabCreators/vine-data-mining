@@ -7,6 +7,13 @@ import Job from "../master/job";
 export default class Worker {
 
   /**
+   * Threshold for job execution time.
+   *
+   * @type {Number}
+   */
+  private static TIME_THRESHOLD = 5000;
+
+  /**
    * Instance of Vine API communicator.
    *
    * @type {VineApi}
