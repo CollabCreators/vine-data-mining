@@ -29,20 +29,6 @@ export default class Master {
   private static ORCHESTRATE_COLLECTION = "vine";
 
   /**
-   * Address of router server.
-   *
-   * @type {String}
-   */
-  private static ROUTER_SERVER = "https://gresak.io:9631";
-
-  /**
-   * Endpoint of router.
-   *
-   * @type {String}
-   */
-  private static ROUTER_ENDPOINT = "router";
-
-  /**
    * Timeout before job resets (5min).
    *
    * @type {number}

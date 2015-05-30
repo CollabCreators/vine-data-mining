@@ -4,6 +4,20 @@ import * as request from "request";
 export default class Communicator {
 
   /**
+   * Address of router server.
+   *
+   * @type {String}
+   */
+  private static ROUTER_SERVER = "https://gresak.io:9631";
+
+  /**
+   * Endpoint of router.
+   *
+   * @type {String}
+   */
+  private static ROUTER_ENDPOINT = "router";
+
+  /**
    * Ping a server each `interval`ms until `check` returns true.
    *
    * @param   {string}                    address  Address to ping.
