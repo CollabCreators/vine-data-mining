@@ -149,7 +149,7 @@ class MasterNode {
       newJobs.push(new Job({ type: JobTypes.Vine, id: data.id }));
     }
     // Filter jobs to remove already done jobs or jobs which are in progress.
-    let jobsToAdd = newJobs.filter((j) => this.doneJobs.indexOf(j.uid) === -1 && Job.Find(j, this.jobs, true) !== null);
+    let jobsToAdd = newJobs.filter((j) => this.doneJobs.indexOf(j.uid) === -1 && Job.Find(j, this.jobs, true) === null);
     // If filtered jobs aren't empty, add them to list of current jobs.
     if (jobsToAdd.length > 0) {
       Array.prototype.push.apply(this.jobs, jobsToAdd);
