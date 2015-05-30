@@ -3,6 +3,7 @@ import Communicator from "../helpers/communicator";
 import {EventEmitter} from "events";
 import * as request from "request";
 import Job from "../master/job";
+import WorkerProfiler from "./worker-profiler";
 
 export default class Worker {
 
@@ -35,11 +36,17 @@ export default class Worker {
   private jobEventEmitter: EventEmitter;
 
   /**
+   * Number of jobs to take.
+   *
+   * @type {number}
+   */
+  private jobSize: number;
    * Start a new worker. Will need router and master running to start.
    *
    * @param   {number} masterPort Port where master node is listening.
    */
   constructor(public masterPort: number) {
+    this.workerProfiler = new WorkerProfiler(Worker.TIME_THRESHOLD);
     // Instantiate new Vine API without login.
     this.vineApi = new VineApi();
     // Instatiate new EventEmitter and register `job.done` event.
