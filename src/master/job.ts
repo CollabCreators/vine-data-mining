@@ -146,12 +146,13 @@ export default class Job {
   /**
    * Filter an array of jobs to keep only idle jobs.
    *
-   * @param   {Array<Job>} jobs Array to be fileterd.
+   * @param   {Array<Job>}      jobs        Array to be fileterd.
+   * @param   {boolean = false} alsoPending Should also check pending state?
    *
    * @returns {Array<Job>}      Filtere array of jobs.
    */
-  public static FilterIdle(jobs: Array<Job>): Array<Job> {
-    return jobs.filter((j: Job) => j.state === JobState.Idle);
+  public static FilterIdle(jobs: Array<Job>, alsoPending: boolean = false): Array<Job> {
+    return jobs.filter((j: Job) => j.state === JobState.Idle || (alsoPending && j.state === JobState.Pending));
   }
 
   /**

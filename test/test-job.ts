@@ -214,6 +214,22 @@ describe("Job", () => {
       done();
     });
 
+    it("to filter an array of jobs to keep idle and pending jobs only", (done) => {
+      let jobs: Array<Job> = [];
+      for (let i = 0; i <= 5; i++) {
+        jobs.push(new Job(null, i));
+      }
+      jobs[0].markActive();
+      jobs[5].markDone();
+      let filtered = Job.FilterIdle(jobs, true);
+      filtered.length.should.equal(5);
+      for (let i = 0; i < 5; i++) {
+        // Compare by priority as it's only distinction between jobs.
+        filtered[i].priority.should.equal(jobs[i].priority);
+      }
+      done();
+    });
+
     describe("to find a reference to a job inside array of jobs", () => {
 
       let jobs: Array<Job>;
