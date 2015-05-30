@@ -78,9 +78,7 @@ export default class Master {
     // Call addJob for each job id, use JobTypes.Vine so both user and vine jobs are added.
     Master.INITIAL_USERS.forEach((id: string) => this.addJob(id));
     expressInit(port, "/master", this.setupExpressRouter, this);
-    if (process.env.NODE_ENV !== "development") {
-      this.registerIpAtRouter();
-    }
+    this.registerIpAtRouter();
   }
 
   /**
