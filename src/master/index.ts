@@ -241,7 +241,7 @@ export default class Master {
       // Get IP of this machine.
       CanIHazIp().then((ip: string) => {
         // Register `ip` with router.
-        Communicator.registerAddress(Master.ROUTER_SERVER, Master.ROUTER_ENDPOINT, ip)
+        Communicator.registerAddress(ip)
           .then(() => {
           // Add exit listeners and resolve returned promise.
           this.addExitListeners();
@@ -260,7 +260,7 @@ export default class Master {
     // Register event for each of exit/kill events.
     ["exit", "SIGINT", "uncaughtException"].forEach((event) => {
       // Event handler should remove IP registered with router.
-      process.on(event, () => Communicator.unregisterAddress(Master.ROUTER_SERVER, Master.ROUTER_ENDPOINT));
+      process.on(event, () => Communicator.unregisterAddress());
     });
   }
 

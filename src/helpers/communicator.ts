@@ -53,13 +53,15 @@ export default class Communicator {
   /**
    * Register an ipAddress on router.
    *
+   * @param   {string}       ipAddress IP address to be registered.
    * @param   {string}       server    Server address where router is running.
    * @param   {string}       endpoint  Server endpoint where router is listening.
-   * @param   {string}       ipAddress IP address to be registered.
    *
    * @returns {Promise<any>}           Promise which will be resolved when ipAddress is successfully registered.
    */
-  public static registerAddress(server: string, endpoint: string, ipAddress: string): Promise<any> {
+  public static registerAddress(ipAddress: string,
+    server: string = Communicator.ROUTER_SERVER,
+    endpoint: string = Communicator.ROUTER_ENDPOINT): Promise<any> {
     return new Promise((resolve, reject) => {
       // Send a put request with value of `ipAddress` to `server`/`endpoint`.
       request.put({
@@ -86,7 +88,9 @@ export default class Communicator {
    * @param   {string}       server    Server address where router is running.
    * @param   {string}       endpoint  Server endpoint where router is listening.
    */
-  public static unregisterAddress(server: string, endpoint: string): void {
+  public static unregisterAddress(
+    server: string = Communicator.ROUTER_SERVER,
+    endpoint: string = Communicator.ROUTER_ENDPOINT): void {
     // Send a DELETE request to `server`/`endpoint`.
     // Don't wait for a response so this function (and it's process) can exit as quickly as possible.
     request.del({ url: `${server}/${endpoint}` });
