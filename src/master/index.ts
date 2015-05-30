@@ -153,6 +153,7 @@ class MasterNode {
     // If filtered jobs aren't empty, add them to list of current jobs.
     if (jobsToAdd.length > 0) {
       Array.prototype.push.apply(this.jobs, jobsToAdd);
+      MasterNode.logJobs("Added jobs:", jobsToAdd);
       this.jobs = Job.Sort(this.jobs);
     }
   }
@@ -167,12 +168,15 @@ class MasterNode {
   private getNextJobs(count: number = 1): Array<Job> {
     // Filter jobs to keep only idle, then take first `count` jobs.
     // Assuming that jobs are already sorted, this is `count` most important jobs.
-    return Job.FilterIdle(this.jobs).slice(0, count).map((job) => {
+    let jobs = Job.FilterIdle(this.jobs).slice(0, count).map((job) => {
       job.markActive();
       this.jobTimeouts[job.uid] = setTimeout(() => job.resetState());
       // Return job to add it to mapped jobs.
       return job;
     });
+    console.log(this.jobs.length, this.jobs);
+    MasterNode.logJobs("Jobs sent as a response:", jobs);
+    return jobs;
   }
 
   /**
@@ -198,6 +202,7 @@ class MasterNode {
           localJob.markDone();
           // Push job to doneJobs list so it will not be added again.
           this.doneJobs.push(localJob.uid);
+          MasterNode.logJobs("Completed job", [localJob]);
         });
         this.cleanDoneJobs();
         resolve();
@@ -261,6 +266,10 @@ class MasterNode {
       // Event handler should remove IP registered with router.
       process.on(event, () => Communicator.unregisterAddress(MasterNode.ROUTER_SERVER, MasterNode.ROUTER_ENDPOINT));
     });
+  }
+
+  private static logJobs(message: string, jobs: Array<Job>): void {
+    console.log(message, jobs.map(j => j.uid));
   }
 }
 
