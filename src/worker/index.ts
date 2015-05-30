@@ -3,6 +3,7 @@ import Communicator from "../helpers/communicator";
 import {EventEmitter} from "events";
 import * as request from "request";
 import Job from "../master/job";
+import {JobTypes} from "../api/ApiHelpers";
 import WorkerProfiler from "./worker-profiler";
 
 export default class Worker {
@@ -84,8 +85,20 @@ export default class Worker {
    * @returns {Promise}       Promise, resolved when job data is successfully sent to master.
    */
   private execJob(jobs: Array<Job>): Promise<any> {
+    // Emit start event.
+    this.jobEventEmitter.emit("job.start");
     return new Promise((resolve, reject) => {
-      this.jobEventEmitter.emit("job.done", this.jobSize);
+      // Map `jobs` array into an array of completed jobs.
+      let resolvedJobs = jobs.map((job) => {
+        if (!JobTypes.isJobType(job.type)) {
+          return null;
+        }
+        // Determine API function based on job type.
+        return (job.type === JobTypes.User ? this.vineApi.getUserProfile : this.vineApi.getUserTimeline)(job.id);
+      // If resolved job is null (i.e. job type was unknown), remove it from resolved jobs.
+      }).filter((resolvedJob) => resolvedJob !== null);
+      // Resolve returned promise with completed jobs.
+      resolve(resolvedJobs);
     });
   }
 
