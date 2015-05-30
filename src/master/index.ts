@@ -206,7 +206,8 @@ export default class Master {
         });
         this.cleanDoneJobs();
         resolve();
-      });
+      })
+      .catch(reject);
     });
   }
 
