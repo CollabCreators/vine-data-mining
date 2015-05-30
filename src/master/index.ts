@@ -174,7 +174,6 @@ class MasterNode {
       // Return job to add it to mapped jobs.
       return job;
     });
-    console.log(this.jobs.length, this.jobs);
     MasterNode.logJobs("Jobs sent as a response:", jobs);
     return jobs;
   }
