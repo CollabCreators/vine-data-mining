@@ -87,10 +87,10 @@ class MasterNode {
     this.orchestrateDb = Orchestrate(process.env.ORCHESTRATE_KEY);
     // Map initial users to user jobs.
     this.jobs = [];
-    // Call addJob for each job id, use JobTypes.Vine so both user and vine jobs are added.
-    MasterNode.INITIAL_USERS.forEach((id: string) => this.addJob({ type: JobTypes.Vine, id: id }));
     this.jobTimeouts = {};
     this.doneJobs = [];
+    // Call addJob for each job id, use JobTypes.Vine so both user and vine jobs are added.
+    MasterNode.INITIAL_USERS.forEach((id: string) => this.addJob({ type: JobTypes.Vine, id: id }));
     expressInit(port, "/master", this.setupExpressRouter, this);
     this.registerIpAtRouter();
   }
