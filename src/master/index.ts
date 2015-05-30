@@ -180,7 +180,26 @@ class MasterNode {
    */
   private completeJobs(jobs: Array<Job>): Promise<any> {
     return new Promise((resolve, reject) => {
-
+      // Filter out jobs which are of type vine and are a repost (based on API response).
+      jobs = jobs.filter((job) => job.data.type === JobTypes.Vine && !job.data.isRepost);
+      this.storeJobsData(jobs).then(() => {
+        jobs.forEach((job) => {
+          let localJob = Job.Find(job, this.jobs, true);
+          // If job wasn't found among local jobs, further execution is not possible.
+          if (localJob === null) {
+            return;
+          }
+          // Clear timeout and remove timer value from jobTimeouts.
+          clearTimeout(this.jobTimeouts[localJob.uid]);
+          delete this.jobTimeouts[localJob.uid];
+          // Mark job as done.
+          localJob.markDone();
+          // Push job to doneJobs list so it will not be added again.
+          this.doneJobs.push(localJob.uid);
+        });
+        this.cleanDoneJobs();
+        resolve();
+      });
     });
   }
 
