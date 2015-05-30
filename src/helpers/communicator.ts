@@ -98,6 +98,37 @@ export default class Communicator {
   }
 
   /**
+   * Get an address registered on router. Promise will not be resolved until an IP is registered.
+   *
+   * @param   {string}       server    Server address where router is running.
+   * @param   {string}       endpoint  Server endpoint where router is listening.
+   *
+   * @returns {Promise<string>}        Promise resolving with IP registered at router.
+   */
+  public static getAddress(
+    server: string = Communicator.ROUTER_SERVER,
+    endpoint: string = Communicator.ROUTER_ENDPOINT): Promise<string> {
+    return new Promise((resolve, reject) => {
+      // Ping router each second.
+      Communicator.ping(server, endpoint, 1000, (body: string) => {
+        // Accept function checks if registered address should return true when registered address isn't null.
+        try {
+          return JSON.parse(body).address !== null;
+        }
+        catch (e) {
+          // Also return false if there was an error while parsing body to JSON.
+          return false;
+        }
+      })
+        .then((body: string) => {
+          // When address is accepted, ping promise will be resolved with last body it got.
+          // Parse the body again and resolve returned promise with address value.
+        resolve(JSON.parse(body).address);
+      })
+    });
+  }
+
+  /**
    * Check for errors in request response and call reject function if any errors found.
    *
    * @param {any}             err          Error from `request`.
