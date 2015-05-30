@@ -3,6 +3,7 @@ import {expressInit} from "../helpers/expressInit";
 import Job from "./job";
 import {JobTypes} from "../api/ApiHelpers";
 import Communicator from "../helpers/communicator";
+import ArrayHelper from "../helpers/arrayHelper";
 let Orchestrate = require("orchestrate");
 let CanIHazIp = require("canihazip");
 
@@ -189,11 +190,11 @@ export default class Master {
         resolve();
       }
       this.storeJobsData(jobs).then(() => {
-        jobs.forEach((job) => {
+        jobs.map((job) => {
           let localJob = Job.Find(job, this.jobs, true);
           // If job wasn't found among local jobs, further execution is not possible.
           if (localJob === null) {
-            return;
+            return null;
           }
           // Clear timeout and remove timer value from jobTimeouts.
           clearTimeout(this.jobTimeouts[localJob.uid]);
@@ -203,8 +204,16 @@ export default class Master {
           // Push job to doneJobs list so it will not be added again.
           this.doneJobs.push(localJob.uid);
           Master.logJobs("Completed job", [localJob]);
-          this.addJob(job.data);
-        });
+          // Return array of unique job ids and mentions (if they exist).
+          // This is *always* array, so it must be flattened.
+          return ArrayHelper.mergeUnique(null, [job.data.id], job.data.mentions || []);
+          // Filter out falsy values.
+        }).filter((id, i, arr) => !!id)
+          // Flatten array.
+          .reduce((a, b) => a.concat(b))
+          // Keep only unique values.
+          .filter((id, i, arr) => ArrayHelper.isUnique(id, i, arr))
+          .forEach((idToAdd: string) => this.addJob(idToAdd));
         this.cleanDoneJobs();
         resolve();
       })
