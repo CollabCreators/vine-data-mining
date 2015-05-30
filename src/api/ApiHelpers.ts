@@ -46,11 +46,11 @@ export class VineHelper {
     return {
       isRepost: VineHelper.isRepost(data),
       type: JobTypes.Vine,
-      authorId: userId,
+      id: userId,
       loopCount: data.loops.count,
       commentsCount: data.comments.count,
       tags: ArrayHelper.mergeUnique(null, data.tags, VineHelper.getTagsEntities(data.entities)),
-      id: data.postId.toString(),
+      vineId: data.postId.toString(),
       respostsCount: data.reposts.count,
       likesCount: data.likes.count,
       created: new Date(data.created),

@@ -64,7 +64,7 @@ interface VineData extends StoredData {
    * User id of vine author.
    * @type {number}
    */
-  authorId: string;
+  vineId: string;
   /**
    * Number of times this vine was looped.
    * @type {number}
