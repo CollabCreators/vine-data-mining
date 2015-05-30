@@ -59,4 +59,24 @@ export default class Worker {
 
   }
 
+  private getJob(count: number = 1): Promise<Array<Job>> {
+    return new Promise((resolve, reject) => {
+      // Check /job-count every second, accept (resolve) when response count is above `count` from argument.
+      Communicator.ping(this.masterAddress, 'job-count', 1000, (body: string) => {
+        return parseInt(body, 10) >= count;
+      }).then(() => {
+        request.get({ url: `${this.masterAddress}/job/${count}` },
+          (err, httpResponse, body: string) => {
+            Communicator.checkErrorAndReject(err, httpResponse, body, reject);
+            try {
+              resolve(JSON.parse(body));
+            }
+            catch (e) {
+              reject(Error("Error occured while parsing JSON response."));
+            }
+          });
+      });
+    });
+  }
+
 }
