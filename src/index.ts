@@ -5,6 +5,9 @@ import Router from "./router/index";
 import Master from "./master/index";
 import Worker from "./worker/index";
 
+// Set environemnt variable NODE_TLS_REJECT_UNAUTHORIZED (to allow connection to gresak.io) router.
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+
 /**
  * Port where the application will run.
  * NOTE: If changing this value, make sure to also change it at ROUTER_SERVER in helpers/communicator.ts.
