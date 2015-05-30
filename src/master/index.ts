@@ -245,11 +245,14 @@ export default class Master {
    */
   private registerIpAtRouter(): Promise<any> {
     return new Promise((resolve, reject) => {
+      console.log("Begin register address...");
       // Get IP of this machine.
       CanIHazIp().then((ip: string) => {
+        console.log("Got IP address:", ip);
         // Register `ip` with router.
         Communicator.registerAddress(ip)
           .then(() => {
+          console.log("Address register successful!");
           // Add exit listeners and resolve returned promise.
           this.addExitListeners();
           resolve();
