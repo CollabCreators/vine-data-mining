@@ -31,11 +31,18 @@ export default class Worker {
    * @param   {number} masterPort Port where master node is listening.
    */
   constructor(public masterPort: number) {
+    // Instantiate new Vine API without login.
     this.vineApi = new VineApi();
+    // Instatiate new EventEmitter and register `job.done` event.
     this.jobEventEmitter = new EventEmitter();
     this.jobEventEmitter.on("job.done", this.nextJob);
+    // Start execution.
     this.nextJob();
   }
+
+  /**
+   * Get next job and execute it.
+   */
   private nextJob(): void {
     Communicator.getAddress().then((address: string) => {
       this.masterAddress = `http://${address}:${this.masterPort}/master`;
