@@ -121,10 +121,10 @@ export default class Communicator {
         }
       })
         .then((body: string) => {
-          // When address is accepted, ping promise will be resolved with last body it got.
-          // Parse the body again and resolve returned promise with address value.
+        // When address is accepted, ping promise will be resolved with last body it got.
+        // Parse the body again and resolve returned promise with address value.
         resolve(JSON.parse(body).address);
-      })
+      });
     });
   }
 
