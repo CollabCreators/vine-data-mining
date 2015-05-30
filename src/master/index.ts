@@ -1,6 +1,5 @@
 import * as express from "express";
 import {expressInit} from "../helpers/expressInit";
-import VineApi from "../api/VineApi";
 import Job from "./job";
 import {JobTypes} from "../api/ApiHelpers";
 import Communicator from "../helpers/communicator";
