@@ -22,7 +22,7 @@ export default class Worker {
    *
    * @param   {number} masterPort Port where master node is listening.
    */
-  constructor(masterPort: number) {
+  constructor(public masterPort: number) {
     this.vineApi = new VineApi();
     Communicator.getAddress().then((address: string) => {
       this.masterAddress = `http://${address}:${masterPort}/master`;
