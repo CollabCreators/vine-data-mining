@@ -16,6 +16,42 @@ export default class Worker {
   private static TIME_THRESHOLD = 5000;
 
   /**
+   * Percentage above which the threshold is considered ok.
+   *
+   * @type {Number}
+   */
+  private static THRESHOLD_PERCENT = .85;
+
+  /**
+   * Number of times time must be above percentage to increase jobSize,
+   * i.e. if threshold is exceeded 5 times, increase job size.
+   *
+   * @type {Number}
+   */
+  private static THRESHOLD_TIMES = 5;
+
+  /**
+   * Number of times to make check before resetting the counter.
+   *
+   * @type {Number}
+   */
+  private static THRESHOLD_CHECKS = 25;
+
+  /**
+   * Number of times threshold was above given percent.
+   *
+   * @type {number}
+   */
+  private thresholdExceededCount: number;
+
+  /**
+   * Number of times threshold was checked.
+   *
+   * @type {number}
+   */
+  private thresholdExceededChecks: number;
+
+  /**
    * Instance of Vine API communicator.
    *
    * @type {VineApi}
@@ -158,6 +194,27 @@ export default class Worker {
           resolve(JSON.parse(body).ok);
         });
     });
+  }
+
+  /**
+   * Check if job execution times are below threshold, if this occurs `THRESHOLD_TIMES`, increase job size.
+   */
+  private checkThreshold(): void {
+    // Check if percentage of jobs completed before `TIME_THRESHOLD` is at least `THRESHOLD_PERCENT`,
+    // and increase counter if it is.
+    if (this.workerProfiler.belowThresholdPercent() >= Worker.THRESHOLD_PERCENT) {
+      this.thresholdExceededCount++;
+    }
+    // If `thresholdExceededCount` is at least `THRESHOLD_TIMES`, reset arrays and counter and increase job size.
+    if (this.thresholdExceededCount >= Worker.THRESHOLD_TIMES) {
+      this.resetCounters();
+      this.jobSize++;
+    }
+    // Increase numbre of checks and if it's above `THRESHOLD_CHECKS`, reset counters.
+    this.thresholdExceededChecks++;
+    if (this.thresholdExceededChecks > Worker.THRESHOLD_CHECKS) {
+      this.resetCounters();
+    }
   }
 
   /**
