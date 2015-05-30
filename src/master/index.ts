@@ -113,10 +113,6 @@ export default class Master {
   private logRequest(req: any): void {
     console.log("-----------------------------------------------------");
     console.log(`${req.method} request from`, (req.headers["x-forwarded-for"] || req.connection.remoteAddress));
-    // If it was PUT request, log received data.
-    if (req.method === "PUT") {
-      console.log(req.body.data);
-    }
   }
 
   /**
