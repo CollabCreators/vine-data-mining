@@ -96,7 +96,7 @@ export default class Worker {
     this.vineApi = new VineApi();
     // Instatiate new EventEmitter and register `job.done` event.
     this.jobEventEmitter = new EventEmitter();
-    this.jobEventEmitter.on("job.done", this.nextJob);
+    this.jobEventEmitter.on("job.done", () => this.nextJob());
     this.workerProfiler = new WorkerProfiler(this.jobEventEmitter, Worker.TIME_THRESHOLD);
     this.jobSize = 1;
     this.resetCounters();
