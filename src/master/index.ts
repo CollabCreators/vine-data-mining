@@ -282,5 +282,3 @@ let CanIHazIp = require("canihazip");
     console.log(message, jobs.map(j => j.uid));
   }
 }
-
-new MasterNode(9999);
