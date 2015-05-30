@@ -41,6 +41,15 @@ export default class Worker {
    * @type {number}
    */
   private jobSize: number;
+
+  /**
+   * Utility for timing execution times of jobs.
+   *
+   * @type {WorkerProfiler}
+   */
+  private workerProfiler: WorkerProfiler;
+
+  /**
    * Start a new worker. Will need router and master running to start.
    *
    * @param   {number} masterPort Port where master node is listening.
@@ -52,6 +61,7 @@ export default class Worker {
     // Instatiate new EventEmitter and register `job.done` event.
     this.jobEventEmitter = new EventEmitter();
     this.jobEventEmitter.on("job.done", this.nextJob);
+    this.jobSize = 1;
     // Start execution.
     this.nextJob();
   }
@@ -62,7 +72,7 @@ export default class Worker {
   private nextJob(): void {
     Communicator.getAddress().then((address: string) => {
       this.masterAddress = `http://${address}:${this.masterPort}/master`;
-      this.getJob().then(this.execJob);
+      this.getJob(this.jobSize).then(this.execJob);
     });
   }
 
@@ -75,7 +85,7 @@ export default class Worker {
    */
   private execJob(jobs: Array<Job>): Promise<any> {
     return new Promise((resolve, reject) => {
-
+      this.jobEventEmitter.emit("job.done", this.jobSize);
     });
   }
 
