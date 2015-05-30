@@ -137,7 +137,7 @@ export default class Communicator {
    * @param {(any) => any}    reject       Function which is called if there was an error in response.
    * @param {boolean = true}  checkStatus  Should status code be checked?
    */
-  private static checkErrorAndReject(err: any, httpResponse: any, body: any, reject: (any) => any, checkStatus: boolean = true): void {
+  public static checkErrorAndReject(err: any, httpResponse: any, body: any, reject: (any) => any, checkStatus: boolean = true): void {
     // Check for error in request and call reject function.
     // Return is used so function stops, value is not expected to be used.
     if (err) {
