@@ -36,7 +36,7 @@ export default class WorkerProfiler {
     // Set event listener for job.start, set start time.
     this.jobEventEmitter.on("job.start", () => this.currentStart = now());
     // Set event listener for job.done, calculate time and store size.
-    this.jobEventEmitter.on("job.done", () => {
+    this.jobEventEmitter.on("job.done", (size: number) => {
       // Calculate time.
       let time = now() - this.currentStart;
       // Add time to times array.
@@ -45,6 +45,10 @@ export default class WorkerProfiler {
       this.wasBelowThreshold.push(time < this.threshold);
       // Increase job counter.
       this.jobCounter++;
+      // If LOG flag is set, output job log.
+      if (this.LOG) {
+        console.log(`Job #${this.jobCounter} (batch of ${size} jobs) completed in ${time}`);
+      }
     });
   }
 
