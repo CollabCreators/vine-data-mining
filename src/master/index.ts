@@ -201,6 +201,15 @@ class MasterNode {
   }
 
   /**
+   * Remove jobs which are fulfilled or have failed.
+   *
+   * @returns {Promise<any>}
+   */
+  private cleanDoneJobs(): void {
+    this.jobs = Job.Sort(Job.FilterIdle(this.jobs, true));
+  }
+
+  /**
    * Register IP of node with router.
    *
    * @returns {Promise<any>} Promise resolving when IP is registed successfully.
