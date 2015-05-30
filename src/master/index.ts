@@ -105,9 +105,10 @@ class MasterNode {
   private setupExpressRouter(): express.Router {
     let router = express.Router();
     // GET /job, returns a list of jobs with most priority.
-    router.get("/job", (req, res) => {
+    router.get("/job/:count?", (req, res) => {
       this.logRequest(req);
-      res.json(this.getNextJobs());
+      // Use count from params. Function will use default value 1 if no param is given.
+      res.json(this.getNextJobs(req.params.count));
     });
     // PUT /job, complete jobs with data.
     router.put("/job", (req, res) => {
