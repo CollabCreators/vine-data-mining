@@ -134,4 +134,24 @@ export default class Worker {
     });
   }
 
+  /**
+   * Send completed jobs data back to master.
+   *
+   * @param   {Array<Job>}   completedJobs Array of complted jobs data.
+   *
+   * @returns {Promise<any>}               Promise resolved when data is successfully delivered.
+   */
+  private sendBack(completedJobs: Array<Job>): Promise<any> {
+    return new Promise((resolve, reject) => {
+      request.put({
+        url: `${this.masterAddress}/job`,
+        form: { data: completedJobs }
+      }, (err, httpResponse, body: string) => {
+          // Check for request errors and call reject function if there were any.
+          Communicator.checkErrorAndReject(err, httpResponse, body, reject);
+          resolve(JSON.parse(body).ok);
+        });
+    });
+  }
+
 }
