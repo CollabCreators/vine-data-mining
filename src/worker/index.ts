@@ -48,7 +48,7 @@ export default class Worker {
   private nextJob(): void {
     Communicator.getAddress().then((address: string) => {
       this.masterAddress = `http://${address}:${this.masterPort}/master`;
-      this.run();
+      this.getJob().then(this.execJob);
     });
   }
 
