@@ -27,20 +27,12 @@ export default class WorkerProfiler {
   private currentStart: number;
 
   /**
-   * Event system for managing when job starts / ends.
-   *
-   * @type {EventEmitter}
-   */
-  private jobEventEmitter: EventEmitter;
-
-  /**
    * Start the profiler.
    *
    * @param   {number} threshold Threshold of job execution time.
    */
-  constructor(public threshold: number) {
+  constructor(public jobEventEmitter: EventEmitter, public threshold: number, public LOG = true) {
     this.resetTimes();
-    this.jobEventEmitter = new EventEmitter();
     // Set event listener for job.start, set start time.
     this.jobEventEmitter.on("job.start", () => this.currentStart = now());
     // Set event listener for job.done, calculate time and store size.
