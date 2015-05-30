@@ -14,6 +14,11 @@ interface StoredData {
    * @type {boolean}
    */
   isRepost?: boolean;
+  /**
+   * An array of mentioned userids.
+   * @type {Array<string>}
+   */
+  mentions?: Array<string>;
 }
 /**
  * Data collected from user's profile.
@@ -90,9 +95,4 @@ interface VineData extends StoredData {
    * @type {Date}
    */
   created: Date;
-  /**
-   * An array of mentioned userids.
-   * @type {Array<string>}
-   */
-  mentions: Array<string>;
 }
