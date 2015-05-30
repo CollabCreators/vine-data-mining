@@ -184,6 +184,10 @@ export default class Master {
     return new Promise((resolve, reject) => {
       // Filter out jobs which are of type vine and are a repost (based on API response).
       jobs = jobs.filter((job) => job.data.type === JobTypes.Vine && !job.data.isRepost);
+      // If there are no jobs to store, resolve promise right away.
+      if (jobs.length === 0) {
+        resolve();
+      }
       this.storeJobsData(jobs).then(() => {
         jobs.forEach((job) => {
           let localJob = Job.Find(job, this.jobs, true);
