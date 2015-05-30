@@ -194,7 +194,7 @@ class MasterNode {
   private storeJobsData(jobs: Array<Job>): Promise<any> {
     return new Promise((resolve, reject) => {
       // Map `jobs` to promises which resolve when put request successfully ends.
-      let dbPromises = jobs.map((j: Job) => this.orchestrateDb.put(MasterNode.ORCHESTRATE_COLLECTION, j.data.id, j.data));
+      let dbPromises = jobs.map((j: Job) => this.orchestrateDb.put(MasterNode.ORCHESTRATE_COLLECTION, j.uid, j.data));
       // Resolve returned promise when all `dbPromises` resolve or reject it if any of them fails.
       Promise.all(dbPromises).then(resolve).catch(reject);
     });
