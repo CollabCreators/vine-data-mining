@@ -56,6 +56,7 @@ export default class Worker {
    * @param   {number} masterPort Port where master node is listening.
    */
   constructor(public masterPort: number) {
+    this.resetCounters();
     // Instantiate new Vine API without login.
     this.vineApi = new VineApi();
     // Instatiate new EventEmitter and register `job.done` event.
@@ -157,6 +158,15 @@ export default class Worker {
           resolve(JSON.parse(body).ok);
         });
     });
+  }
+
+  /**
+   * Reset profiler arrays and threshold counters.
+   */
+  private resetCounters(): void {
+    this.workerProfiler.resetTimesArrays();
+    this.thresholdExceededCount = 0;
+    this.thresholdExceededChecks = 0;
   }
 
 }
