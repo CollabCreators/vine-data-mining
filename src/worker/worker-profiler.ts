@@ -3,6 +3,8 @@ let now = require("performance-now");
 
 export default class WorkerProfiler {
 
+  private jobCounter = 0;
+
   /**
    * Array of times from start to stop.
    *
@@ -49,6 +51,8 @@ export default class WorkerProfiler {
       this.times.push(time);
       // Add below threshold flag.
       this.wasBelowThreshold.push(time < this.threshold);
+      // Increase job counter.
+      this.jobCounter++;
     });
   }
 
