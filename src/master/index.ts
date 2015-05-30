@@ -7,6 +7,7 @@ import Communicator from "../helpers/communicator";
 let Orchestrate = require("orchestrate");
 let CanIHazIp = require("canihazip");
 
+export default class Master {
 
   /**
    * Id's of 5 most followed users (my assuption).
@@ -89,7 +90,7 @@ let CanIHazIp = require("canihazip");
     this.jobTimeouts = {};
     this.doneJobs = [];
     // Call addJob for each job id, use JobTypes.Vine so both user and vine jobs are added.
-    MasterNode.INITIAL_USERS.forEach((id: string) => this.addJob({ type: JobTypes.Vine, id: id }));
+    Master.INITIAL_USERS.forEach((id: string) => this.addJob({ type: JobTypes.Vine, id: id }));
     expressInit(port, "/master", this.setupExpressRouter, this);
     if (process.env.NODE_ENV !== "development") {
       this.registerIpAtRouter();
@@ -155,7 +156,7 @@ let CanIHazIp = require("canihazip");
     // If filtered jobs aren't empty, add them to list of current jobs.
     if (jobsToAdd.length > 0) {
       Array.prototype.push.apply(this.jobs, jobsToAdd);
-      MasterNode.logJobs("Added jobs:", jobsToAdd);
+      Master.logJobs("Added jobs:", jobsToAdd);
       this.jobs = Job.Sort(this.jobs);
     }
   }
@@ -172,11 +173,11 @@ let CanIHazIp = require("canihazip");
     // Assuming that jobs are already sorted, this is `count` most important jobs.
     let jobs = Job.FilterIdle(this.jobs).slice(0, count).map((job) => {
       job.markActive();
-      this.jobTimeouts[job.uid] = setTimeout(() => job.resetState(), MasterNode.JOB_TIMEOUT);
+      this.jobTimeouts[job.uid] = setTimeout(() => job.resetState(), Master.JOB_TIMEOUT);
       // Return job to add it to mapped jobs.
       return job;
     });
-    MasterNode.logJobs("Jobs sent as a response:", jobs);
+    Master.logJobs("Jobs sent as a response:", jobs);
     return jobs;
   }
 
@@ -212,7 +213,7 @@ let CanIHazIp = require("canihazip");
           localJob.markDone();
           // Push job to doneJobs list so it will not be added again.
           this.doneJobs.push(localJob.uid);
-          MasterNode.logJobs("Completed job", [localJob]);
+          Master.logJobs("Completed job", [localJob]);
         });
         this.cleanDoneJobs();
         resolve();
@@ -230,7 +231,7 @@ let CanIHazIp = require("canihazip");
   private storeJobsData(jobs: Array<Job>): Promise<any> {
     return new Promise((resolve, reject) => {
       // Map `jobs` to promises which resolve when put request successfully ends.
-      let dbPromises = jobs.map((j: Job) => this.orchestrateDb.put(MasterNode.ORCHESTRATE_COLLECTION, j.uid, j.data));
+      let dbPromises = jobs.map((j: Job) => this.orchestrateDb.put(Master.ORCHESTRATE_COLLECTION, j.uid, j.data));
       // Resolve returned promise when all `dbPromises` resolve or reject it if any of them fails.
       Promise.all(dbPromises).then(resolve).catch(reject);
     });
@@ -255,7 +256,7 @@ let CanIHazIp = require("canihazip");
       // Get IP of this machine.
       CanIHazIp().then((ip: string) => {
         // Register `ip` with router.
-        Communicator.registerAddress(MasterNode.ROUTER_SERVER, MasterNode.ROUTER_ENDPOINT, ip)
+        Communicator.registerAddress(Master.ROUTER_SERVER, Master.ROUTER_ENDPOINT, ip)
           .then(() => {
           // Add exit listeners and resolve returned promise.
           this.addExitListeners();
@@ -274,7 +275,7 @@ let CanIHazIp = require("canihazip");
     // Register event for each of exit/kill events.
     ["exit", "SIGINT", "uncaughtException"].forEach((event) => {
       // Event handler should remove IP registered with router.
-      process.on(event, () => Communicator.unregisterAddress(MasterNode.ROUTER_SERVER, MasterNode.ROUTER_ENDPOINT));
+      process.on(event, () => Communicator.unregisterAddress(Master.ROUTER_SERVER, Master.ROUTER_ENDPOINT));
     });
   }
 
