@@ -100,7 +100,7 @@ export default class Master {
     // PUT /job, complete jobs with data.
     router.put("/job", (req, res) => {
       this.logRequest(req);
-      this.completeJobs(req.body.data);
+      this.completeJobs(req.body.data).then(() => res.json({ok: true})).catch(() => res.json({ok: false}));
     });
     return router;
   }
