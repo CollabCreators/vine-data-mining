@@ -30,6 +30,9 @@ export default class Worker {
     });
   }
 
+  /**
+   * Run this worker.
+   */
   private run(): void {
 
   }
