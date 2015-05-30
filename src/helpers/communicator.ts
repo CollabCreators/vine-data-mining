@@ -73,22 +73,8 @@ export default class Communicator {
         (err, httpResponse, body: string) => {
           // Check for errors, calls reject if there are any.
           Communicator.checkErrorAndReject(err, httpResponse, body, reject);
-          let address = "";
-          // Try to parse address or reject the value.
-          try {
-            address = JSON.parse(body).address;
-          }
-          catch (e) {
-            reject(e);
-          }
-          // If address in response (new address) doesn't match the address which was sent, try to register it again.
-          if (address !== ipAddress) {
-            Communicator.registerAddress(server, endpoint, ipAddress).then(resolve);
-          }
-          else {
-            // Register was successful, resolve returned promise.
-            resolve(body);
-          }
+          // Register was successful, resolve returned promise.
+          resolve(body);
         });
     });
   }
