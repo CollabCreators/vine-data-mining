@@ -76,7 +76,9 @@ export default class Worker {
       this.getJob(this.jobSize).then((jobs: Array<Job>) => {
         this.execJob(jobs).then((completedJobs: Array<Job>) => {
           // Emit end event.
-          this.jobEventEmitter.emit("job.done");
+          this.sendBack(completedJobs).then(() => {
+            this.jobEventEmitter.emit("job.done");
+          });
         });
       });
     });
