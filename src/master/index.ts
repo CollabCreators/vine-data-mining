@@ -191,7 +191,7 @@ class MasterNode {
    *
    * @returns {Promise<any>}      Promise which resolves when data is stored or is rejected if storing fails.
    */
-  private storeJobData(jobs: Array<Job>): Promise<any> {
+  private storeJobsData(jobs: Array<Job>): Promise<any> {
     return new Promise((resolve, reject) => {
       // Map `jobs` to promises which resolve when put request successfully ends.
       let dbPromises = jobs.map((j: Job) => this.orchestrateDb.put(MasterNode.ORCHESTRATE_COLLECTION, j.data.id, j.data));
