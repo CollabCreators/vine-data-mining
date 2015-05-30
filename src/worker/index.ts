@@ -141,7 +141,12 @@ export default class Worker {
     return new Promise((resolve, reject) => {
       // Check /job-count every second, accept (resolve) when response count is above `count` from argument.
       Communicator.ping(this.masterAddress, 'job-count', 1000, (body: string) => {
-        return parseInt(body, 10) >= count;
+        let responseCount = parseInt(body, 10);
+        if (responseCount < count) {
+          console.log(`Waiting for ${count} jobs, there are ${responseCount} jobs at the moment...`);
+          return false;
+        }
+        return true;
       }).then(() => {
         request.get({ url: `${this.masterAddress}/job/${count}` },
           (err, httpResponse, body: string) => {
