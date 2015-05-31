@@ -14,4 +14,22 @@ export default class JobTypes {
     let x = parseInt(type);
     return x === JobTypes.User || x === JobTypes.Vine;
   }
+
+  /**
+   * Parse given value to a job type.
+   *
+   * @param   {any}     value Value to check.
+   *
+   * @returns {JobType}       One of JobTypes (if not found, JobType.Unknown is used).
+   */
+  public static parse(value: any): JobType {
+    let x = parseInt(value);
+    if (x === JobTypes.User) {
+      return JobTypes.User;
+    }
+    if (x === JobTypes.Vine) {
+      return JobTypes.Vine;
+    }
+    return JobTypes.Unknown;
+  }
 }
