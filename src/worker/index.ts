@@ -5,6 +5,7 @@ import * as request from "request";
 import Job from "../master/job";
 import {JobTypes} from "../api/ApiHelpers";
 import WorkerProfiler from "./worker-profiler";
+import Logger from "../helpers/logger";
 
 export default class Worker {
 
@@ -115,10 +116,10 @@ export default class Worker {
       console.log("Master found at", this.masterAddress);
       // Get new job of size `jobSize`.
       this.getJob(this.jobSize).then((jobs: Array<Job>) => {
-        Worker.logJobs("Got jobs:", jobs);
+        Logger.logJobs("Got jobs:", jobs);
         // Execute received jobs.
         this.execJob(jobs).then((completedJobs: Array<Job>) => {
-          Worker.logJobs("Completed completedJobs:", jobs);
+          Logger.logJobs("Completed completedJobs:", jobs);
           // Send collected data back.
           this.sendBack(completedJobs).then(() => {
             console.log("Jobs successfully stored!");
@@ -269,10 +270,6 @@ export default class Worker {
     this.workerProfiler.resetTimesArrays();
     this.thresholdExceededCount = 0;
     this.thresholdExceededChecks = 0;
-  }
-
-  private static logJobs(message: string, jobs: Array<Job>): void {
-    console.log(message, jobs.map(j => j.uid));
   }
 
 }

@@ -25,6 +25,7 @@
         "./src/helpers/arrayHelper.ts",
         "./src/helpers/communicator.ts",
         "./src/helpers/expressInit.ts",
+        "./src/helpers/logger.ts",
         "./src/index.ts",
         "./src/master/JobState.ts",
         "./src/master/JobType.ts",

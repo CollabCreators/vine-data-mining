@@ -4,6 +4,7 @@ import Job from "./job";
 import {JobTypes} from "../api/ApiHelpers";
 import Communicator from "../helpers/communicator";
 import ArrayHelper from "../helpers/arrayHelper";
+import Logger from "../helpers/logger";
 let Orchestrate = require("orchestrate");
 let CanIHazIp = require("canihazip");
 
@@ -104,7 +105,7 @@ export default class Master {
       this.logRequest(req);
       console.log("Received data:", req.body.data);
       let receivedJobs = req.body.data.map((d) => new Job(d.data, d.priority));
-      Master.logJobs("Received jobs", receivedJobs);
+      Logger.logJobs("Received jobs", receivedJobs);
       this.completeJobs(receivedJobs).then(() => res.json({ ok: true })).catch(() => res.json({ ok: false }));
     });
     return router;
@@ -150,7 +151,7 @@ export default class Master {
     // If filtered jobs aren't empty, add them to list of current jobs.
     if (jobsToAdd.length > 0) {
       Array.prototype.push.apply(this.jobs, jobsToAdd);
-      Master.logJobs("Added jobs:", jobsToAdd);
+      Logger.logJobs("Added jobs:", jobsToAdd);
       this.jobs = Job.Sort(this.jobs);
     }
   }
@@ -171,7 +172,7 @@ export default class Master {
       // Return job to add it to mapped jobs.
       return job;
     });
-    Master.logJobs("Jobs sent as a response:", jobs);
+    Logger.logJobs("Jobs sent as a response:", jobs);
     return jobs;
   }
 
@@ -197,7 +198,7 @@ export default class Master {
       if (jobs.length === 0) {
         resolve();
       }
-      Master.logJobs("Request to store", jobs);
+      Logger.logJobs("Request to store", jobs);
       this.storeJobsData(jobs).then(() => {
         console.log("Jobs stored to Orchestrate successfuly!");
         jobs.map((job) => {
@@ -213,7 +214,7 @@ export default class Master {
           localJob.markDone();
           // Push job to doneJobs list so it will not be added again.
           this.doneJobs.push(localJob.uid);
-          Master.logJobs("Completed job", [localJob]);
+          Logger.logJobs("Completed job", [localJob]);
           // Return array of unique job ids and mentions (if they exist).
           // This is *always* array, so it must be flattened.
           return ArrayHelper.mergeUnique(null, [job.data.id], job.data.mentions || []);
@@ -292,7 +293,4 @@ export default class Master {
     });
   }
 
-  private static logJobs(message: string, jobs: Array<Job>): void {
-    console.log(message, jobs.map(j => j.uid));
-  }
 }
