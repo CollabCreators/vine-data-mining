@@ -102,7 +102,10 @@ export default class Master {
     // PUT /job, complete jobs with data.
     router.put("/job", (req, res) => {
       this.logRequest(req);
-      this.completeJobs(req.body.data).then(() => res.json({ ok: true })).catch(() => res.json({ ok: false }));
+      console.log("Received data:", req.body.data);
+      let receivedJobs = req.body.data.map((d) => new Job(d.data, d.priority));
+      Master.logJobs("Received jobs", receivedJobs);
+      this.completeJobs(receivedJobs).then(() => res.json({ ok: true })).catch(() => res.json({ ok: false }));
     });
     return router;
   }
@@ -194,7 +197,9 @@ export default class Master {
       if (jobs.length === 0) {
         resolve();
       }
+      Master.logJobs("Request to store", jobs);
       this.storeJobsData(jobs).then(() => {
+        console.log("Jobs stored to Orchestrate successfuly!");
         jobs.map((job) => {
           let localJob = Job.Find(job, this.jobs, true);
           // If job wasn't found among local jobs, further execution is not possible.
