@@ -108,6 +108,7 @@ export default class Worker {
    * Get next job and execute it.
    */
   private nextJob(): void {
+    let printError = (err) => console.error(err);
     console.log("Begin get address...");
     Communicator.getAddress().then((address: string) => {
       this.masterAddress = `http://${address}:${this.masterPort}/master`;
@@ -124,10 +125,10 @@ export default class Worker {
             // Emit end event.
             this.jobEventEmitter.emit("job.done", this.jobSize);
             this.checkThreshold();
-          });
-        });
-      });
-    });
+          }).catch(printError);
+        }).catch(printError);
+      }).catch(printError);
+    }).catch(printError);
   }
 
   /**
