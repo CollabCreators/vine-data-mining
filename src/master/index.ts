@@ -135,7 +135,7 @@ export default class Master {
       // Map data back to jobs.
       let receivedJobs = data.map((d) => {
         // Parse type, and return null if failed to find type.
-        let type = JobTypes.parseJobType(d.data.type);
+        let type = JobTypes.parse(d.data.type);
         console.log(`data" ${d}, type: ${type}`);
         if (type === JobTypes.Unknown) {
           return null;
