@@ -173,19 +173,46 @@ export default class Worker {
   private execJob(jobs: Array<Job>): Promise<any> {
     // Emit start event.
     this.jobEventEmitter.emit("job.start");
+    console.log("Begin execJob...");
     return new Promise((resolve, reject) => {
+      let jobsData = [];
       // Map `jobs` array into an array of completed jobs.
-      let resolvedJobs = jobs.map((job) => {
+      let apiPromises = jobs.map((job) => {
+        console.log(`Executing job ${job.uid}...`);
+        // If job type was unknown, return immediately resolved promise.
         if (!JobTypes.isJobType(job.type)) {
-          return null;
+          console.error("Error: unknown job type");
+          return Promise.resolve();
         }
-        // Determine API function based on job type.
-        return (job.type === JobTypes.User ? this.vineApi.getUserProfile : this.vineApi.getUserTimeline)(job.id);
-        return apiData;
-        // If resolved job is null (i.e. job type was unknown), remove it from resolved jobs.
-      }).filter((resolvedJob) => resolvedJob !== null);
-      // Resolve returned promise with completed jobs.
-      resolve(resolvedJobs);
+        // Determine API function based on job type and return the promise,
+        let p: Promise<any>;
+        if (job.type === JobTypes.User) {
+          p = this.vineApi.getUserProfile(job.id);
+        }
+        else {
+          p = this.vineApi.getUserTimeline(job.id);
+        }
+        // Chain to returned promise, pushes the data to array.
+        p.then((data) => {
+          // If length is greater than zero, data is an array of VineData records.
+          if (data.length > 0) {
+            for (let i = 0, len = data.length; i < len; i++) {
+              jobsData.push(data[i]);
+            }
+          }
+          // The length property doesn't exist, data is an UserProfileData record.
+          else {
+            jobsData.push(data);
+          }
+        });
+        return p;
+      });
+      // Wait for all promises to resolve.
+      Promise.all(apiPromises).then(() => {
+        // Resolve returned promise with completed jobs.
+        console.log("All jobs executed, got data:", jobsData);
+        resolve(jobsData);
+      }).catch(reject);
     });
   }
 
