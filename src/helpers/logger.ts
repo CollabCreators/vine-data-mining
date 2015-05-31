@@ -7,7 +7,7 @@ export default class Logger {
       console.log(message, jobs.map(j => j.uid));
     }
     catch (e) {
-      console.error("Error while logging jobs: ");
+      console.error("Error while logging jobs");
     }
   }
 
