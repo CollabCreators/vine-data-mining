@@ -231,7 +231,12 @@ export default class Worker {
       }, (err, httpResponse, body: string) => {
           // Check for request errors and call reject function if there were any.
           Communicator.checkErrorAndReject(err, httpResponse, body, reject);
-          resolve(JSON.parse(body).ok);
+          try {
+            resolve(JSON.parse(body).ok);
+          }
+          catch (e) {
+            reject(e);
+          }
         });
     });
   }
