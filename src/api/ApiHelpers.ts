@@ -15,12 +15,23 @@ export class UserProfileHelper {
       type: JobTypes.User,
       username: data.username,
       id: userId,
-      followerCount: data.followerCount,
-      loopCount: data.followerCount,
-      postCount: data.postCount,
+      followerCount: UserProfileHelper.parseNum(data.followerCount),
+      loopCount: UserProfileHelper.parseNum(data.followerCount),
+      postCount: UserProfileHelper.parseNum(data.postCount),
       location: data.location,
-      followingCount: data.followingCount
+      followingCount: UserProfileHelper.parseNum(data.followingCount)
     };
+  }
+
+  /**
+   * Workaround to use parseInt with any value and TypeScript won't complain.
+   *
+   * @param   {any}    x Value to parse.
+   *
+   * @returns {number}   Parsed number or 0 if unable to parse.
+   */
+  public static parseNum(x: any): number {
+    return parseInt(x, 10) || 0;
   }
 }
 
@@ -39,12 +50,12 @@ export class VineHelper {
       isRepost: VineHelper.isRepost(data),
       type: JobTypes.Vine,
       id: userId,
-      loopCount: data.loops.count,
-      commentsCount: data.comments.count,
+      loopCount: UserProfileHelper.parseNum(data.loops.count),
+      commentsCount: UserProfileHelper.parseNum(data.comments.count),
       tags: ArrayHelper.mergeUnique(null, data.tags, VineHelper.getTagsEntities(data.entities)),
       vineId: data.postId.toString(),
-      respostsCount: data.reposts.count,
-      likesCount: data.likes.count,
+      respostsCount: UserProfileHelper.parseNum(data.reposts.count),
+      likesCount: UserProfileHelper.parseNum(data.likes.count),
       created: new Date(data.created),
       mentions: VineHelper.getMentionEntities(data.entities)
     };
