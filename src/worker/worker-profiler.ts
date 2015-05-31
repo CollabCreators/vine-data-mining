@@ -47,7 +47,7 @@ export default class WorkerProfiler {
       this.jobCounter++;
       // If LOG flag is set, output job log.
       if (this.LOG) {
-        console.log(`Job #${this.jobCounter} (batch of ${size} jobs) completed in ${time}`);
+        console.log(`Job #${this.jobCounter} (batch of ${size} jobs) completed in ${time} ms`);
       }
     });
   }
