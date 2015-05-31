@@ -5,6 +5,7 @@ import JobTypes from "../master/JobTypes";
 import Communicator from "../helpers/communicator";
 import ArrayHelper from "../helpers/arrayHelper";
 import Logger from "../helpers/logger";
+import {UserProfileHelper, VineHelper} from "../api/ApiHelpers";
 let Orchestrate = require("orchestrate");
 let CanIHazIp = require("canihazip");
 
@@ -103,10 +104,10 @@ export default class Master {
     // PUT /job, complete jobs with data.
     router.put("/job", (req, res) => {
       this.logRequest(req);
-      console.log("Received data:", req.body.data);
-      let receivedJobs = req.body.data.map((d) => new Job(d.data, d.priority));
-      Logger.logJobs("Received jobs", receivedJobs);
-      this.completeJobs(receivedJobs).then(() => res.json({ ok: true })).catch(() => res.json({ ok: false }));
+      this.processPutRequest(req.body.data).then((ok: boolean) => {
+        console.log("Put request resolved with", ok);
+        res.json({ ok: ok });
+      });
     });
     return router;
   }
@@ -121,10 +122,40 @@ export default class Master {
     console.log(`${req.method} request from`, (req.headers["x-forwarded-for"] || req.connection.remoteAddress));
   }
 
-  private processPutRequest(data): void {
-    // let receivedJobs = req.body.data.map((d) => new Job(d.data, d.priority));
-    // Logger.logJobs("Received jobs", receivedJobs);
-    // this.completeJobs(receivedJobs).then(() => res.json({ ok: true })).catch(() => res.json({ ok: false }));
+  /**
+   * Process a router put request
+   *
+   * @param   {(Array)<Object>}    data `req.body.data`
+   *
+   * @returns {Promise<boolean>}        Promise resolving with value of `completeJobs` success.
+   */
+  private processPutRequest(data): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      console.log("Received data:", data, "length: ", data.length, `(${data.map != undefined})`);
+      // Map data back to jobs.
+      let receivedJobs = data.map((d) => {
+        // Parse type, and return null if failed to find type.
+        let type = JobTypes.parseJobType(d.data.type);
+        console.log(`data" ${d}, type: ${type}`);
+        if (type === JobTypes.Unknown) {
+          return null;
+        }
+        let parsedData;
+        // User `UserProfileHelper` if user job or `VineHelper` if vine job.
+        if (type === JobTypes.User) {
+          parsedData = UserProfileHelper.ProcessApiResponse(d.data.id, d.data);
+        }
+        else {
+          parsedData = VineHelper.ProcessApiResponse(d.data.id, d.data);
+        }
+        // Return new job using parsed data and priority from data (if given, otherwise default value is used).
+        return new Job(parsedData, d.priority);
+      }).filter((job) => job !== null); // Filter null jobs (i.e. unknown type).
+      Logger.logJobs("Received jobs", receivedJobs);
+      this.completeJobs(receivedJobs)
+        .then(() => resolve(true))
+        .catch(() => resolve(false));
+    });
   }
 
   /**
