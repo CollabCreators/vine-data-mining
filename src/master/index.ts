@@ -134,25 +134,24 @@ export default class Master {
    */
   private processPutRequest(data): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      console.log("Received data:", data, "length: ", data.length, `(${data.map != undefined})`);
+      console.log("Received data:", data);
       // Map data back to jobs.
-      let receivedJobs = data.map((d) => {
+      let receivedJobs = data.map((data) => {
         // Parse type, and return null if failed to find type.
-        let type = JobTypes.parse(d.data.type);
-        console.log(`data" ${d}, type: ${type}`);
+        let type = JobTypes.parse(data.type);
         if (type === JobTypes.Unknown) {
           return null;
         }
         let parsedData;
         // User `UserProfileHelper` if user job or `VineHelper` if vine job.
         if (type === JobTypes.User) {
-          parsedData = UserProfileHelper.ProcessApiResponse(d.data.id, d.data);
+          parsedData = UserProfileHelper.ProcessApiResponse(data.id, data);
         }
         else {
-          parsedData = VineHelper.ProcessApiResponse(d.data.id, d.data);
+          parsedData = VineHelper.ProcessApiResponse(data.id, data);
         }
         // Return new job using parsed data and priority from data (if given, otherwise default value is used).
-        return new Job(parsedData, d.priority);
+        return new Job(parsedData, data.priority);
       }).filter((job) => job !== null); // Filter null jobs (i.e. unknown type).
       Logger.logJobs("Received jobs", receivedJobs);
       this.completeJobs(receivedJobs)
