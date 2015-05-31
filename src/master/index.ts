@@ -107,6 +107,9 @@ export default class Master {
       this.processPutRequest(req.body.data).then((ok: boolean) => {
         console.log("Put request resolved with", ok);
         res.json({ ok: ok });
+      }).catch((err) => {
+        console.error(err);
+        res.json({ ok: false });
       });
     });
     return router;
