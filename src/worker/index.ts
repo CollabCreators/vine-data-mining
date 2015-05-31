@@ -180,6 +180,7 @@ export default class Worker {
         }
         // Determine API function based on job type.
         return (job.type === JobTypes.User ? this.vineApi.getUserProfile : this.vineApi.getUserTimeline)(job.id);
+        return apiData;
         // If resolved job is null (i.e. job type was unknown), remove it from resolved jobs.
       }).filter((resolvedJob) => resolvedJob !== null);
       // Resolve returned promise with completed jobs.
