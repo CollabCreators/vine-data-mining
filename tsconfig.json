@@ -29,6 +29,7 @@
         "./src/index.ts",
         "./src/master/JobState.ts",
         "./src/master/JobType.ts",
+        "./src/master/JobTypes.ts",
         "./src/master/index.ts",
         "./src/master/job.ts",
         "./src/router/index.ts",

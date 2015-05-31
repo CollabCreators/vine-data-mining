@@ -6,7 +6,7 @@ chai.use(require("chai-as-promised"));
 
 import Job from "../src/master/job";
 import JobState from "../src/master/JobState";
-import {JobTypes} from "../src/api/ApiHelpers";
+import JobTypes from "../src/master/JobTypes";
 
 describe("Job", () => {
 

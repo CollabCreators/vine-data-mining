@@ -3,7 +3,7 @@ import Communicator from "../helpers/communicator";
 import {EventEmitter} from "events";
 import * as request from "request";
 import Job from "../master/job";
-import {JobTypes} from "../api/ApiHelpers";
+import JobTypes from "../master/JobTypes";
 import WorkerProfiler from "./worker-profiler";
 import Logger from "../helpers/logger";
 

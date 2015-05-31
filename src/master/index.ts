@@ -1,7 +1,7 @@
 import * as express from "express";
 import {expressInit} from "../helpers/expressInit";
 import Job from "./job";
-import {JobTypes} from "../api/ApiHelpers";
+import JobTypes from "../master/JobTypes";
 import Communicator from "../helpers/communicator";
 import ArrayHelper from "../helpers/arrayHelper";
 import Logger from "../helpers/logger";
@@ -119,6 +119,12 @@ export default class Master {
   private logRequest(req: any): void {
     console.log("-----------------------------------------------------");
     console.log(`${req.method} request from`, (req.headers["x-forwarded-for"] || req.connection.remoteAddress));
+  }
+
+  private processPutRequest(data): void {
+    // let receivedJobs = req.body.data.map((d) => new Job(d.data, d.priority));
+    // Logger.logJobs("Received jobs", receivedJobs);
+    // this.completeJobs(receivedJobs).then(() => res.json({ ok: true })).catch(() => res.json({ ok: false }));
   }
 
   /**
