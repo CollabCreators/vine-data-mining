@@ -279,7 +279,12 @@ export default class Master {
   private storeJobsData(jobs: Array<Job>): Promise<any> {
     return new Promise((resolve, reject) => {
       // Map `jobs` to promises which resolve when put request successfully ends.
-      let dbPromises = jobs.map((j: Job) => this.orchestrateDb.put(Master.ORCHESTRATE_COLLECTION, j.uid, j.data));
+      let dbPromises = jobs.map((j: Job) => {
+        return new Promise((resolve, reject) => {
+          // Workaround to make Orchestrate API return real Promise.
+          this.orchestrateDb.put(Master.ORCHESTRATE_COLLECTION, j.uid, j.data).then(resolve).fail(reject);
+        });
+      });
       // Resolve returned promise when all `dbPromises` resolve or reject it if any of them fails.
       Promise.all(dbPromises).then(resolve).catch(reject);
     });
