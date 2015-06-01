@@ -134,7 +134,6 @@ export default class Master {
    */
   private processPutRequest(data): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      console.log("Received data:", data);
       // Map data back to jobs.
       let receivedJobs = data.map((data) => {
         // Parse type, and return null if failed to find type.
@@ -153,7 +152,6 @@ export default class Master {
         // Return new job using parsed data and priority from data (if given, otherwise default value is used).
         return new Job(parsedData, data.priority);
       }).filter((job) => job !== null); // Filter null jobs (i.e. unknown type).
-      Logger.logJobs("Received jobs", receivedJobs);
       this.completeJobs(receivedJobs)
         .then(() => resolve(true))
         .catch(() => resolve(false));
