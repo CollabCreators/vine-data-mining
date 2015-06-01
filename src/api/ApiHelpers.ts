@@ -87,6 +87,10 @@ export class VineHelper {
    * @returns {Array<string>}                     Array of mnetioned user id's.
    */
   private static getMentionEntities(entities: Array<VideoEntityRecord>): Array<string> {
+    // If entity is not an array, return empty array.
+    if (!Array.isArray(entities)) {
+      return [];
+    }
     return entities
     // Filter out entites of type mention.
       .filter(entity => entity.type === "mention")
@@ -104,6 +108,10 @@ export class VineHelper {
    * @returns {Array<string>}                     Array of mnetioned user id's.
    */
   private static getTagsEntities(entities: Array<VideoEntityRecord>): Array<string> {
+    // If entity is not an array, return empty array.
+    if (!Array.isArray(entities)) {
+      return [];
+    }
     return entities
     // Filter out entites of type tag.
       .filter(entity => entity.type === "tag")
