@@ -142,6 +142,12 @@ interface VideoRecord {
    * @type {PaginatedResponse}
    */
   likes: PaginatedResponse<any>;
+
+  // Possible values if parsing API data. Because TypeScript throws errors otherwise.
+  loopCount?: number;
+  commentsCount?: number;
+  repostsCount?: number;
+  likesCount?: number;
 }
 
 /**
