@@ -13,7 +13,8 @@ export default class ArrayHelper {
     if (!uniqueFn) {
       uniqueFn = ArrayHelper.isUnique;
     }
-    return arrays.reduce((a, b) => a.concat(b)).filter(uniqueFn);
+    // Filter array to keep only truthy values, then concat values and filter using `uniqueFn`.
+    return arrays.filter((a) => a).reduce((a, b) => a.concat(b)).filter(uniqueFn);
   }
 
   public static isUnique(value: any, index: number, arr: Array<any>): boolean {
