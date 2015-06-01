@@ -118,15 +118,4 @@ export class VineHelper {
     // Pick out titles of entities.
       .map(entity => entity.title);
   }
-
-  /**
-   * Check if Vine is a repost.
-   *
-   * @param   {VideoRecord} data API response for a Vine.
-   *
-   * @returns {boolean}          True if Vine is a repost, false otherwise.
-   */
-  private static isRepost(data: VideoRecord): boolean {
-    return !!(data.repost || data.isRepost);
-  }
 }
