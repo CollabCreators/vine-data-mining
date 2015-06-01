@@ -30,8 +30,16 @@ export interface SSLConfig {
  */
 export function expressInit(port: number, routerPath: string, initRouter: () => express.Router, thisArg: any = this, conf: SSLConfig = undefined): express.Express {
   let app = express();
-  app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(bodyParser.json());
+  // NOTE: In `limit` value, `mb` must be lowercase!
+  app.use(bodyParser.json({
+    limit: "50mb",
+    parameterLimit: 50000
+  }));
+  app.use(bodyParser.urlencoded({
+    extended: true,
+    limit: "50mb",
+    parameterLimit: 50000
+  }));
   app.use(routerPath, initRouter.call(thisArg));
   if (conf && typeof conf.key === "string" && typeof conf.cert === "string") {
     // Create a https server with passed `conf` an listen on `port`.
