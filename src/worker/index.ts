@@ -109,7 +109,7 @@ export default class Worker {
    * Get next job and execute it.
    */
   private nextJob(): void {
-    let printError = (err) => console.error(err);
+    let printError = (err) => console.error(err.stack);
     console.log("Begin get address...");
     Communicator.getAddress().then((address: string) => {
       this.masterAddress = `http://${address}:${this.masterPort}/master`;
