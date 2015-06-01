@@ -255,7 +255,6 @@ export default class Master {
           localJob.markDone();
           // Push job to doneJobs list so it will not be added again.
           this.doneJobs.push(localJob.uid);
-          Logger.logJobs("Completed job", [localJob]);
           // Return array of unique job ids and mentions (if they exist).
           // This is *always* array, so it must be flattened.
           return ArrayHelper.mergeUnique(null, [job.data.id], job.data.mentions || []);
