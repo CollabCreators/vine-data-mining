@@ -14,7 +14,7 @@ export default class Worker {
    *
    * @type {Number}
    */
-  private static TIME_THRESHOLD = 5000;
+  private static TIME_THRESHOLD = 20000;
 
   /**
    * Percentage above which the threshold is considered ok.
