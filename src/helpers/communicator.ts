@@ -8,7 +8,7 @@ export default class Communicator {
    *
    * @type {String}
    */
-  private static ROUTER_SERVER = "https://gresak.io:9631";
+  private static ROUTER_SERVER = "https://gresak.io:9998";
 
   /**
    * Endpoint of router.

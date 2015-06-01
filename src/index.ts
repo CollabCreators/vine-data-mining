@@ -35,7 +35,7 @@ process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
  *
  * @type {Number}
  */
-const PORT = 9631;
+const PORT = 9998;
 
 /**
  * Arguments that will print a help message.
