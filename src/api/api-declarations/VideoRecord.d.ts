@@ -49,7 +49,7 @@ interface VideoRecord {
    * If Vine is repost, this will contain data about reposter.
    * @type {Object}
    */
-  repost?: Object;
+  repost?: boolean;
   /**
   * Is this video blocked (0, 1).
   * @type {number}

@@ -13,7 +13,7 @@ interface StoredData {
    * Flag set to true if vine is a repost.
    * @type {boolean}
    */
-  isRepost?: boolean;
+  repost?: boolean;
   /**
    * An array of mentioned userids.
    * @type {Array<string>}
