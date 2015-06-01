@@ -5,6 +5,26 @@ import Router from "./router/index";
 import Master from "./master/index";
 import Worker from "./worker/index";
 import {exec} from "child_process";
+import * as path from "path";
+import * as fs from "fs";
+
+/**
+ * File containing definitions for environment variables.
+ *
+ * @type {String}
+ */
+const ENV_PATH = "./bin/env.json";
+
+// Try to read file with environment variables and add them to `process.env`.
+// If any of this fails, execution will continue without logging any errors.
+try {
+  let configFile = JSON.parse(fs.readFileSync(path.resolve(ENV_PATH)).toString());
+  for (let key in configFile) {
+    process.env[key] = configFile[key];
+    console.log(`Added environemnt variable ${key}`);
+  }
+}
+catch (e) { }
 
 // Set environemnt variable NODE_TLS_REJECT_UNAUTHORIZED (to allow connection to gresak.io) router.
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
