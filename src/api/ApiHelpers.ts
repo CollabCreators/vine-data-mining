@@ -53,11 +53,11 @@ export class VineHelper {
       loopCount: UserProfileHelper.parseNum(data.loops ? data.loops.count : data.loopCount),
       commentsCount: UserProfileHelper.parseNum(data.comments ? data.comments.count : data.commentsCount),
       tags: ArrayHelper.mergeUnique(null, data.tags, VineHelper.getTagsEntities(data.entities)),
-      vineId: data.postId.toString(),
+      vineId: (data.postId ? data.postId.toString() : data.vineId),
       repostsCount: UserProfileHelper.parseNum(data.reposts ? data.reposts.count : data.repostsCount),
       likesCount: UserProfileHelper.parseNum(data.likes ? data.likes.count : data.likesCount),
       created: new Date(data.created),
-      mentions: VineHelper.getMentionEntities(data.entities)
+      mentions: ArrayHelper.mergeUnique(null, data.mentions, VineHelper.getMentionEntities(data.entities))
     };
   }
 
@@ -127,6 +127,6 @@ export class VineHelper {
    * @returns {boolean}          True if Vine is a repost, false otherwise.
    */
   private static isRepost(data: VideoRecord): boolean {
-    return !!data.repost;
+    return !!(data.repost || data.isRepost);
   }
 }

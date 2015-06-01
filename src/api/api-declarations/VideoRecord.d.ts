@@ -148,6 +148,9 @@ interface VideoRecord {
   commentsCount?: number;
   repostsCount?: number;
   likesCount?: number;
+  isRepost?: boolean;
+  vineId?: string;
+  mentions?: Array<string>;
 }
 
 /**
