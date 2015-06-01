@@ -108,7 +108,7 @@ export default class Master {
         console.log("Put request resolved with", ok);
         res.json({ ok: ok });
       }).catch((err) => {
-        console.error(err);
+        console.error(err.stack);
         res.json({ ok: false });
       });
     });
