@@ -155,9 +155,9 @@ export default class Master {
       this.completeJobs(receivedJobs)
         .then(() => resolve(true))
         .catch((err) => {
-          console.error(err.stack);
-          resolve(false);
-        });
+        console.error(err.stack);
+        resolve(false);
+      });
     });
   }
 
