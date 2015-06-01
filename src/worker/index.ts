@@ -211,7 +211,6 @@ export default class Worker {
       // Wait for all promises to resolve.
       Promise.all(apiPromises).then(() => {
         // Resolve returned promise with completed jobs.
-        console.log("All jobs executed, got data:", jobsData);
         resolve(jobsData);
       }).catch(reject);
     });
