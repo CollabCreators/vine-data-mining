@@ -50,12 +50,12 @@ export class VineHelper {
       isRepost: VineHelper.isRepost(data),
       type: JobTypes.Vine,
       id: userId,
-      loopCount: UserProfileHelper.parseNum(data.loops.count),
-      commentsCount: UserProfileHelper.parseNum(data.comments.count),
+      loopCount: UserProfileHelper.parseNum(data.loops ? data.loops.count : data.loopCount),
+      commentsCount: UserProfileHelper.parseNum(data.comments ? data.comments.count : data.commentsCount),
       tags: ArrayHelper.mergeUnique(null, data.tags, VineHelper.getTagsEntities(data.entities)),
       vineId: data.postId.toString(),
-      respostsCount: UserProfileHelper.parseNum(data.reposts.count),
-      likesCount: UserProfileHelper.parseNum(data.likes.count),
+      repostsCount: UserProfileHelper.parseNum(data.reposts ? data.reposts.count : data.repostsCount),
+      likesCount: UserProfileHelper.parseNum(data.likes ? data.likes.count : data.likesCount),
       created: new Date(data.created),
       mentions: VineHelper.getMentionEntities(data.entities)
     };
