@@ -232,6 +232,7 @@ export default class Master {
    */
   private completeJobs(jobs: Array<Job>): Promise<any> {
     return new Promise((resolve, reject) => {
+      console.log("jobs before filtering:", jobs.length);
       // Filter out jobs which are of type vine and are a repost (based on API response).
       jobs = jobs.filter((j) => j.data.type === JobTypes.User || j.data.type === JobTypes.Vine && !j.data.isRepost);
       // If there are no jobs to store, resolve promise right away.
