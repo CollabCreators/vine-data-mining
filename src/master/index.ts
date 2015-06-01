@@ -154,7 +154,10 @@ export default class Master {
       }).filter((job) => job !== null); // Filter null jobs (i.e. unknown type).
       this.completeJobs(receivedJobs)
         .then(() => resolve(true))
-        .catch(() => resolve(false));
+        .catch((err) => {
+          console.error(err.stack);
+          resolve(false);
+        });
     });
   }
 
