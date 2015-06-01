@@ -84,7 +84,7 @@ interface VineData extends StoredData {
    * Number of times this vine was reposted.
    * @type {number}
    */
-  respostsCount: number;
+  repostsCount: number;
   /**
    * Number of times this vine was liked.
    * @type {number}
