@@ -18,10 +18,18 @@ export default class SimpleWorker {
   constructor() {
     this.jobStore = new JobStore();
     this.jobEventEmitter = new EventEmitter();
-    // Add initial users to array of jobs.
-    SimpleWorker.INITIAL_USERS.forEach((uid) => this.jobStore.add(uid));
+    this.jobStore.getStoredJobs().then((count) => {
+      console.log(`Found ${count} existing jobs...`);
+      let promises = [Promise.resolve()];
+      if (count === 0) {
+        console.log("Count is 0, add initial users");
+        // If there was no stored jobs, add initial users to array of jobs.
+        promises = SimpleWorker.INITIAL_USERS.map((uid) => this.jobStore.add(uid));
+      }
+      Promise.all(promises)
+        .then(() => this.doNextJob())
+    });
     this.jobEventEmitter.on("job.done", () => this.doNextJob());
-    this.doNextJob();
   }
 
   /**
