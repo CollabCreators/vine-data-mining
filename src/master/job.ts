@@ -1,4 +1,5 @@
 import JobState from "./JobState";
+import JobTypes from "./JobTypes";
 
 export default class Job {
 
@@ -167,6 +168,17 @@ export default class Job {
   public static Find(job: Job, jobs: Array<Job>, matchType: boolean = false): Job {
     // Filter jobs and return first match or null if there was no matches.
     return jobs.filter(j => j.equals(job, matchType))[0] || null;
+  }
+
+  public static JobFromUid(uid: string): Job {
+    uid = uid.trim();
+    // If uid is empty string or just spaces, do not proceed with job initialization.
+    if (uid.length === 0) {
+      return null;
+    }
+    // Split uid into `[type, id]`.
+    let values = uid.split("-");
+    return new Job({ type: JobTypes.parse(values[0]), id: values[1] });
   }
 
 }
