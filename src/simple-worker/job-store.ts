@@ -119,11 +119,11 @@ export default class JobStore {
    */
   public add(uid: string): void {
     // Initialize new jobs of type User and Vine.
-    [new Job({ type: JobTypes.User, id: uid }), new Job({ type: JobTypes.Vine, id: uid })]
+    let added = [new Job({ type: JobTypes.User, id: uid }), new Job({ type: JobTypes.Vine, id: uid })]
     // Filter out pending and done jobs.
       .filter((j: Job) => this.doneJobs.indexOf(j.uid) === -1 || Job.Find(j, this.jobs, true) === null)
     // Push remaining jobs (if any) to the list of pending jobs.
-      .forEach((j: Job) => this.jobs.push(j));
+      .map((j: Job) => this.jobs.push(j));
   }
 
 }
