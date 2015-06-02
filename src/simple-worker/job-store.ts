@@ -124,7 +124,7 @@ export default class JobStore {
    * @returns {Promise<any>}     Promise resolving to either UserProfileData or an Array<VineData>.
    */
   public fetchVineData(job: Job): Promise<any> {
-    console.log(`Fetching Vine data for ${job.uid}`);
+    console.log(`Fetching Vine data for ${job.uid}...`);
     // If job is of unknown type, resolve promise with null.
     if (!JobTypes.isJobType(job.type)) {
       return Promise.resolve(null);
@@ -140,15 +140,15 @@ export default class JobStore {
    * @returns {Promise<any>}      Promise resolving when all data is stored.
    */
   public putToDatabase(data: Array<any>): Promise<any> {
-    console.log(`Store ${data.length} jobs.`);
     // Prevent storing if data is a falsy value.
     if (!data) {
-      return Promise.reject(Error("putToDatabase data = null"));
+      return Promise.reject(Error("putToDatabase failed, data = null"));
     }
     // If data is not an array, wrap it into one.
     if (!Array.isArray(data)) {
       data = [data];
     }
+    console.log(`Store ${data.length} data record${data.length === 1 ? "s" : ""}.`);
     // Map data to an array of promises, each resolving when Orchestrate PUT request finishes.
     let dbPromises = data.map((d) => this.localStorage.storeData(d));
     // Return promise resolving when all Orchestrate database promises finish.
