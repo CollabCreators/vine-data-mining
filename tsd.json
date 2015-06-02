@@ -37,6 +37,9 @@
     },
     "chai-as-promised/chai-as-promised.d.ts": {
       "commit": "c2b70ba731a485968fa3e0561a32652f59787015"
+    },
+    "mkdirp/mkdirp.d.ts": {
+      "commit": "484544d14d400190b20f270341c97b16adc0f1ef"
     }
   }
 }

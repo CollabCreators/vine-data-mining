@@ -45,6 +45,7 @@
         "./typings/es6-promise/es6-promise.d.ts",
         "./typings/express/express.d.ts",
         "./typings/form-data/form-data.d.ts",
+        "./typings/mkdirp/mkdirp.d.ts",
         "./typings/mocha/mocha.d.ts",
         "./typings/node/node.d.ts",
         "./typings/request/request.d.ts",
