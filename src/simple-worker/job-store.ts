@@ -128,7 +128,7 @@ export default class JobStore {
     // Push remaining jobs (if any) to the list of pending jobs.
       .map((j: Job) => this.jobs.push(j));
 
-    console.log(`Added ${added.length} new jobs for user ${uid}`);
+    console.log(`Added ${added.length} new jobs for user ${uid}, new job count: ${this.jobs.length}`);
   }
 
 }
