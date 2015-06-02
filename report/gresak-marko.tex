@@ -17,20 +17,32 @@
 \usepackage[toc,page]{appendix}
 \usepackage[pdftex]{graphicx} % za slike
 \usepackage{setspace}
+\usepackage{multicol}
 \usepackage{color}
 \definecolor{light-gray}{gray}{0.95}
 \usepackage{listings} % za vključevanje kode
+\usepackage{minted} % za barvanje kode
 \usepackage{hyperref}
 \renewcommand{\baselinestretch}{1.2} % za boljšo berljivost večji razmak
 \renewcommand{\appendixpagename}{Priloge}
 
 
-\lstset{% nastavitve za izpis kode, sem lahko tudi kaj dodaš/spremeniš
-language=Python,
-basicstyle=\footnotesize,
-basicstyle=\ttfamily\footnotesize\setstretch{1},
-backgroundcolor=\color{light-gray},
+\newminted{ts}{
+  % remove first 2 characters (padding spaces)
+  gobble = 2,
+  % set left line (code block padding hack)
+  frame = leftline,
+  % 0 width for frame ruler (gives padding but is invisible)
+  framerule = 0pt,
+  % distance between frame and content
+  framesep = 8pt,
+  % set background
+  bgcolor = light-gray
 }
+
+% \begin{tscode}
+%   // Some great code.
+% \end{tscode}
 
 \title{Naslov}
 \author{Marko Grešak (63130058)}
@@ -41,6 +53,8 @@ backgroundcolor=\color{light-gray},
 \maketitle
 
 \section{Uvod}
+
+
 
 V tem razdelku, ki naj bo kratek in naj obsega en odstavek z do 150
 besed, na kratko opišeš, kaj je bil cilj naloge.
