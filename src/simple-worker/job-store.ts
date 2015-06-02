@@ -71,6 +71,7 @@ export default class JobStore {
     this.doneJobs = [];
     this.jobs = [];
     this.totalJobCount = 0;
+    this.registerExitEvents();
   }
 
   /**
@@ -208,6 +209,13 @@ export default class JobStore {
       }).catch(reject);
     });
   }
+
+  private registerExitEvents(): void {
+    // Register event for each of exit/kill events.
+    ["exit", "SIGINT", "uncaughtException"].forEach((event) => {
+      // Store jobs currenly in RAM before exiting.
+      process.on(event, () => this.jobs.forEach((j) => this.localStorage.storeJob(j)));
+    });
   }
 
 }
