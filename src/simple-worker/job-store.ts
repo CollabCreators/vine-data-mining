@@ -1,7 +1,6 @@
 import VineApi from "../api/VineApi";
 import Job from "../master/job";
 import JobTypes from "../master/JobTypes";
-let Orchestrate = require("orchestrate");
 
 export default class JobStore {
 
@@ -13,11 +12,8 @@ export default class JobStore {
   private vineApi: VineApi;
 
   /**
-   * Orchestrate API connector utility.
    *
-   * @type {any}
    */
-  private orchestrateDb;
 
   /**
    * Array of pending jobs.
@@ -37,12 +33,6 @@ export default class JobStore {
    * Initialize a new JobStore.
    */
   constructor() {
-    // Check if ORCHESTRATE_KEY environment variable is set.
-    if (!process.env.ORCHESTRATE_KEY) {
-      throw Error("Missing environment variable ORCHESTRATE_KEY.");
-    }
-    // Initialize API connectors.
-    this.orchestrateDb = Orchestrate(process.env.ORCHESTRATE_KEY);
     this.vineApi = new VineApi();
     // Initialize arrays.
     this.doneJobs = [];
@@ -92,12 +82,6 @@ export default class JobStore {
       data = [data];
     }
     // Map data to an array of promises, each resolving when Orchestrate PUT request finishes.
-    let dbPromises = data.map((d) => new Promise((resolve, reject) => {
-      // Workaround to make orchestrate response compatible with Promise.
-      // Resolve with stored data object instead of Orchestrate response.
-      // On fail, resolve with null value just so all promises eventually resolve.
-      this.orchestrateDb.put("vine", `${d.type}-${d.id}`, d).then(() => resolve(d)).fail(() => resolve(null));
-    }));
     // Return promise resolving when all Orchestrate database promises finish.
     return Promise.all(dbPromises);
   }
