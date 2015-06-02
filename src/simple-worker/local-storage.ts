@@ -47,6 +47,16 @@ export default class LocalStorage {
   }
 
   /**
+   * Store a job uid to job storage file.
+   *
+   * @param   {Job}          job Job of which uid should be stored.
+   *
+   * @returns {Promise<any>}     Promise resolved / rejected based on appendFile success.
+   */
+  public storeJob(job: Job): Promise<any> {
+    return LocalStorage.appendFile(LocalStorage.JOBS_FILENAME, job.uid);
+  }
+
    * Promise wrapper for `fs.appendFile`.
    *
    * @param   {string}       fileName Name of file to write (append) to.
