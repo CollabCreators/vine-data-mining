@@ -44,7 +44,7 @@ export default class SimpleWorker {
     let nextJob = this.jobStore.next;
     if (!nextJob) {
       // Store returned falsy value, there is no more jobs.
-      this.jobEventEmitter.emit("job.done");
+      // this.jobEventEmitter.emit("job.done");
       return;
     }
     let timeLabel = `Job ${nextJob.uid}`;
