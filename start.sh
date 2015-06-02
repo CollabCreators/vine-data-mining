@@ -10,7 +10,7 @@ done
 shift $((OPTIND-1))
 [ "$1" = "--" ] && shift
 
-runArg="${1:-worker}"
+runArg="${1:-sw}"
 if [[ "$runArg" == "router" ]] || [[ "$runArg" == "r" ]]; then runArg="router"
 elif [[ "$runArg" == "master" ]] || [[ "$runArg" == "m" ]]; then runArg="master"
 elif [[ "$runArg" == "worker" ]] || [[ "$runArg" == "w" ]]; then runArg="worker"; fi

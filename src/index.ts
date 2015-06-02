@@ -4,6 +4,7 @@
 import Router from "./router/index";
 import Master from "./master/index";
 import Worker from "./worker/index";
+import SimpleWorker from "./simple-worker/index";
 import {exec} from "child_process";
 import * as path from "path";
 import * as fs from "fs";
@@ -64,7 +65,8 @@ const initFunctions = {
   // therefore killing other applications is not necessary.
   "router": () => killPort(() => new Router(PORT)),
   "master": () => killPort(() => new Master(PORT)),
-  "worker": () => new Worker(PORT)
+  "worker": () => new Worker(PORT),
+  "sw": () => new SimpleWorker(),
 }
 
 // Get argument or use default value empty string.
@@ -83,6 +85,7 @@ if (HELP_ARGS.indexOf(runArg) >= 0) {
     \tmaster - run master node server on port ${PORT}
     \trouter - run router server on port ${PORT}
     \tworker - run a worker
+    \tsw     - run a simple worker (full-stack)
     `);
   process.exit(0);
 }
