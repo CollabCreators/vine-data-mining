@@ -35,6 +35,7 @@
         "./src/router/index.ts",
         "./src/simple-worker/index.ts",
         "./src/simple-worker/job-store.ts",
+        "./src/simple-worker/local-storage.ts",
         "./src/worker/index.ts",
         "./src/worker/worker-profiler.ts",
         "./test/test-arrayHelper.ts",
