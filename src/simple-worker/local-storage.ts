@@ -57,6 +57,17 @@ export default class LocalStorage {
     return LocalStorage.appendFile(LocalStorage.JOBS_FILENAME, job.uid);
   }
 
+  /**
+   * Store size to new line of file.
+   *
+   * @param   {number}       size New size to be stored.
+   *
+   * @returns {Promise<any>}      Promise resolved / rejected based on appendFile success.
+   */
+  public storeTotalJobSize(size: number): Promise<any> {
+    return LocalStorage.appendFile(LocalStorage.SIZE_FILENAME, { timestamp: Date.now(), size: size });
+  }
+
    * Promise wrapper for `fs.appendFile`.
    *
    * @param   {string}       fileName Name of file to write (append) to.
