@@ -96,7 +96,7 @@ export default class JobStore {
       // Workaround to make orchestrate response compatible with Promise.
       // Resolve with stored data object instead of Orchestrate response.
       // On fail, resolve with null value just so all promises eventually resolve.
-      this.orchestrateDb.put("vine", `d.type-d.id`, d).then(() => resolve(d)).fail(() => resolve(null));
+      this.orchestrateDb.put("vine", `${d.type}-${d.id}`, d).then(() => resolve(d)).fail(() => resolve(null));
     }));
     // Return promise resolving when all Orchestrate database promises finish.
     return Promise.all(dbPromises);
