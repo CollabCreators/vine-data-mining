@@ -17,6 +17,7 @@ export default class SimpleWorker {
 
   constructor() {
     this.jobStore = new JobStore();
+    this.jobEventEmitter = new EventEmitter();
     // Add initial users to array of jobs.
     SimpleWorker.INITIAL_USERS.forEach((uid) => this.jobStore.add(uid));
     this.jobEventEmitter.on("job.done", () => this.doNextJob());
