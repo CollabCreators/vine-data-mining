@@ -49,4 +49,13 @@ export default class JobStore {
     this.jobs = [];
   }
 
+  /**
+   * Get next job from list of jobs.
+   *
+   * NOTE: Get next job from the list ([0] is used because splice always returns an array).
+   *
+   * @returns {Job}
+   */
+  get next(): Job { return this.jobs.splice(0, 1)[0] }
+
 }
