@@ -43,7 +43,7 @@ export default class SimpleWorker {
     // Fetch data from Vine API.
       .fetchVineData(nextJob)
     // Store received data to database.
-      .then(this.jobStore.putToDatabase)
+      .then((data) => this.jobStore.putToDatabase(data))
     // For each data value, check if it's defined, if it contains mentions
     // field and then add then add each mention (userId) as new job.
       .then((data) => data.forEach((d) => d && Array.isArray(d.mentions) && d.mentions.forEach(this.jobStore.add)))
