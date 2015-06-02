@@ -7,11 +7,12 @@ import Job from "../master/job";
 export default class LocalStorage {
 
   /**
-   * Path to storage directory.
+   * Path to storage directory. Path is resolved relative to `simple-worker` folder in bin directory,
+   * 	i.e. `[project_root]/bin/src/simple-worker`, where the BASE_PATH is supposed to be `[project_root]/storage`
    *
    * @type {string}
    */
-  private static BASE_PATH = "./storage/";
+  private static BASE_PATH = path.resolve(__dirname, "../../../storage/");
 
   /**
    * File name of data storage file.
