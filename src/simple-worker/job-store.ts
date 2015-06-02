@@ -72,4 +72,31 @@ export default class JobStore {
     }
     return job.type === JobTypes.User ? this.vineApi.getUserProfile(job.id) : this.vineApi.getUserTimeline(job.id);
   }
+
+  /**
+   * Store data to Orchestrate database.
+   *
+   * @param   {Array<any>}   data Array of data to be stored.
+   *
+   * @returns {Promise<any>}      Promise resolving when all data is stored.
+   */
+  public putToDatabase(data: Array<any>): Promise<any> {
+    // Prevent storing if data is a falsy value.
+    if (!data) {
+      return Promise.reject(Error("putToDatabase data = null"));
+    }
+    // If data is not an array, wrap it into one.
+    if (!Array.isArray(data)) {
+      data = [data];
+    }
+    // Map data to an array of promises, each resolving when Orchestrate PUT request finishes.
+    let dbPromises = data.map((d) => new Promise((resolve, reject) => {
+      // Workaround to make orchestrate response compatible with Promise.
+      // Resolve with stored data object instead of Orchestrate response.
+      // On fail, resolve with null value just so all promises eventually resolve.
+      this.orchestrateDb.put("vine", `d.type-d.id`, d).then(() => resolve(d)).fail(() => resolve(null));
+    }));
+    // Return promise resolving when all Orchestrate database promises finish.
+    return Promise.all(dbPromises);
+  }
 }
