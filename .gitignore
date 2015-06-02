@@ -45,3 +45,4 @@ node_modules
 opis-problema
 typings
 bin/
+storage/
