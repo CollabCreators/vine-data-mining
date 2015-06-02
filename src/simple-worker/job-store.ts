@@ -58,4 +58,18 @@ export default class JobStore {
    */
   get next(): Job { return this.jobs.splice(0, 1)[0] }
 
+  /**
+   * Get API data based on job type.
+   *
+   * @param   {Job}          job Job to get data for.
+   *
+   * @returns {Promise<any>}     Promise resolving to either UserProfileData or an Array<VineData>.
+   */
+  public fetchVineData(job: Job): Promise<any> {
+    // If job is of unknown type, resolve promise with null.
+    if (!JobTypes.isJobType(job.type)) {
+      return Promise.resolve(null);
+    }
+    return job.type === JobTypes.User ? this.vineApi.getUserProfile(job.id) : this.vineApi.getUserTimeline(job.id);
+  }
 }
