@@ -1,4 +1,6 @@
 import * as path from "path";
+import * as mkdirp from "mkdirp";
+
 export default class LocalStorage {
 
   /**
@@ -9,6 +11,7 @@ export default class LocalStorage {
    private static BASE_PATH = path.resolve("./storage");
 
   constructor() {
+    mkdirp.sync(LocalStorage.BASE_PATH);
   }
 
 }
