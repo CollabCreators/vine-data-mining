@@ -66,6 +66,7 @@ export default class JobStore {
    * @returns {Promise<any>}     Promise resolving to either UserProfileData or an Array<VineData>.
    */
   public fetchVineData(job: Job): Promise<any> {
+    console.log(`Fetching Vine data for ${job.uid}`);
     // If job is of unknown type, resolve promise with null.
     if (!JobTypes.isJobType(job.type)) {
       return Promise.resolve(null);
@@ -81,6 +82,7 @@ export default class JobStore {
    * @returns {Promise<any>}      Promise resolving when all data is stored.
    */
   public putToDatabase(data: Array<any>): Promise<any> {
+    console.log(`Store ${data.length} jobs.`);
     // Prevent storing if data is a falsy value.
     if (!data) {
       return Promise.reject(Error("putToDatabase data = null"));
@@ -106,6 +108,7 @@ export default class JobStore {
    * @param {Job} job Job to be stored to list of done jobs.
    */
   public markAsDone(job: Job): void {
+    console.log(`Job ${job.uid} is done!`);
     // Check to make sure this job is not on the list already.
     if (this.doneJobs.indexOf(job.uid) === -1) {
       this.doneJobs.push(job.uid);
@@ -124,6 +127,8 @@ export default class JobStore {
       .filter((j: Job) => this.doneJobs.indexOf(j.uid) === -1 || Job.Find(j, this.jobs, true) === null)
     // Push remaining jobs (if any) to the list of pending jobs.
       .map((j: Job) => this.jobs.push(j));
+
+    console.log(`Added ${added.length} new jobs for user ${uid}`);
   }
 
 }
