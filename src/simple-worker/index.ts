@@ -51,9 +51,10 @@ export default class SimpleWorker {
       .then(() => this.jobStore.markAsDone(nextJob))
     // End timer and output the time.
       .then(() => console.timeEnd(timeLabel))
-    // Emit done event.
-      .then(() => this.jobEventEmitter.emit("job.done"))
-      .catch((err) => console.error(err.stack));
+    // Catch any errors in chain.
+      .catch((err) => console.error(err.stack))
+    // Emit done event (always, even if there was an error).
+      .then(() => this.jobEventEmitter.emit("job.done"));
   }
 
 }
