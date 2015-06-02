@@ -34,6 +34,17 @@ export default class LocalStorage {
     mkdirp.sync(LocalStorage.BASE_PATH);
   }
 
+  /**
+   * Store data as a line of JSON string into data storage file.
+   *
+   * @param   {any}          data Data to store (will be stringified);
+   *
+   * @returns {Promise<any>}      Promise rejected if data stringification fails or resolved / rejected based on
+   *                                      appendFile success.
+   */
+  public storeData(data: any): Promise<any> {
+    return LocalStorage.appendFile(LocalStorage.DATA_FILENAME, data);
+  }
 
   /**
    * Promise wrapper for `fs.appendFile`.
