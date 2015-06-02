@@ -99,4 +99,16 @@ export default class JobStore {
     // Return promise resolving when all Orchestrate database promises finish.
     return Promise.all(dbPromises);
   }
+
+  /**
+   * Add jobs to `doneJobs` array.
+   *
+   * @param {Job} job Job to be stored to list of done jobs.
+   */
+  public markAsDone(job: Job): void {
+    // Check to make sure this job is not on the list already.
+    if (this.doneJobs.indexOf(job.uid) === -1) {
+      this.doneJobs.push(job.uid);
+    }
+  }
 }
