@@ -6,6 +6,13 @@ import LocalStorage from "./local-storage";
 export default class JobStore {
 
   /**
+   * Minimum number of followers of user to add.
+   *
+   * @type {Number}
+   */
+  private static MIN_FOLLOWERS = 10000;
+
+  /**
    * Limit of how much jobs can be stored in RAM at one time.
    *
    * @type {number}
@@ -150,7 +157,13 @@ export default class JobStore {
     }
     console.log(`Store ${data.length} data record${data.length === 1 ? "s" : ""}.`);
     // Map data to an array of promises, each resolving when Orchestrate PUT request finishes.
-    let dbPromises = data.map((d) => this.localStorage.storeData(d));
+    let dbPromises = data.map((d) => {
+      // If data is user and their follower count is less than `MIN_FOLLOWERS`, do not add them.
+      if (d.type === JobTypes.User && d.followerCount < JobStore.MIN_FOLLOWERS) {
+        return Promise.resolve(null);
+      }
+      return this.localStorage.storeData(d);
+    });
     // Return promise resolving when all Orchestrate database promises finish.
     return Promise.all(dbPromises);
   }
