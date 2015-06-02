@@ -111,4 +111,19 @@ export default class JobStore {
       this.doneJobs.push(job.uid);
     }
   }
+
+  /**
+   * Add user and vine job to the list of pending jobs.
+   *
+   * @param {string} uid UserId of user which should be added as jobs.
+   */
+  public add(uid: string): void {
+    // Initialize new jobs of type User and Vine.
+    [new Job({ type: JobTypes.User, id: uid }), new Job({ type: JobTypes.Vine, id: uid })]
+    // Filter out pending and done jobs.
+      .filter((j: Job) => this.doneJobs.indexOf(j.uid) === -1 || Job.Find(j, this.jobs, true) === null)
+    // Push remaining jobs (if any) to the list of pending jobs.
+      .forEach((j: Job) => this.jobs.push(j));
+  }
+
 }
