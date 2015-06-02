@@ -1,8 +1,30 @@
 import VineApi from "../api/VineApi";
 import Job from "../master/job";
 import JobTypes from "../master/JobTypes";
+import LocalStorage from "./local-storage";
 
 export default class JobStore {
+
+  /**
+   * Limit of how much jobs can be stored in RAM at one time.
+   *
+   * @type {number}
+   */
+  private static MAX_JOBS_IN_RAM = 5000;
+
+  /**
+   * Upper bound of jobs size, before reading in more jobs.
+   *
+   * @type {Number}
+   */
+  private static MIN_JOBS_UPPER = 500;
+
+  /**
+   * Lower bound of jobs size, before reading in more jobs.
+   *
+   * @type {Number}
+   */
+  private static MIN_JOBS_LOWER = 400;
 
   /**
    * Vine API connector utility.
@@ -12,8 +34,11 @@ export default class JobStore {
   private vineApi: VineApi;
 
   /**
+   * LocalStorage manager.
    *
+   * @type {LocalStorage}
    */
+  private localStorage: LocalStorage;
 
   /**
    * Array of pending jobs.
@@ -30,13 +55,22 @@ export default class JobStore {
   private doneJobs: Array<string>;
 
   /**
+   * Counter of all jobs (in RAM + stored).
+   *
+   * @type {number}
+   */
+  private totalJobCount: number;
+
+  /**
    * Initialize a new JobStore.
    */
   constructor() {
     this.vineApi = new VineApi();
+    this.localStorage = new LocalStorage();
     // Initialize arrays.
     this.doneJobs = [];
     this.jobs = [];
+    this.totalJobCount = 0;
   }
 
   /**
@@ -46,7 +80,40 @@ export default class JobStore {
    *
    * @returns {Job}
    */
-  get next(): Job { return this.jobs.splice(0, 1)[0] }
+  get next(): Job {
+    if (this.totalJobCount === 0) {
+      return null;
+    }
+    // If job length is below threshold, try to add more from file.
+    if (this.jobs.length > JobStore.MIN_JOBS_LOWER && this.jobs.length < JobStore.MIN_JOBS_UPPER) {
+      this.getStoredJobs();
+    }
+    // Reduce job count by 1.
+    this.totalJobCount--;
+    // Also store updated job size to file.
+    this.localStorage.storeTotalJobSize(this.totalJobCount);
+    // Return next job from list.
+    return this.jobs.splice(0, 1)[0];;
+  }
+
+  /**
+   * Try to get next jobs from job store.
+   *
+   * @returns {Promise<number>} Number of jobs collected.
+   */
+  public getStoredJobs(): Promise<number> {
+    return new Promise((resolve, reject) => {
+      this.localStorage.getFirstJobs(JobStore.MIN_JOBS_UPPER).then((newJobs) => {
+        if (newJobs) {
+          // If newJobs exits, concat them to existing jobs and resolve promise with added length.
+          this.jobs.concat(newJobs);
+          resolve(newJobs.length);
+        }
+        // New jobs are undefined, resolve with length 0.
+        resolve(0);
+      });
+    });
+  }
 
   /**
    * Get API data based on job type.
@@ -82,6 +149,7 @@ export default class JobStore {
       data = [data];
     }
     // Map data to an array of promises, each resolving when Orchestrate PUT request finishes.
+    let dbPromises = data.map((d) => this.localStorage.storeData(d));
     // Return promise resolving when all Orchestrate database promises finish.
     return Promise.all(dbPromises);
   }
@@ -103,16 +171,43 @@ export default class JobStore {
    * Add user and vine job to the list of pending jobs.
    *
    * @param {string} uid UserId of user which should be added as jobs.
+   *
+   * @returns {Promise<any>}      Promise resolving when all jobs are added.
    */
-  public add(uid: string): void {
-    // Initialize new jobs of type User and Vine.
-    let added = [new Job({ type: JobTypes.User, id: uid }), new Job({ type: JobTypes.Vine, id: uid })]
-    // Filter out pending and done jobs.
-      .filter((j: Job) => this.doneJobs.indexOf(j.uid) === -1 || Job.Find(j, this.jobs, true) === null)
-    // Push remaining jobs (if any) to the list of pending jobs.
-      .map((j: Job) => this.jobs.push(j));
+  public add(uid: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // Initialize new jobs of type User and Vine.
+      let findPromises = [new Job({ type: JobTypes.User, id: uid }), new Job({ type: JobTypes.Vine, id: uid })]
+      // Filter out pending and done jobs.
+        .filter((j: Job) => this.doneJobs.indexOf(j.uid) === -1 && Job.Find(j, this.jobs, true) === null)
+      // Push remaining jobs (if any) to the list of pending jobs.
+        .map((j) => this.localStorage.findJob(j));
 
-    console.log(`Added ${added.length} new jobs for user ${uid}, new job count: ${this.jobs.length}`);
+      Promise.all(findPromises).then((foundJobs) => {
+        // When all `findJob` promises resolve, filter jobs which are `null` (i.e. found)
+        // add add jobs which weren't found to list of jobs. Using map to get actually added jobs.
+        let added = foundJobs.filter((j) => j !== null).map((j: Job) => this.jobs.push(j));
+        // Add added length to total count.
+        this.totalJobCount += added.length;
+        console.log(`Added ${added.length} new jobs for user ${uid}, new job count: ${this.jobs.length} (total: ${this.totalJobCount})`);
+        // Also store updated job size to file.
+        this.localStorage.storeTotalJobSize(this.totalJobCount);
+
+        let jobLen = this.jobs.length;
+        // Check if length is more than set threshold, if it is, store half of array in jobs file.
+        if (jobLen > JobStore.MAX_JOBS_IN_RAM) {
+          // Take last half of array.
+          let jobsToStore = this.jobs.splice(jobLen / 2, jobLen);
+          Promise.all(jobsToStore.map((j) => this.localStorage.storeJob(j))).then(() => {
+            console.log(`Job array "overflow", stored ${jobsToStore.length} jobs`);
+            resolve();
+          }).catch(reject);
+        }
+        // If job length is not exceeded, just resolve the promise.
+        resolve();
+      }).catch(reject);
+    });
+  }
   }
 
 }
