@@ -108,6 +108,42 @@ export default class LocalStorage {
       });
     });
   }
+
+  /**
+   * Find a job in jobs storage file.
+   *
+   * @param   {Job}          job Job to look for.
+   *
+   * @returns {Promise<Job>}     Promise resolving to given `job` if job is found or null otherwise.
+   */
+  public findJob(job: Job): Promise<Job> {
+    return new Promise((resolve, reject) => {
+      // Read jobs file.
+      LocalStorage.readFile(LocalStorage.JOBS_FILENAME).then((data: string) => {
+        data = data.trim();
+        // File is empty, resolve with `job` (i.e. not found).
+        if (data.length === 0) {
+          resolve(job);
+        }
+        // Split data in lines.
+        let lines = data.split("\n");
+        let uid = job.uid;
+        // Traverse through lines and resolve with true if a line matches.
+        for (let i = 0; i < lines.length; i++) {
+          // Job was found, resolve with null (i.e. this job exists, don't add it again).
+          if (lines[i] === uid) {
+            resolve(null);
+          }
+        }
+        // No match found, resolve with `job`.
+        resolve(job);
+      })
+      // If an error occured while reading jobs file, resolve with `job`.
+        .catch(() => resolve(job));
+    });
+  }
+
+  /**
    * Promise wrapper for `fs.appendFile`.
    *
    * @param   {string}       fileName Name of file to write (append) to.
