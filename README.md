@@ -1,4 +1,4 @@
-# Vine Data Mining  [![Build Status](https://magnum.travis-ci.com/markogresak/vine-data-mining.svg?token=yBhQFGxVxxqqbo7xzCdE)](https://magnum.travis-ci.com/markogresak/vine-data-mining)
+# Vine Data Mining  [![Build Status](https://travis-ci.org/markogresak/vine-data-mining.svg)](https://travis-ci.org/markogresak/vine-data-mining)
 
 
 
