@@ -33,6 +33,7 @@
         "./src/master/index.ts",
         "./src/master/job.ts",
         "./src/router/index.ts",
+        "./src/simple-worker/index.ts",
         "./src/simple-worker/job-store.ts",
         "./src/worker/index.ts",
         "./src/worker/worker-profiler.ts",
