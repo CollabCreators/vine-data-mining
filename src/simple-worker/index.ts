@@ -28,6 +28,11 @@ export default class SimpleWorker {
       }
       Promise.all(promises)
         .then(() => this.doNextJob())
+        .catch((err) => {
+        // Initializaton error, output stack and exit with error status code.
+        console.error(err.stack);
+        process.exit(1);
+      });
     });
     this.jobEventEmitter.on("job.done", () => this.doNextJob());
   }
