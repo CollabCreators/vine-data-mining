@@ -1,5 +1,7 @@
 import JobStore from "./job-store";
+import LocalStorage from "./local-storage";
 import {EventEmitter} from "events";
+let lineReader = require("reverse-line-reader");
 
 export default class SimpleWorker {
 
@@ -18,6 +20,9 @@ export default class SimpleWorker {
   constructor() {
     this.jobStore = new JobStore();
     this.jobEventEmitter = new EventEmitter();
+  }
+
+  public begin(): void {
     this.jobStore.getStoredJobs().then((count) => {
       console.log(`Found ${count} existing jobs...`);
       let promises = [Promise.resolve()];
@@ -35,6 +40,26 @@ export default class SimpleWorker {
       });
     });
     this.jobEventEmitter.on("job.done", () => this.doNextJob());
+  }
+
+  public beginWithExisting(): void {
+    lineReader.eachLine(LocalStorage.PARSED_DATA_FILENAME, (line: string, last: boolean, cb: (done?: boolean) => void) => {
+      if (line.trim().length === 0) {
+        return cb();
+      }
+      try {
+        let data = JSON.parse(line);
+        if (data.type === 0 && data.id && userIds.indexOf(data.id) === -1) {
+          this.jobStore.add()
+        }
+        return cb();
+      }
+      catch (e) {
+        return cb();
+      }
+    }).then(() => {
+      // done
+    });
   }
 
   /**
