@@ -184,8 +184,8 @@ export default class JobStore {
   /**
    * Add user and vine job to the list of pending jobs.
    *
-   * @param {boolean = false} userOnly  Should add both jobs, or just user job?
    * @param {string}          id        UserId of user which should be added as jobs.
+   * @param {boolean = false} vineOnly  Should add both jobs, or just user job?
    *
    * @returns {Promise<any>}      Promise resolving when all jobs are added.
    */
@@ -199,8 +199,8 @@ export default class JobStore {
         if (this.doneJobs.indexOf(j.uid) !== -1 || Job.Find(j, this.jobs, true) !== null) {
           return false;
         }
-        // If adding just user job, skip vine jobs.
-        if (userOnly && j.type === JobTypes.Vine) {
+        // If adding just vine job, skip user jobs.
+        if (vineOnly && j.type === JobTypes.User) {
           return false;
         }
         return true;
