@@ -22,6 +22,13 @@ export default class LocalStorage {
   private static DATA_FILENAME = path.resolve(LocalStorage.BASE_PATH, "data.json");
 
   /**
+   * File name of parsed data storage file.
+   *
+   * @type {string}
+   */
+  public static PARSED_DATA_FILENAME = path.resolve(LocalStorage.BASE_PATH, "parsed-data.json");
+
+  /**
    * File name of jobs storage file.
    *
    * @type {string}
