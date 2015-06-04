@@ -32,6 +32,7 @@
         "./src/master/JobTypes.ts",
         "./src/master/index.ts",
         "./src/master/job.ts",
+        "./src/parse-data/index.ts",
         "./src/router/index.ts",
         "./src/simple-worker/index.ts",
         "./src/simple-worker/job-store.ts",
