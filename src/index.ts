@@ -7,6 +7,7 @@ import Worker from "./worker/index";
 import SimpleWorker from "./simple-worker/index";
 import GetVinesUsers from "./simple-worker/get-vines-users";
 import ParseData from "./parse-data/index";
+import DrawPlots from "./draw-plots/index";
 import {exec} from "child_process";
 import * as path from "path";
 import * as fs from "fs";
@@ -69,8 +70,9 @@ const initFunctions = {
   "master": () => killPort(() => new Master(PORT)),
   "worker": () => new Worker(PORT),
   "sw": () => new SimpleWorker().begin(),
-  "parse": () => new ParseData()
   "swe": () => new GetVinesUsers().beginWithExisting(),
+  "parse": () => new ParseData(),
+  "plots": () => new DrawPlots()
 }
 
 // Get argument or use default value empty string.
