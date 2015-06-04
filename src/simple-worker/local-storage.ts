@@ -61,6 +61,18 @@ export default class LocalStorage {
   }
 
   /**
+   * Store parsed data as a line of JSON string into parsed data storage file.
+   *
+   * @param   {any}          data Data to store (will be stringified).
+   *
+   * @returns {Promise<any>}      Promise rejected if data stringification fails or resolved / rejected based on
+   *                                      appendFile success.
+   */
+  public storeParsedData(data: any): Promise<any> {
+    return LocalStorage.appendFile(LocalStorage.PARSED_DATA_FILENAME, data);
+  }
+
+  /**
    * Store a job uid to job storage file.
    *
    * @param   {Job}          job Job of which uid should be stored.
