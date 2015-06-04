@@ -19,7 +19,7 @@ export default class LocalStorage {
    *
    * @type {string}
    */
-  private static DATA_FILENAME = path.resolve(LocalStorage.BASE_PATH, "data.json");
+  public static DATA_FILENAME = path.resolve(LocalStorage.BASE_PATH, "data.json");
 
   /**
    * File name of parsed data storage file.
@@ -33,12 +33,12 @@ export default class LocalStorage {
    *
    * @type {string}
    */
-  private static JOBS_FILENAME = path.resolve(LocalStorage.BASE_PATH, "jobs.json");
+  public static JOBS_FILENAME = path.resolve(LocalStorage.BASE_PATH, "jobs.json");
 
   /**
    * File name of size storage file.
    */
-  private static SIZE_FILENAME = path.resolve(LocalStorage.BASE_PATH, "size.json");
+  public static SIZE_FILENAME = path.resolve(LocalStorage.BASE_PATH, "size.json");
 
   constructor() {
     console.log("base path:", LocalStorage.BASE_PATH);
@@ -51,7 +51,7 @@ export default class LocalStorage {
   /**
    * Store data as a line of JSON string into data storage file.
    *
-   * @param   {any}          data Data to store (will be stringified);
+   * @param   {any}          data Data to store (will be stringified).
    *
    * @returns {Promise<any>}      Promise rejected if data stringification fails or resolved / rejected based on
    *                                      appendFile success.
