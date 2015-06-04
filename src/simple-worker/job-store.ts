@@ -155,7 +155,7 @@ export default class JobStore {
     if (!Array.isArray(data)) {
       data = [data];
     }
-    console.log(`Store ${data.length} data record${data.length === 1 ? "s" : ""}.`);
+    console.log(`Stored ${data.length} data record${data.length === 1 ? "" : "s"}.`);
     // Map data to an array of promises, each resolving when Orchestrate PUT request finishes.
     let dbPromises = data.map((d) => {
       // If data is user and their follower count is less than `MIN_FOLLOWERS`, do not add them.
