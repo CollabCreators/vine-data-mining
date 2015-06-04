@@ -68,6 +68,30 @@ export default class SimpleWorker {
     });
   }
 
+  private doNextExistingJob(): void {
+    let nextJob = this.jobStore.next;
+    if (!nextJob) {
+      // Store returned falsy value, there is no more jobs.
+      this.jobEventEmitter.emit("job.existing.done");
+      return;
+    }
+    let timeLabel = `Existing job ${nextJob.uid}`;
+    // Start timer.
+    console.log("Begin", timeLabel);
+    console.time(timeLabel);
+    this.jobStore
+      .fetchVineData(nextJob)
+      .then((data) => this.jobStore.putToDatabase(data))
+      // Store current job as done.
+        .then(() => this.jobStore.markAsDone(nextJob))
+      // End timer and output the time.
+        .then(() => console.timeEnd(timeLabel))
+      // Catch any errors in chain.
+        .catch((err) => console.error(err.stack))
+      // Emit done event (always, even if there was an error).
+        .then(() => this.jobEventEmitter.emit("job.existing.done"));
+  }
+
   /**
    * Execute next job on the list.
    */
