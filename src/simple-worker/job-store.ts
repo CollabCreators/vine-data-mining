@@ -184,15 +184,15 @@ export default class JobStore {
   /**
    * Add user and vine job to the list of pending jobs.
    *
-   * @param {string}          uid       UserId of user which should be added as jobs.
    * @param {boolean = false} userOnly  Should add both jobs, or just user job?
+   * @param {string}          id        UserId of user which should be added as jobs.
    *
    * @returns {Promise<any>}      Promise resolving when all jobs are added.
    */
-  public add(uid: string, userOnly = false): Promise<any> {
+  public add(id: string, vineOnly = false): Promise<any> {
     return new Promise((resolve, reject) => {
       // Initialize new jobs of type User and Vine.
-      let findPromises = [new Job({ type: JobTypes.User, id: uid }), new Job({ type: JobTypes.Vine, id: uid })]
+      let findPromises = [new Job({ type: JobTypes.User, id: id }), new Job({ type: JobTypes.Vine, id: id })]
       // Filter out pending and done jobs.
         .filter((j: Job) => {
         // Check if job already exists.
@@ -214,7 +214,7 @@ export default class JobStore {
         let added = foundJobs.filter((j) => j !== null).map((j: Job) => this.jobs.push(j));
         // Add added length to total count.
         this.totalJobCount += added.length;
-        console.log(`Added ${added.length} new jobs for user ${uid}, new job count: ${this.jobs.length} (total: ${this.totalJobCount})`);
+        console.log(`Added ${added.length} new jobs for user ${id}, new job count: ${this.jobs.length} (total: ${this.totalJobCount})`);
         // Also store updated job size to file.
         this.localStorage.storeTotalJobSize(this.totalJobCount);
 
