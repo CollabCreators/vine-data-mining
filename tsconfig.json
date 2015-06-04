@@ -34,6 +34,7 @@
         "./src/master/job.ts",
         "./src/parse-data/index.ts",
         "./src/router/index.ts",
+        "./src/simple-worker/get-vines-users.ts",
         "./src/simple-worker/index.ts",
         "./src/simple-worker/job-store.ts",
         "./src/simple-worker/local-storage.ts",
