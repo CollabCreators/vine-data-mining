@@ -5,6 +5,7 @@ import Router from "./router/index";
 import Master from "./master/index";
 import Worker from "./worker/index";
 import SimpleWorker from "./simple-worker/index";
+import ParseData from "./parse-data/index";
 import {exec} from "child_process";
 import * as path from "path";
 import * as fs from "fs";
@@ -66,7 +67,9 @@ const initFunctions = {
   "router": () => killPort(() => new Router(PORT)),
   "master": () => killPort(() => new Master(PORT)),
   "worker": () => new Worker(PORT),
-  "sw": () => new SimpleWorker(),
+  "sw": () => new SimpleWorker().begin(),
+  "swe": () => new SimpleWorker().beginWithExisting(),
+  "parse": () => new ParseData()
 }
 
 // Get argument or use default value empty string.
@@ -86,6 +89,7 @@ if (HELP_ARGS.indexOf(runArg) >= 0) {
     \trouter - run router server on port ${PORT}
     \tworker - run a worker
     \tsw     - run a simple worker (full-stack)
+    \parse   - parse stored data
     `);
   process.exit(0);
 }
