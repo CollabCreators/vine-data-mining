@@ -43,14 +43,17 @@ export default class SimpleWorker {
   }
 
   public beginWithExisting(): void {
+    let userIds: Array<string> = [];
+    let addPromises: Array<Promise<any>> = [];
     lineReader.eachLine(LocalStorage.PARSED_DATA_FILENAME, (line: string, last: boolean, cb: (done?: boolean) => void) => {
       if (line.trim().length === 0) {
         return cb();
       }
       try {
         let data = JSON.parse(line);
-        if (data.type === 0 && data.id && userIds.indexOf(data.id) === -1) {
-          this.jobStore.add()
+        if (data.type === 0 && data.id && userIds.indexOf(data.id) === -1 && data.followerCount > 50000) {
+          addPromises.push(this.jobStore.add(data.id, true));
+          userIds.push(data.id);
         }
         return cb();
       }
@@ -58,7 +61,10 @@ export default class SimpleWorker {
         return cb();
       }
     }).then(() => {
-      // done
+      Promise.all(addPromises).then(() => {
+        this.jobEventEmitter.on("job.existing.done", () => this.doNextExistingJob());
+        this.doNextExistingJob();
+      });
     });
   }
 
