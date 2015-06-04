@@ -184,16 +184,27 @@ export default class JobStore {
   /**
    * Add user and vine job to the list of pending jobs.
    *
-   * @param {string} uid UserId of user which should be added as jobs.
+   * @param {string}          uid       UserId of user which should be added as jobs.
+   * @param {boolean = false} userOnly  Should add both jobs, or just user job?
    *
    * @returns {Promise<any>}      Promise resolving when all jobs are added.
    */
-  public add(uid: string): Promise<any> {
+  public add(uid: string, userOnly = false): Promise<any> {
     return new Promise((resolve, reject) => {
       // Initialize new jobs of type User and Vine.
       let findPromises = [new Job({ type: JobTypes.User, id: uid }), new Job({ type: JobTypes.Vine, id: uid })]
       // Filter out pending and done jobs.
-        .filter((j: Job) => this.doneJobs.indexOf(j.uid) === -1 && Job.Find(j, this.jobs, true) === null)
+        .filter((j: Job) => {
+        // Check if job already exists.
+        if (this.doneJobs.indexOf(j.uid) !== -1 || Job.Find(j, this.jobs, true) !== null) {
+          return false;
+        }
+        // If adding just user job, skip vine jobs.
+        if (userOnly && j.type === JobTypes.Vine) {
+          return false;
+        }
+        return true;
+      })
       // Push remaining jobs (if any) to the list of pending jobs.
         .map((j) => this.localStorage.findJob(j));
 
