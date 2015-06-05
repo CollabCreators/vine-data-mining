@@ -78,14 +78,14 @@ export default class GetVinesUsers {
       userData.repostCounts = [];
       userData.likesCounts = [];
       userData.vinesCreated = [];
-      userData.mentioned = [];
+      userData.mentioned = {};
       data.forEach((d: VineData) => {
         userData.loopCounts.push(d.loopCount);
         userData.commentCounts.push(d.commentsCount);
         userData.repostCounts.push(d.repostsCount);
         userData.likesCounts.push(d.likesCount);
         userData.vinesCreated.push(d.created);
-        userData.mentioned = ArrayHelper.mergeUnique(null, userData.mentioned, d.mentions);
+        d.mentions.forEach((id) => userData.mentioned[id] = (userData.mentioned[id] + 1) || 1);
       })
       console.log(`stored ${data.length} vine records for user ${userData.id}`);
       console.timeEnd(timeLabel);
