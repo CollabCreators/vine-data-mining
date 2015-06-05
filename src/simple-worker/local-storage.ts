@@ -40,11 +40,13 @@ export default class LocalStorage {
    */
   public static SIZE_FILENAME = path.resolve(LocalStorage.BASE_PATH, "size.json");
 
-  constructor() {
-    console.log("base path:", LocalStorage.BASE_PATH);
-    console.log("data path:", LocalStorage.DATA_FILENAME);
-    console.log("jobs path:", LocalStorage.JOBS_FILENAME);
-    console.log("sizes path:", LocalStorage.SIZE_FILENAME);
+  constructor(logPaths = false) {
+    if (logPaths) {
+      console.log("base path:", LocalStorage.BASE_PATH);
+      console.log("data path:", LocalStorage.DATA_FILENAME);
+      console.log("jobs path:", LocalStorage.JOBS_FILENAME);
+      console.log("sizes path:", LocalStorage.SIZE_FILENAME);
+    }
     mkdirp.sync(LocalStorage.BASE_PATH);
   }
 
