@@ -1,4 +1,5 @@
 import LocalStorage from "../simple-worker/local-storage";
+import ArrayHelper from "../helpers/arrayHelper";
 import * as fs from "fs";
 import * as path from "path";
 import * as mkdirp from "mkdirp";
@@ -184,12 +185,16 @@ export default class DrawPlots {
 
   private viewsOverTime(): Promise<any> {
     return new Promise((resolve, reject) => {
-      let generateTrace = (user: UserVines) => {
+      let colors = [
+        "rgb(0,191,143)", "rgb(255,121,77)", "rgb(255,175,64)", "rgb(120,112,204)", "rgb(242,121,172)",
+        "rgb(255,89,103)", "rgb(80,130,229)", "rgb(190,95,182)", "rgb(204,204,82)", "rgb(84,136,153)"]
+      let generateTrace = (user: UserVines, i: number, allDates) => {
         return {
-          x: user.vinesCreated,
+          x: allDates,
           y: user.loopCounts,
+          name: user.username.replace(/[^a-zA-Z]/g, ""),
           marker: {
-            color: "rgb(0, 191, 143)",
+            color: colors[i],
             size: 6,
             line: {
               color: "white",
@@ -199,13 +204,37 @@ export default class DrawPlots {
           type: "scatter"
         };
       };
-      let top10 = this.users.sort((a, b) => b.followerCount - a.followerCount).slice(0, 10);
-
+      let compareDates = (a, b) => new Date(a).getTime() - new Date(b).getTime();
+      let top10 = this.users
+        .sort((a, b) => b.followerCount - a.followerCount)
+        .slice(0, 10);
+      let allDates: any = top10.map((u) => u.vinesCreated);
+      allDates.unshift(null);
+      allDates = ArrayHelper.mergeUnique.apply(null, allDates).sort(compareDates);
+      top10 = top10.map((u) => {
+        let sorted = u.vinesCreated.map((date: any, i) => [date, u.loopCounts[i]]).sort((a, b) => compareDates(a[0], b[0]));
+        u.vinesCreated = allDates;
+        u.loopCounts = [];
+        if (sorted.length === 0) {
+          u.loopCounts = u.vinesCreated.map(() => 0);
+          return u;
+        }
+        let sortedI = 0;
+        allDates.forEach((date: any) => {
+          let count = 0;
+          if (sorted[sortedI] && sorted[sortedI][0] === date) {
+            count = sorted[sortedI][1];
+            sortedI++;
+          }
+          u.loopCounts.push(count);
+        });
+        return u;
+      });
       let layout = {
         title: "Views over time for 10 most followed users",
         xaxis: {
           title: "Time",
-          showgrid: true,
+          showgrid: false,
           zeroline: true
         },
         yaxis: {
@@ -219,7 +248,7 @@ export default class DrawPlots {
         height: 500
       };
       let figure = {
-        data: top10.map(generateTrace),
+        data: top10.map((u, i) => generateTrace(u, i, allDates)),
         layout: layout
       };
       let graphOptions = { layout: layout, filename: "views-over-time", fileopt: "overwrite" };
