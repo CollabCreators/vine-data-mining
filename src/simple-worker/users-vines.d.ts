@@ -3,6 +3,6 @@ interface UserVines extends UserProfileData {
   commentCounts: Array<number>;
   repostCounts: Array<number>;
   likesCounts: Array<number>;
-  vinesCreated: Array<number>;
+  vinesCreated: Array<Date>;
   mentioned: Array<string>;
 }
