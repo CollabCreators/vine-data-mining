@@ -48,6 +48,7 @@
         "./typings/body-parser/body-parser.d.ts",
         "./typings/chai-as-promised/chai-as-promised.d.ts",
         "./typings/chai/chai.d.ts",
+        "./typings/d3/d3.d.ts",
         "./typings/es6-promise/es6-promise.d.ts",
         "./typings/express/express.d.ts",
         "./typings/form-data/form-data.d.ts",
