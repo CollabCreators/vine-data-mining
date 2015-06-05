@@ -124,6 +124,7 @@ export default class DrawPlots {
       let traceAvg = {
         x: this.users.map((u) => u.followerCount),
         y: this.users.map((u) => u.loopCounts.length > 0 ? avgFn(u.loopCounts) : 0),
+        text: this.users.map((u) => `Uploads: ${u.loopCounts.length}`),
         mode: "markers",
         name: "Avg views",
         marker: {
