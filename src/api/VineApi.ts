@@ -186,7 +186,7 @@ export default class VineApi {
           }
           // If response wasn't successful, reject promise with reponse error.
           if (!data || !data.success) {
-            reject(Error(data.error));
+            reject(Error(data ? data.error : "data is null"));
           }
           // There was no error, resolve promise with parsed data.
           resolve(data);
