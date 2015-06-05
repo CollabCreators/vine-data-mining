@@ -2,6 +2,8 @@ import LocalStorage from "../simple-worker/local-storage";
 
 export default class ProcessMentions {
 
+  private static MIN_FOLLOWERS = 5e6;
+
   private localStorage: LocalStorage;
   private users: Array<UserVines>;
   private userIds: Array<string>;
@@ -19,16 +21,28 @@ export default class ProcessMentions {
         links: []
       };
       this.users.forEach((user, i) => {
-        this.graphData.nodes[i] = {
+        this.graphData.nodes.push({
           name: user.username,
           group: this.getUserGroup(user.followerCount)
-        };
-        let source = i + 1;
+        });
+        let added = false;
         for (let key in user.mentioned) {
+          let target = this.userIds.indexOf(key);
+          if (target === -1) {
+            continue;
+          }
           this.graphData.links.push({
-            source: source,
-            target: this.userIds.indexOf(key) + 1,
+            source: i,
+            target: target,
             value: user.mentioned[key]
+          });
+          added = true;
+        }
+        if (!added) {
+          this.graphData.links.push({
+            source: i,
+            target: i,
+            value: 0
           });
         }
       });
@@ -41,9 +55,8 @@ export default class ProcessMentions {
       this.localStorage.readData().then((data: string) => {
         this.users = data.split("\n")
           .map((l) => l.trim().length === 0 ? null : JSON.parse(l))
-          .filter((u) => u !== null && u.type === 0);
+          .filter((u) => u !== null && u.type === 0 && u.followerCount > ProcessMentions.MIN_FOLLOWERS);
         this.userIds = this.users.map((user) => user.id);
-        this.userIds.unshift('null');
         resolve();
       });
     });
