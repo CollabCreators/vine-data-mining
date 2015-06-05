@@ -40,6 +40,11 @@ export default class LocalStorage {
    */
   public static SIZE_FILENAME = path.resolve(LocalStorage.BASE_PATH, "size.json");
 
+  /**
+   * File name of mentions storage file.
+   */
+  public static MENTIONS_FILENAME = path.resolve(LocalStorage.BASE_PATH, "mentions.json");
+
   constructor(logPaths = false) {
     if (logPaths) {
       console.log("base path:", LocalStorage.BASE_PATH);
@@ -101,6 +106,17 @@ export default class LocalStorage {
    */
   public storeJob(job: Job): Promise<any> {
     return LocalStorage.appendFile(LocalStorage.JOBS_FILENAME, job.uid);
+  }
+
+  /**
+   * Store graph data to file.
+   *
+   * @param   {ForceGraphData} graphData Graph definiton to store.
+   *
+   * @returns {Promise<any>}             Promise resolved / rejected based on appendFile success.
+   */
+  public storeMentions(graphData: ForceGraphData): Promise<any> {
+    return LocalStorage.appendFile(LocalStorage.MENTIONS_FILENAME, graphData);
   }
 
   /**
