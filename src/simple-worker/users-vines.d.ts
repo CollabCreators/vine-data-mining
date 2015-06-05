@@ -4,5 +4,5 @@ interface UserVines extends UserProfileData {
   repostCounts: Array<number>;
   likesCounts: Array<number>;
   vinesCreated: Array<Date>;
-  mentioned: Array<string>;
+  mentioned: Object;
 }
