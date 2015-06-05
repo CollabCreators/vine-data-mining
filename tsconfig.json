@@ -22,6 +22,7 @@
         "./src/api/api-declarations/UserData.d.ts",
         "./src/api/api-declarations/UserSearchData.d.ts",
         "./src/api/api-declarations/VideoRecord.d.ts",
+        "./src/draw-plots/d3-graphs.ts",
         "./src/draw-plots/graph-data.d.ts",
         "./src/draw-plots/index.ts",
         "./src/helpers/arrayHelper.ts",
