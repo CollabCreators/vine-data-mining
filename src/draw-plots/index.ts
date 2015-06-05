@@ -276,7 +276,7 @@ export default class DrawPlots {
     return new Promise((resolve, reject) => {
       let trace = {
         x: this.users.map((u) => u.followerCount),
-        y: this.users.map((u) => u.mentioned.length),
+        y: this.users.map((u) => Object.keys(u.mentioned).length),
         mode: "markers",
         name: "Mentioned users",
         text: this.users.map((u) => u.username.replace(/[^a-zA-Z]/g, "")),
