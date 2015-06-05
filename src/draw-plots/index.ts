@@ -30,6 +30,7 @@ export default class DrawPlots {
       .then(() => this.drawFollowerPostsPlot())
       .then(() => this.drawFollowerViewsPlot())
       .then(() => this.viewsOverTime())
+      .then(() => this.drawFollowerCooperationsPlot())
       .catch((err) => console.error(err.stack));
   }
 
@@ -240,4 +241,64 @@ export default class DrawPlots {
       });
     });
   }
+
+  private drawFollowerCooperationsPlot(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let trace = {
+        x: this.users.map((u) => u.followerCount),
+        y: this.users.map((u) => u.mentioned.length),
+        mode: "markers",
+        name: "Mentioned users",
+        marker: {
+          color: "rgb(0, 191, 143)",
+          size: 6,
+          line: {
+            color: "white",
+            width: 0.5
+          }
+        },
+        type: "scatter"
+      };
+      let layout = {
+        title: "User followers / mentioned users",
+        xaxis: {
+          title: "Followers",
+          showgrid: true,
+          zeroline: true
+        },
+        yaxis: {
+          title: "Mentioned users",
+          showline: false
+        }
+      };
+      let imgOpts = {
+        format: "png",
+        width: 1000,
+        height: 500
+      };
+      let figure = {
+        data: [trace],
+        layout: layout
+      };
+      let graphOptions = { layout: layout, filename: "follower-cooperations", fileopt: "overwrite" };
+      this.plotly.plot(figure.data, graphOptions, function(error, msg) {
+        if (error) {
+          return console.error("error", error);
+        }
+        console.log(`${msg.filename}, url: ${msg.url}`);
+      });
+
+      this.plotly.getImage(figure, imgOpts, (error, imageStream) => {
+        if (error) {
+          return console.error("error", error);
+        }
+        let fileName = path.resolve(DrawPlots.FIGURE_PATH, "follower-cooperations.png");
+        let fileStream = fs.createWriteStream(fileName);
+        imageStream.pipe(fileStream);
+        console.log("saved", fileName);
+        resolve();
+      });
+    });
+  }
+
 }
