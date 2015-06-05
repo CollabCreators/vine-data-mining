@@ -63,6 +63,24 @@ export default class LocalStorage {
   }
 
   /**
+   * Read parsed data file.
+   *
+   * @returns {Promise<string>} Promise resolving with file contents as string.
+   */
+  public readParsedData(): Promise<string> {
+    return LocalStorage.readFile(LocalStorage.PARSED_DATA_FILENAME);
+  }
+
+  /**
+   * Read data file.
+   *
+   * @returns {Promise<string>} Promise resolving with file contents as string.
+   */
+  public readData(): Promise<string> {
+    return LocalStorage.readFile(LocalStorage.DATA_FILENAME);
+  }
+
+  /**
    * Store parsed data as a line of JSON string into parsed data storage file.
    *
    * @param   {any}          data Data to store (will be stringified).
