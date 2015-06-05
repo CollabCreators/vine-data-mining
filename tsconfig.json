@@ -25,6 +25,7 @@
         "./src/draw-plots/d3-graphs.ts",
         "./src/draw-plots/graph-data.d.ts",
         "./src/draw-plots/index.ts",
+        "./src/draw-plots/process-mentions.ts",
         "./src/helpers/arrayHelper.ts",
         "./src/helpers/communicator.ts",
         "./src/helpers/expressInit.ts",
