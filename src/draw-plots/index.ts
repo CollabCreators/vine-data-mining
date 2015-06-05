@@ -109,7 +109,7 @@ export default class DrawPlots {
   private drawFollowerViewsPlot(): Promise<any> {
     return new Promise((resolve, reject) => {
       let avgFn = (arr: Array<number>) => arr.reduce((a, b) => a + b, 0) / arr.length;
-      let popup = (u) => this.users.map((u) => `Uploads: ${u.loopCounts.length}\n${u.username.replace(/[^a-zA-Z]/g, "") }`);
+      let popup = (u) => `Uploads: ${u.loopCounts.length}\n${u.username.replace(/[^a-zA-Z]/g, "") }`;
       let traceTotal = {
         x: this.users.map((u) => u.followerCount),
         y: this.users.map((u) => u.loopCount),
