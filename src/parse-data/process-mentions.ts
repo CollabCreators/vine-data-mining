@@ -50,11 +50,11 @@ export default class ProcessMentions {
   }
 
   private getUserGroup(followerCount: number): number {
-    if (followerCount < 100000) return 1;  // 100k
-    if (followerCount < 500000) return 2;  // 500k
-    if (followerCount < 1000000) return 3; // 1M
-    if (followerCount < 5000000) return 4; // 5M
-    return 5;
+    if (followerCount < 100000) return 0;  // 100k
+    if (followerCount < 500000) return 1;  // 500k
+    if (followerCount < 1000000) return 2; // 1M
+    if (followerCount < 5000000) return 3; // 5M
+    return 4;
   }
 
 }
