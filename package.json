@@ -33,6 +33,7 @@
     "mocha": "^2.2.5",
     "orchestrate": "^0.4.3",
     "performance-now": "^0.2.0",
+    "plotly": "^1.0.2",
     "request": "^2.55.0",
     "reverse-line-reader": "^0.2.6",
     "sinon": "^1.14.1",
