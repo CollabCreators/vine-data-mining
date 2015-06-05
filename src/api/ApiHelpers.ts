@@ -16,7 +16,7 @@ export class UserProfileHelper {
       username: data.username,
       id: userId,
       followerCount: UserProfileHelper.parseNum(data.followerCount),
-      loopCount: UserProfileHelper.parseNum(data.followerCount),
+      loopCount: UserProfileHelper.parseNum(data.loopCount),
       postCount: UserProfileHelper.parseNum(data.postCount),
       location: data.location,
       followingCount: UserProfileHelper.parseNum(data.followingCount)
