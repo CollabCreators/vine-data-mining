@@ -109,12 +109,13 @@ export default class DrawPlots {
   private drawFollowerViewsPlot(): Promise<any> {
     return new Promise((resolve, reject) => {
       let avgFn = (arr: Array<number>) => arr.reduce((a, b) => a + b, 0) / arr.length;
+      let popup = (u) => this.users.map((u) => `Uploads: ${u.loopCounts.length}\n${u.username.replace(/[^a-zA-Z]/g, "") }`);
       let traceTotal = {
         x: this.users.map((u) => u.followerCount),
         y: this.users.map((u) => u.loopCount),
         mode: "markers",
         name: "Views",
-        text: this.users.map((u) => u.username.replace(/[^a-zA-Z]/g, "")),
+        text: this.users.map(popup),
         marker: {
           color: "rgb(80, 130, 229)",
           size: 6,
@@ -128,7 +129,7 @@ export default class DrawPlots {
       let traceAvg = {
         x: this.users.map((u) => u.followerCount),
         y: this.users.map((u) => u.loopCounts.length > 0 ? avgFn(u.loopCounts) : 0),
-        text: this.users.map((u) => `Uploads: ${u.loopCounts.length}`),
+        text: this.users.map(popup),
         mode: "markers",
         name: "Avg views",
         marker: {
