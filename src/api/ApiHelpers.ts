@@ -18,6 +18,7 @@ export class UserProfileHelper {
       followerCount: UserProfileHelper.parseNum(data.followerCount),
       loopCount: UserProfileHelper.parseNum(data.loopCount),
       postCount: UserProfileHelper.parseNum(data.postCount),
+      authoredPostCount: UserProfileHelper.parseNum(data.authoredPostCount),
       location: data.location,
       followingCount: UserProfileHelper.parseNum(data.followingCount)
     };

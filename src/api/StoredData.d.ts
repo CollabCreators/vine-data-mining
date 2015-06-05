@@ -40,10 +40,15 @@ interface UserProfileData extends StoredData {
    */
   loopCount: number;
   /**
-   * Number of posts.
+   * Number of all posts (including reposts).
    * @type {number}
    */
   postCount: number;
+  /**
+   * Number of original (uploaded) posts.
+   * @type {number}
+   */
+  authoredPostCount: number;
   /**
    * Location user has entered. It's probably not very reliable.
    * @type {string}
