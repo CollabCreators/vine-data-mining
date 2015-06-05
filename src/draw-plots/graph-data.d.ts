@@ -1,15 +1,15 @@
-interface Node {
+interface ForceGraphNode {
   name: string;
   group: number;
 }
 
-interface Link {
+interface ForceGraphLink {
   source: number;
   target: number;
   value: number;
 }
 
-interface GraphData {
-  nodes: Array<Node>;
-  links: Array<Link>;
+interface ForceGraphData {
+  nodes: Array<ForceGraphNode>;
+  links: Array<ForceGraphLink>;
 }
