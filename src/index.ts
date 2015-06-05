@@ -8,6 +8,8 @@ import SimpleWorker from "./simple-worker/index";
 import GetVinesUsers from "./simple-worker/get-vines-users";
 import ParseData from "./parse-data/index";
 import DrawPlots from "./draw-plots/index";
+import ProcessMentions from "./draw-plots/process-mentions";
+import ForceGraphServer from "./force-graph/index";
 import {exec} from "child_process";
 import * as path from "path";
 import * as fs from "fs";
@@ -73,7 +75,9 @@ const initFunctions = {
   "swe": () => new GetVinesUsers().beginWithExisting(),
   "sweu": () => new GetVinesUsers().beginUsersWithExisting(),
   "parse": () => new ParseData(),
-  "plots": () => new DrawPlots()
+  "plots": () => new DrawPlots(),
+  "mentions": () => new ProcessMentions(),
+  "graph": () => new ForceGraphServer()
 }
 
 // Get argument or use default value empty string.
