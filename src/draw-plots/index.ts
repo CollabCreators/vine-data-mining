@@ -72,7 +72,7 @@ export default class DrawPlots {
           zeroline: true
         },
         yaxis: {
-          title: "Posts (including reposts)",
+          title: "Posts",
           showline: false
         }
       };
