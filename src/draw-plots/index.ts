@@ -65,7 +65,7 @@ export default class DrawPlots {
         type: "scatter"
       };
       let layout = {
-        title: "User followers / posts",
+        title: "Amout of followers related to post count",
         xaxis: {
           title: "Followers",
           showgrid: true,
@@ -131,7 +131,7 @@ export default class DrawPlots {
         y: this.users.map((u) => u.loopCounts.length > 0 ? avgFn(u.loopCounts) : 0),
         text: this.users.map(popup),
         mode: "markers",
-        name: "Avg views",
+        name: "Average views",
         marker: {
           color: "rgb(255, 185, 115)",
           size: 6,
@@ -143,7 +143,7 @@ export default class DrawPlots {
         type: "scatter"
       };
       let layoutAvg = {
-        title: "User followers / average views",
+        title: "Average views related to number of followers",
         xaxis: {
           title: "Followers",
           showgrid: true,
@@ -155,7 +155,7 @@ export default class DrawPlots {
         }
       };
       let layoutTotal = {
-        title: "User followers / total views",
+        title: "Total views related to number of followers",
         xaxis: {
           title: "Followers",
           showgrid: true,
@@ -273,7 +273,7 @@ export default class DrawPlots {
           zeroline: true
         },
         yaxis: {
-          title: "Views (loops)",
+          title: "Vine views (loops)",
           showline: false
         }
       };
