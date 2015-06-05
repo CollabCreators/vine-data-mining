@@ -24,7 +24,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
   <script>
     var width = 1680,
-      height = 950;
+      height = 950,
+      bodyEl = d.getElementsByTagName('body')[0];
 
     var color = d3.scale.ordinal()
       .range(['rgb(70,70,70)', 'rgb(80,130,229)', 'rgb(255,185,115)', 'rgb(255,89,103)', 'rgb(0,191,143)']);
@@ -63,8 +64,8 @@
         .call(force.drag);
 
       function updateWindow() {
-        x = w.innerWidth || e.clientWidth || g.clientWidth;
-        y = w.innerHeight || e.clientHeight || g.clientHeight;
+        var x = window.innerWidth || d.documentElement.clientWidth || bodyEl.clientWidth;
+        var y = window.innerHeight || d.documentElement.clientHeight || bodyEl.clientHeight;
 
         svg.attr("width", x).attr("height", y);
       }

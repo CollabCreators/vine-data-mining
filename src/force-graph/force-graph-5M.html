@@ -63,8 +63,8 @@
         .call(force.drag);
 
       function updateWindow() {
-        x = w.innerWidth || e.clientWidth || g.clientWidth;
-        y = w.innerHeight || e.clientHeight || g.clientHeight;
+        var x = window.innerWidth || d.documentElement.clientWidth || bodyEl.clientWidth;
+        var y = window.innerHeight || d.documentElement.clientHeight || bodyEl.clientHeight;
 
         svg.attr("width", x).attr("height", y);
       }
