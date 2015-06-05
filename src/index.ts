@@ -71,6 +71,7 @@ const initFunctions = {
   "worker": () => new Worker(PORT),
   "sw": () => new SimpleWorker().begin(),
   "swe": () => new GetVinesUsers().beginWithExisting(),
+  "sweu": () => new GetVinesUsers().beginUsersWithExisting(),
   "parse": () => new ParseData(),
   "plots": () => new DrawPlots()
 }
