@@ -29,6 +29,7 @@ export default class DrawPlots {
     this.readUserData()
       .then(() => this.drawFollowerPostsPlot())
       .then(() => this.drawFollowerViewsPlot())
+      .then(() => this.viewsOverTime())
       .catch((err) => console.error(err.stack));
   }
 
@@ -179,4 +180,64 @@ export default class DrawPlots {
     });
   }
 
+  private viewsOverTime(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let generateTrace = (user: UserVines) => {
+        return {
+          x: user.vinesCreated,
+          y: user.loopCounts,
+          marker: {
+            color: "rgb(0, 191, 143)",
+            size: 6,
+            line: {
+              color: "white",
+              width: 0.5
+            }
+          },
+          type: "scatter"
+        };
+      };
+      let top10 = this.users.sort((a, b) => b.followerCount - a.followerCount).slice(0, 10);
+
+      let layout = {
+        title: "Views over time for 10 most followed users",
+        xaxis: {
+          title: "Time",
+          showgrid: true,
+          zeroline: true
+        },
+        yaxis: {
+          title: "Views (loops)",
+          showline: false
+        }
+      };
+      let imgOpts = {
+        format: "png",
+        width: 1000,
+        height: 500
+      };
+      let figure = {
+        data: top10.map(generateTrace),
+        layout: layout
+      };
+      let graphOptions = { layout: layout, filename: "views-over-time", fileopt: "overwrite" };
+      this.plotly.plot(figure.data, graphOptions, function(error, msg) {
+        if (error) {
+          return console.error("error", error);
+        }
+        console.log(`${msg.filename}, url: ${msg.url}`);
+      });
+
+      this.plotly.getImage(figure, imgOpts, (error, imageStream) => {
+        if (error) {
+          return console.error("error", error);
+        }
+        let fileName = path.resolve(DrawPlots.FIGURE_PATH, "views-over-time.png");
+        let fileStream = fs.createWriteStream(fileName);
+        imageStream.pipe(fileStream);
+        console.log("saved", fileName);
+        resolve();
+      });
+    });
+  }
 }
