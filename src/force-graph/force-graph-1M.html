@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
-  html,
-  body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
-
   .node {
     stroke: #fff;
     stroke-width: 1.5px;
@@ -61,15 +53,6 @@
           return color(d.group);
         })
         .call(force.drag);
-
-      function updateWindow() {
-        var x = window.innerWidth || d.documentElement.clientWidth || bodyEl.clientWidth;
-        var y = window.innerHeight || d.documentElement.clientHeight || bodyEl.clientHeight;
-
-        svg.attr("width", x).attr("height", y);
-      }
-      updateWindow();
-      window.onresize = updateWindow;
 
       node.append("title")
         .text(function(d) {
