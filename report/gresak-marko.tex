@@ -93,5 +93,13 @@ Problem sem rešil tako, da sem začel pri 5 po mojem mnenju najbolj sledenih up
 \par
 Za vsakega od teh uporabnikov sem pripravil zahtevo na profil ter hkrati na časovnico, kjer se nahajajo vsi posnetki. Na le-tej se pojavi omejitev, saj lahko v zahtevi dobimo največ 100 posnetkov, za več pa moramo zahtevati naslednje strani. Problem sm rešil preprosto, saj ob vsaki zahtevi kot odgovor dobim število vseh objav, potem pa preostale izračunam po formuli \(\left \lfloor{\frac{n}{100}}\right \rfloor\) , kjer je \textit{n} število vseh objav, navzdol pa zaokrožim, ker prvo skupino objav že imam.
 
+\subsection{Programsko zbiranje podatkov}
+
+Ker je uporabnikov in Vine posnetnov ogromno, z vsakim novim pa se število potrebnih zahtev povečuje zelo hitro, sem si naprej postavil omejitev, da uporabnike z manj od 10k sledilcev preskočim. To se je kasneje izkazalo za prenizko mejo, zato sem jo povišal na 50k, saj se drugače zbiranje podatkov ne bi končalo v nekem doglednem času, da bi lahko zaključil predstavitev.
+\par
+Odločil sem se izdelati mrežo računalnikov, oziroma instanc strežnikov, ki bodo zbirale podatke ter jih oddajale na centralni, zmogljivejši strežnik. To se je izkazalo za zelo slabo idejo, saj sem za razvoj tega sistema skupno porabil okoli 50 ur, ko pa sem sistem prvič pognal, je bilo toliko zahtev, da se je sistem sesul v manj kot pol ure. Poskusil sem z najzmogljivešim strežnikom na DigitalOcean, ki so mi ga dovolili najeti, ampak tudi tam zgodba ni bila dosti drugačna. Nazadnje sem se odločil vzpostaviti strežnik kar na svojem osebnem računalniku, saj je bil glavni problem RAM in diskovni prostor, tega pa imam več, kot strežnik, ki sem ga najel. Poleg tega sem v vmesnem času še dodal nekaj optimizacij, zato se je rešitev za nekaj ur že kazala obetavne rezultate. Ampak je število zahtev rastlo brez meja, v okoli 48 urah neprestanega delovanja se je izvajanje še vedno zdelo, da sem daleč od konca, zato sem se odločil delovanje ustaviti in pregledati podatke. Zbral sem skoraj dva GB podatkov s skupno več kot 5M vnosi. Čeprav sem se trudil in implementiral več mehanizmov za preprečeavnje shranjevanja duplikatov, je bilo še vseeno okoli 10\% podatkov podvojenih, prav tako pa je bila večina podatkov o posnetkih.
+\par
+Tu sem se odločil izbrati samo podatke o uporabnikih ter dodal že prej omenjeno mejo za 50k sledilcev, prav tako pa sem iz množice izključil uporabnike, ki so imeli zasebne profile, kar pomeni, da ni možnosti pridobivanja vseh zanimivh informacij o njihovem profilu. Po tem mi je ostalo \textit{588} bolj ali manj znanih uporabnikov, za katere pa sem zbral tudi \textit{145.970} videov.
+
 
 \end{document}
