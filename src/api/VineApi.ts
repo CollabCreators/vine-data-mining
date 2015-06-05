@@ -205,12 +205,13 @@ export default class VineApi {
    */
   private makePaginatedApiRequest(endpoint: string, reqData: string): Promise<PaginatedResponse<any>> {
     return new Promise((resolve, reject) => {
+      let responseData: PaginatedResponse<any>;
       // Make a request to first page (page=1 is implicit).
       // Using a very large value for size to max out API's max allowed page size.
       this.makeApiRequest(endpoint, reqData, [{ size: 1000 }])
         .then((data) => {
         // Set temporary variable to store response `data` field.
-        let responseData: PaginatedResponse<any> = data.data;
+        responseData = data.data;
         // Store max size of a single page. This should max out at 100, but keeping it dynamic.
         let maxSize = responseData.size;
         // Initialize an array of secondary, i.e. pages following the first, requests promises.
@@ -230,7 +231,7 @@ export default class VineApi {
         Promise.all(secondaryRequests).then(() => resolve(responseData));
       })
       // If  there happened to be an error, reject this promise.
-        .catch(error => reject(error));
+        .catch(error => resolve(responseData));
     });
   }
 }
