@@ -50,7 +50,7 @@ export default class DrawPlots {
       let trace = {
         x: this.users.map((u) => u.followerCount),
         y: this.users.map((u) => u.postCount),
-        // text: this.users.map((u) => u.username),
+        text: this.users.map((u) => u.username.replace(/[^a-zA-Z]/g, "")),
         mode: "markers",
         name: "Users",
         marker: {
@@ -113,6 +113,7 @@ export default class DrawPlots {
         y: this.users.map((u) => u.loopCount),
         mode: "markers",
         name: "Views",
+        text: this.users.map((u) => u.username.replace(/[^a-zA-Z]/g, "")),
         marker: {
           color: "rgb(80, 130, 229)",
           size: 6,
@@ -249,6 +250,7 @@ export default class DrawPlots {
         y: this.users.map((u) => u.mentioned.length),
         mode: "markers",
         name: "Mentioned users",
+        text: this.users.map((u) => u.username.replace(/[^a-zA-Z]/g, "")),
         marker: {
           color: "rgb(0, 191, 143)",
           size: 6,
