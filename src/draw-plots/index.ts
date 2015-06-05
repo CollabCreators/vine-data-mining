@@ -10,7 +10,7 @@ export default class DrawPlots {
 
   private plotly;
   private localStorage: LocalStorage;
-  private users: Array<VinesUsers>;
+  private users: Array<UserVines>;
 
   constructor() {
     // Check if PLOTLY_KEY environment variable is set.

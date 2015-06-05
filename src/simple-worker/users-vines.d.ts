@@ -1,4 +1,4 @@
-interface VinesUsers extends UserProfileData {
+interface UserVines extends UserProfileData {
   loopCounts: Array<number>;
   commentCounts: Array<number>;
   repostCounts: Array<number>;
