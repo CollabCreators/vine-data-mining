@@ -16,6 +16,7 @@
 \selectlanguage{slovene}
 \usepackage[toc,page]{appendix}
 \usepackage[pdftex]{graphicx} % za slike
+\usepackage[justification=centering]{caption}
 \usepackage{setspace}
 \usepackage{multicol}
 \usepackage{color}
@@ -97,9 +98,104 @@ Za vsakega od teh uporabnikov sem pripravil zahtevo na profil ter hkrati na čas
 
 Ker je uporabnikov in Vine posnetnov ogromno, z vsakim novim pa se število potrebnih zahtev povečuje zelo hitro, sem si naprej postavil omejitev, da uporabnike z manj od 10k sledilcev preskočim. To se je kasneje izkazalo za prenizko mejo, zato sem jo povišal na 50k, saj se drugače zbiranje podatkov ne bi končalo v nekem doglednem času, da bi lahko zaključil predstavitev.
 \par
-Odločil sem se izdelati mrežo računalnikov, oziroma instanc strežnikov, ki bodo zbirale podatke ter jih oddajale na centralni, zmogljivejši strežnik. To se je izkazalo za zelo slabo idejo, saj sem za razvoj tega sistema skupno porabil okoli 50 ur, ko pa sem sistem prvič pognal, je bilo toliko zahtev, da se je sistem sesul v manj kot pol ure. Poskusil sem z najzmogljivešim strežnikom na DigitalOcean, ki so mi ga dovolili najeti, ampak tudi tam zgodba ni bila dosti drugačna. Nazadnje sem se odločil vzpostaviti strežnik kar na svojem osebnem računalniku, saj je bil glavni problem RAM in diskovni prostor, tega pa imam več, kot strežnik, ki sem ga najel. Poleg tega sem v vmesnem času še dodal nekaj optimizacij, zato se je rešitev za nekaj ur že kazala obetavne rezultate. Ampak je število zahtev rastlo brez meja, v okoli 48 urah neprestanega delovanja se je izvajanje še vedno zdelo, da sem daleč od konca, zato sem se odločil delovanje ustaviti in pregledati podatke. Zbral sem skoraj dva GB podatkov s skupno več kot 5M vnosi. Čeprav sem se trudil in implementiral več mehanizmov za preprečeavnje shranjevanja duplikatov, je bilo še vseeno okoli 10\% podatkov podvojenih, prav tako pa je bila večina podatkov o posnetkih.
+Odločil sem se izdelati mrežo računalnikov, oziroma instanc strežnikov, ki bodo zbirale podatke ter jih oddajale na centralni, zmogljivejši strežnik. To se je izkazalo za zelo slabo idejo, saj sem za razvoj tega sistema skupno porabil okoli 50 ur, ko pa sem sistem prvič pognal, je bilo toliko zahtev, da se je sistem sesul v manj kot pol ure. Poskusil sem z najzmogljivešim strežnikom na DigitalOcean, ki so mi ga dovolili najeti, ampak tudi tam zgodba ni bila dosti drugačna. Nazadnje sem se odločil vzpostaviti strežnik kar na svojem osebnem računalniku, saj je bil glavni problem RAM in diskovni prostor, tega pa imam več, kot strežnik, ki sem ga najel. Poleg tega sem v vmesnem času še dodal nekaj optimizacij, zato se je rešitev za nekaj ur že kazala obetavne rezultate. Ampak je število zahtev rastlo ``brez meja'', v okoli 48 urah neprestanega delovanja se je izvajanje še vedno zdelo, da sem daleč od konca, zato sem se odločil delovanje ustaviti in pregledati podatke. Zbral sem skoraj dva GB podatkov s skupno več kot 5M vnosi. Čeprav sem se trudil in implementiral več mehanizmov za preprečeavnje shranjevanja duplikatov, je bilo še vseeno okoli 10\% podatkov podvojenih, prav tako pa je bila večina podatkov o posnetkih.
 \par
-Tu sem se odločil izbrati samo podatke o uporabnikih ter dodal že prej omenjeno mejo za 50k sledilcev, prav tako pa sem iz množice izključil uporabnike, ki so imeli zasebne profile, kar pomeni, da ni možnosti pridobivanja vseh zanimivh informacij o njihovem profilu. Po tem mi je ostalo \textit{588} bolj ali manj znanih uporabnikov, za katere pa sem zbral tudi \textit{145.970} videov.
+Tu sem se odločil izbrati samo podatke o uporabnikih ter dodal že prej omenjeno mejo za 50k sledilcev, prav tako pa sem iz množice izključil uporabnike, ki so imeli zasebne profile, kar pomeni, da ni možnosti pridobivanja vseh zanimivh informacij o njihovem profilu. Napisal sem tudi manjšo skripto, ki opravlja delo celotnega prej opisanega sistema, saj je le-ta težko obvladljiv, poleg tega pa tudi nisem potreboval visoke zmogljivosti, saj je zbiranje za \textit{588} preostalih uporabnikov trajalo okoli pol ure, na koncu pa sem zbral \textit{145.970} videov.
 
+\section{Vizualizacije podatkov}
+
+Zbrane podatke sem združil skupaj po uporabnikih ter jih uporabil za upodobo vizualizacij. Za test sem opravil še probno vizualizacijo za prejšnje, večje, podatke, s katero sem ugotovil, da se je uporaba manjšega seta bolj popularnih uporabnikov izkazala za dobro odločitev. Pri zadnjih se pojavijo bolj vidni vzorci razvoja popularnosti uporabnika, kot tudi razvoja same platforme. Prav tako pa se vidi kdaj je postala vsebina uporabnika viralna, pojav, ki se pri manj popularnih uporabnikih pojavi zelo redko ali celo nikoli.
+
+\subsection{Uporbniki skozi čas}
+
+Ena meni najbolj zanimivih vizualizacij, za katero sem zaradi nekonsistentnosti pri datumih tudi porabil kar nekaj časa, je prikaz grafa ogledov objavljenih objav skozi čas za deset najbolj popularnih uporabnikov, od začetka februarja 2013, kar je nekaj dni po uradnem odprtju omrežja Vine, do konca maja 2015. Na tem grafu se lepo vidi kako je z razvojem portala rastlo tudi število ogledov teh uporabnikov, prav tako pa so zelo nazorno vidni skoki ogledov, kar ponazarja, da so bili nekateri posnetki ogledani nadpovprečno velikokrat, torej so postali viralni.
+\par
+Tukaj bi še dodal, da so imena uporabnikov nekoliko popačena, saj platforma plot.ly ne podpira posebnih znakov v besedilu, zato sem se odločil izbrisati vse znake, ki niso črke.
+\par
+Za boljši pregled nad grafom proporočam klik na povezavo za interaktiven ogled. Če platforma zahteva prijavo, lahko pojavno okno zaprete in si graf ogledate tudi kot anonimni uporabnik.
+
+\pagebreak
+
+\begin{figure}[htbp]
+  \begin{center}
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/views-over-time.png}
+    \caption{10 najbolj popularnih uporabnikov in njihovi ogledi skozi čas\\
+    Interaktivni pregled: \href{https://plot.ly/\~markogresak/61}{\underline{https://plot.ly/\~markogresak/61}}}
+  \end{center}
+\end{figure}
+
+\subsection{Sodelovanje med uporabniki}
+
+Izrisal sem tudi graf sodelovanja med uporabniki, za katerega sem pričakoval, da bo prikazal kako so uporabniki povezani med seboj in kakšne mreže se tvorijo, ampak sem z vizualizacijo spoznal, da je sodelovanj med popularnimi uporabniki toliko, da se ne oblikujejo skupine, ampak so vsi uporabniki prepleteni med seboj, graf na sliki 2 pa zgleda kot klobčič volne.
+\par
+Šele na vizualizaciji uporabnikov z več od 5M sledilcev, katerih sem zajel samo 20, se vidijo povezave, ki jih lahko vidimo ter analiziramo. Debelina črte ponazarja večje število sodelovanj med povazanima uporabnikoma. Iz slike lahko vidimo, da uporabniki veliko sodelujejo med seboj, s tem pa si tudi pomagajo pri pridobivanju še več sledilcev.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/collaborations-all.png}
+    \caption{Sodelovanje med vsemi uporabniki\\
+    Interaktivni pregled (opcija all 588 users): \href{https://gresak.io/pr/graf-sodelovanja}{\underline{https://gresak.io/pr/graf-sodelovanja}}}
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/collaborations-over-5M.png}
+    \caption{Sodelovanje med uporabniki z več kot 5M sledilcev\\
+    Interaktivni pregled (opcija users over 5M): \href{https://gresak.io/pr/graf-sodelovanja}{\underline{https://gresak.io/pr/graf-sodelovanja}}\\
+    \textit{(Če se graf ne prikaže, z miško premaknite prikazano točko.)}}
+  \end{center}
+\end{figure}
+
+\pagebreak
+
+\subsection{Ostale vizualizacije}
+
+Poleg tega sem izrisal še nekaj vizualizacij, ki predstavljajo različne razporeditve glede na število sledilcev uporabnika, si lahko ogledate v prilogi.
+
+\subsection{Vizualizacije, katerih nisem uspel izdelati}
+
+Pri vmesni predstavitvi sem predlagal tudi vizualizacijo pogostosti objav na zemljevidu Združenih Držav Amerike, vendar sem po bolj podrobni analizi podatkov ugotovil, da to ne bo mogoče, saj je edina informacija o lokaciji uporabnika ta, ki jo uporabnik vnese v svoj opis kot besedilo, torej je to lahko karkoli, na primer naslov za drugo socialno omrežje, dodaten opis profila in podobno. Sicer sem še vseeno poskusil poiskati lokacije z \href{https://developers.google.com/maps/documentation/business/geolocation/}\underline{Google Geolocation API}, vendar je stopnja pravilnosti podatkov tako nizga, da se mi ni zdela vizualizacija got zanimiva.
+
+\section{Izjava o izdelavi domače naloge}
+Domačo nalogo in pripadajoče programe sem izdelal sam.
+
+\pagebreak
+\appendix
+\appendixpage
+\pagenumbering{gobble}
+
+\section{Ostale vizualizacije}
+
+\begin{figure}[htbp]
+  \begin{center}
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/follower-posts.png}
+    \caption{Razmerje med številom sledilcev ter številom objav\\
+    Lahko nekaj osamelcev čisto pri vrhu na levi, to so računalniki, ki nalagajo ``spam'' ali ukradeno vsebino za všečke. \\
+    Interaktivni pregled: \href{https://plot.ly/\~markogresak/18}{\underline{https://plot.ly/\~markogresak/18}}}
+  \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+  \begin{center}
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/follower-cooperations.png}
+    \caption{Razmerje med številom sledilcev ter sodelovanji z ostalimi\\
+    Hitro lahko opazimo, da v povprečju s številom sledilcev narašča tudi število sodelovanj. \\
+    Interaktivni pregled: \href{https://plot.ly/\~markogresak/62}{\underline{https://plot.ly/\~markogresak/62}}}
+  \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+  \begin{center}
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/follower-cooperations.png}
+    \caption{Razmerje med številom sledilcev ter povprečjem ogledov\\
+    Zanimivi outlierji, po ročnem pregledu sem ugotovil, da so to slavne osebnosti, ki pa niso redno aktivne na Vine-u. \\
+    Interaktivni pregled: \href{https://plot.ly/\~markogresak/117}{\underline{https://plot.ly/\~markogresak/117}}}
+  \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+  \begin{center}
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/follower-cooperations.png}
+    \caption{Razmerje med številom sledilcev ter številom vseh ogledov\\
+    Število vseh ogledov narašča skoraj linearno, izstopa pa avtorica, ki pogosto objavi vsebino, katero je potrebno pogledati večkrat za popolno razumevanje, predvsem zaradi hitrega dogajanja. \\
+    Interaktivni pregled: \href{https://plot.ly/\~markogresak/118}{\underline{https://plot.ly/\~markogresak/118}}}
+  \end{center}
+\end{figure}
 
 \end{document}
