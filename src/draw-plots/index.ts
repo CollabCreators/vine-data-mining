@@ -141,8 +141,20 @@ export default class DrawPlots {
         },
         type: "scatter"
       };
-      let layout = {
-        title: "User followers / views",
+      let layoutAvg = {
+        title: "User followers / average views",
+        xaxis: {
+          title: "Followers",
+          showgrid: true,
+          zeroline: true
+        },
+        yaxis: {
+          title: "Views (loops)",
+          showline: false
+        }
+      };
+      let layoutTotal = {
+        title: "User followers / total views",
         xaxis: {
           title: "Followers",
           showgrid: true,
@@ -158,23 +170,45 @@ export default class DrawPlots {
         width: 1000,
         height: 500
       };
-      let figure = {
-        data: [traceAvg, traceTotal],
-        layout: layout
+      let figureAvg = {
+        data: [traceAvg],
+        layout: layoutAvg
       };
-      let graphOptions = { layout: layout, filename: "follower-views", fileopt: "overwrite" };
-      this.plotly.plot(figure.data, graphOptions, function(error, msg) {
+      let figureTotal = {
+        data: [traceTotal],
+        layout: layoutTotal
+      };
+      let graphAvgOptions = { layout: layoutAvg, filename: "follower-avg-views", fileopt: "overwrite" };
+      this.plotly.plot(figureAvg.data, graphAvgOptions, function(error, msg) {
         if (error) {
           return console.error("error", error);
         }
         console.log(`${msg.filename}, url: ${msg.url}`);
       });
 
-      this.plotly.getImage(figure, imgOpts, (error, imageStream) => {
+      this.plotly.getImage(figureAvg, imgOpts, (error, imageStream) => {
         if (error) {
           return console.error("error", error);
         }
-        let fileName = path.resolve(DrawPlots.FIGURE_PATH, "follower-views.png");
+        let fileName = path.resolve(DrawPlots.FIGURE_PATH, "follower-avg-views.png");
+        let fileStream = fs.createWriteStream(fileName);
+        imageStream.pipe(fileStream);
+        console.log("saved", fileName);
+        resolve();
+      });
+      let graphTotalOptions = { layout: layoutTotal, filename: "follower-total-views", fileopt: "overwrite" };
+      this.plotly.plot(figureTotal.data, graphTotalOptions, function(error, msg) {
+        if (error) {
+          return console.error("error", error);
+        }
+        console.log(`${msg.filename}, url: ${msg.url}`);
+      });
+
+      this.plotly.getImage(figureTotal, imgOpts, (error, imageStream) => {
+        if (error) {
+          return console.error("error", error);
+        }
+        let fileName = path.resolve(DrawPlots.FIGURE_PATH, "follower-total-views.png");
         let fileStream = fs.createWriteStream(fileName);
         imageStream.pipe(fileStream);
         console.log("saved", fileName);
