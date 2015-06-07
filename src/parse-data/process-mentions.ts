@@ -2,16 +2,20 @@ import LocalStorage from "../simple-worker/local-storage";
 
 export default class ProcessMentions {
 
-  private static MIN_FOLLOWERS = 5e6;
+  private static MIN_FOLLOWERS = 0;
 
   private localStorage: LocalStorage;
   private users: Array<UserVines>;
   private userIds: Array<string>;
   private graphData: ForceGraphData;
+  private missingCount: number;
+  private addedCount: number;
 
   constructor() {
     this.localStorage = new LocalStorage();
     this.begin();
+    this.missingCount = 0;
+    this.addedCount = 0;
   }
 
   private begin(): void {
@@ -29,8 +33,10 @@ export default class ProcessMentions {
         for (let key in user.mentioned) {
           let target = this.userIds.indexOf(key);
           if (target === -1) {
+            this.missingCount++;
             continue;
           }
+          this.addedCount++;
           this.graphData.links.push({
             source: i,
             target: target,
@@ -47,6 +53,8 @@ export default class ProcessMentions {
         }
       });
       this.localStorage.storeMentions(this.graphData);
+      console.log(`Missing ${this.missingCount} connections...`);
+      console.log(`Added ${this.addedCount} connections...`);
     });
   }
 
