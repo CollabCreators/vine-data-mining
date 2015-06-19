@@ -10,12 +10,16 @@ export default class ProcessMentions {
   private graphData: ForceGraphData;
   private missingCount: number;
   private addedCount: number;
+  private foundConnections: Array<any>;
+  private allConnections: Array<any>;
 
   constructor() {
     this.localStorage = new LocalStorage();
     this.begin();
     this.missingCount = 0;
     this.addedCount = 0;
+    this.foundConnections = [];
+    this.allConnections = [];
   }
 
   private begin(): void {
@@ -30,6 +34,7 @@ export default class ProcessMentions {
           group: this.getUserGroup(user.followerCount)
         });
         let added = false;
+        let connections = 0;
         for (let key in user.mentioned) {
           let target = this.userIds.indexOf(key);
           if (target === -1) {
@@ -37,6 +42,7 @@ export default class ProcessMentions {
             continue;
           }
           this.addedCount++;
+          connections++;
           this.graphData.links.push({
             source: i,
             target: target,
@@ -44,6 +50,11 @@ export default class ProcessMentions {
           });
           added = true;
         }
+        let allConnections = Object.keys(user.mentioned).length;
+        this.foundConnections.push({ id: user.username, c: connections });
+        this.allConnections.push({ id: user.username, c: allConnections });
+        console.log(`Found ${connections} for user ${user.id}`);
+        console.log(`User ${user.id} has ${allConnections} in total`);
         if (!added) {
           this.graphData.links.push({
             source: i,
@@ -55,6 +66,18 @@ export default class ProcessMentions {
       this.localStorage.storeMentions(this.graphData);
       console.log(`Missing ${this.missingCount} connections...`);
       console.log(`Added ${this.addedCount} connections...`);
+      this.foundConnections = this.foundConnections.sort((a, b) => a.c - b.c);
+      this.allConnections = this.allConnections.sort((a, b) => a.c - b.c);
+      console.log('Data for all connections:');
+      let allMin = this.allConnections[0], allMax = this.allConnections[this.allConnections.length - 1];
+      let maxAvg = this.allConnections.reduce((p, c) => p + (c.c || c), 0) / this.allConnections.length;
+      console.log(`Average connections: ${maxAvg }`);
+      console.log(`Min connections: ${allMin.c} (${allMin.id}) | Max connections: ${allMax.c} (${allMax.id})`);
+      console.log('Data for found connections:');
+      let foundMin = this.foundConnections[0], foundMax = this.foundConnections[this.foundConnections.length - 1];
+      let foundAvg = this.foundConnections.reduce((p, c) => p + (c.c || c), 0) / this.foundConnections.length;
+      console.log(`Average connections: ${foundAvg }`);
+      console.log(`Min connections: ${allMin.c} (${allMin.id}) | Max connections: ${allMax.c} (${allMax.id})`);
     });
   }
 
